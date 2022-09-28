@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<settings>
+  <run_mode>eigenvalue</run_mode>
+  <temperature_default>600.0</temperature_default>
+  <temperature_method>interpolation</temperature_method>
+  <temperature_range>294.0 1600.0</temperature_range>
+</settings>
