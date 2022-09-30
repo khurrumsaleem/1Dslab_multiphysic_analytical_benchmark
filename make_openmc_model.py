@@ -3,8 +3,8 @@ import openmc.mgxs as mgxs
 
 # problem parameters
 T0 = 300
-L = 1.0 # TODO determine which L, initial or equilibrium
-infdim = 5.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
+L = 100.0 # TODO determine which L, initial or equilibrium
+infdim = 50.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
 rho = 10.0 # g/cc
 N = 4 # number of regions in the problem
 
@@ -78,12 +78,19 @@ settings.inactive = inactive
 settings.particles = particles
 settings.output = {'tallies': True}
 
-# set temperatures (perhaps initial temp to T_0 in every cell and have it update)
-settings.temperature = {'default': 300.0,
-                        'method': 'interpolation',
-                        'range': (294.0, 1600.0)} # good to load all temperatures you could encounter in multiphysics
+# Create an initial uniform spatial source distribution over fissionable zones
+bounds = [-L -infdim, -infdim, L, infdim, infdim]
+uniform_dist = openmc.stats.Box(bounds[:3], bounds[3:], only_fissionable=True)
+settings_file.source = openmc.Source(space=uniform_dist)
 
+
+# set temperatures not sure about this one since we'll likely use a temperature XS lib that we create, but the below may be useful
+# settings.temperature = {'default': T0,
+#                         'method': 'interpolation',
+#                         'range': (294.0, 1600.0)} # good to load all temperatures you could encounter in multiphysics
 
 settings.export_to_xml()
 
-# generate MGXS
+# generate one group cross sections
+groups = mgxs.EnergyGroups()
+groups.group_edges = np.array([0.0, 20.0e6]) #  groups in eV
