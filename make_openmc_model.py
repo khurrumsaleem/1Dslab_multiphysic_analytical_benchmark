@@ -9,13 +9,12 @@ rho = 10.0 # g/cc
 N = 4 # number of regions in the problem
 
 # create materials
-# did Greisheimer and Kooreman use an actual material that would make this easier?
-# if not maybe UO2?
-uo2 = openmc.Material(1, "uo2")
-uo2.add_element('U', 1.0, enrichment=5.0) # this will be used in computing lambda/the eigenvalue
-uo2.add_element('O', 2.0)
-uo2.set_density('g/cm3',rho)
-mats = openmc.Materials([uo2])
+
+slab = openmc.Material(1, "slab")
+# uo2.add_element('U', 1.0, enrichment=5.0) # this will be used in computing lambda/the eigenvalue
+# uo2.add_element('O', 2.0)
+# uo2.set_density('g/cm3',rho)
+# mats = openmc.Materials([uo2])
 mats.export_to_xml()
 
 # TODO maybe change x_N to x_4 or get loop to work lol
@@ -70,12 +69,21 @@ tallies.export_to_xml()
 
 # settings
 settings = openmc.Settings()
-# more settings
+batches = 100
+inactive = 30
+particles = 2000
+
+settings.batches = batches
+settings.inactive = inactive
+settings.particles = particles
+settings.output = {'tallies': True}
 
 # set temperatures (perhaps initial temp to T_0 in every cell and have it update)
-settings.temperature = {'default': 600.0,
+settings.temperature = {'default': 300.0,
                         'method': 'interpolation',
                         'range': (294.0, 1600.0)} # good to load all temperatures you could encounter in multiphysics
 
 
 settings.export_to_xml()
+
+# generate MGXS
