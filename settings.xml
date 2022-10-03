@@ -1,7 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <settings>
   <run_mode>eigenvalue</run_mode>
-  <temperature_default>600.0</temperature_default>
+  <particles>2000</particles>
+  <batches>100</batches>
+  <inactive>30</inactive>
+  <source strength="1.0">
+    <space type="fission">
+      <parameters>-100.0 -50.0 -50.0 100.0 50.0 50.0</parameters>
+    </space>
+  </source>
+  <output>
+    <tallies>true</tallies>
+  </output>
+  <temperature_default>293</temperature_default>
   <temperature_method>interpolation</temperature_method>
-  <temperature_range>294.0 1600.0</temperature_range>
+  <temperature_range>0.0 900.0</temperature_range>
 </settings>
