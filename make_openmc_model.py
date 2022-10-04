@@ -13,7 +13,7 @@ num_dens = rho*N_A/A
 
 # create material for slab
 slab = openmc.Material(1, "slab",T0)
-slab.set_density('atom/b-cm',num_dens) #probably want this one we don't want to load the nuclear data for A=180 
+slab.set_density('atom/b-cm',num_dens) #probably want this one we don't want to load the nuclear data for A=180
 mats = openmc.Materials([slab])
 mats.export_to_xml()
 
@@ -27,9 +27,9 @@ root_cell, cells = mesh.build_cells(['vacuum','vacuum','reflective','reflective'
 for cell in cells:
     cell.fill = slab
 # create universe from filled cells, create geometry from universe and export the geometry
-root_universe = openmc.Universe(name='root universe', cells=cells)
+root_universe = openmc.Universe(name='root universe', cells=[root_cell])
 geom = openmc.Geometry(root_universe)
-geom.export_to_xml() 
+geom.export_to_xml()
 
 # settings
 settings = openmc.Settings()
@@ -61,7 +61,7 @@ absorption = mgxs.AbsorptionXS(domain=root_universe, energy_groups=groups)
 scattering = mgxs.ScatterXS(domain=root_universe, energy_groups=groups)
 fission = mgxs.FissionXS(domain=root_universe, energy_groups=groups, nu=True)
 
-# create MGXS tallies 
+# create MGXS tallies
 mgxs_tallies = openmc.Tallies()
 mgxs_tallies.append(total.tallies['flux'])
 mgxs_tallies.append(absorption.tallies['flux'])
