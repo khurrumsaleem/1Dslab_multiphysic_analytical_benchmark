@@ -86,10 +86,10 @@ N = 4 # number of mesh regions
   power = P
 []
 
-# TODO steady or transient
 [Executioner]
-    type=Transient
-    num_steps = 1
+  type=Steady
+  nl_forced_its = 5
+  verbose = true
 []
 
 
