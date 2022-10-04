@@ -1,24 +1,29 @@
 # GLOBAL VARS
 P = 100 # W
-T0 = 300 # K sink temp
-L0 = 1
+T0 = 293 # K sink temp
+L0 = 100.0
 # L compute from formula or allow expansion from MOOSE to figure it out
 # could be cool to do both and see how much they agree
-infdim = 5 # cm
-rho = 10.0 # g/cc
+infdim = 50 # cm
+rho = 1.2 # g/cc TODO make sure this unit is used
 N = 4 # number of mesh regions
 
-[Mesh]
-  type = CartesianMeshGenerator
-  dim = 3
-  dx = L
-  dy = 2*infdim
-  dz = 2*infdim
-  ix = N
-  iy = 1
-  iz = 1
-  length_unit = 'cm'
-[]
+  [Mesh]
+    [centered_mesh]
+      type=GeneratedMeshGenerator
+      dim = 3
+      xmax = ${fparse -1*L0/2}
+      xmin = ${fparse L0/2}
+      ymax = ${fparse -1*infdim}
+      ymin = ${fparse infdim}
+      zmax = ${fparse -1*infdim}
+      zmin = ${fparse infdim}
+      nx = ${fparse N}
+      ny = 1
+      nz = 1
+      length_unit = 'cm'
+    []
+  []
 
 # [AuxVariables]
 #    # always set
@@ -59,6 +64,15 @@ N = 4 # number of mesh regions
   []
 []
 
+# TODO may be useful depending on if MOOSE or OpenMC runs first
+# [ICs]
+#   [temp]
+#       type = ConstantIC
+#       variable = temp
+#       value = 293.0
+#   []
+# []
+
 # we probably want the mesh to be the same bewtween MOOSE and OpenMC
 # but allow both of them to change due to thermal expansion. TODO look into this
 [Problem]
@@ -67,7 +81,7 @@ N = 4 # number of mesh regions
   verbose = true
   tally_type = mesh
   solid_cell_level = 0
-  solid_blocks = '1 2 3 4'
+  solid_blocks = ANY_BLOCK_ID
   # scaling TODO just do everything in cm since scaling may be messed up rn
   power = P
 []
