@@ -6,14 +6,14 @@
   <cell id="4" material="1" universe="3" />
   <cell id="5" material="1" universe="4" />
   <lattice id="5">
-    <pitch>25.0 100.0 100.0</pitch>
+    <pitch>26.6175 100.0 100.0</pitch>
     <dimension>4 1 1</dimension>
-    <lower_left>-50.0 -50.0 -50.0</lower_left>
+    <lower_left>-53.235 -50.0 -50.0</lower_left>
     <universes>
 1 2 3 4 </universes>
   </lattice>
-  <surface boundary="vacuum" coeffs="-50.0" id="1" type="x-plane" />
-  <surface boundary="vacuum" coeffs="50.0" id="2" type="x-plane" />
+  <surface boundary="vacuum" coeffs="-53.235" id="1" type="x-plane" />
+  <surface boundary="vacuum" coeffs="53.235" id="2" type="x-plane" />
   <surface boundary="reflective" coeffs="-50.0" id="3" type="y-plane" />
   <surface boundary="reflective" coeffs="50.0" id="4" type="y-plane" />
   <surface boundary="reflective" coeffs="-50.0" id="5" type="z-plane" />
