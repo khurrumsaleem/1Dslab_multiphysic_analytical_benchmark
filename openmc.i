@@ -25,26 +25,21 @@ N = 4 # number of mesh regions
     []
   []
 
-# [AuxVariables]
-#    # always set
-#    [temp]
-#        family = MONONIAL
-#        order = CONSTANT
-#    []
-#
-#    [heat_source]
-#        family = MONOMIAL
-#        order = constant
-#    []
-#    # if you set fluid
-#    [density]
-#        family = MONOMIAL
-#        order = CONSTANT
-#    []
-#    [fission_tally_std_dev]
-#        family = MONOMIAL
-#        order = CONSTANT
-# []
+[AuxVariables]
+   # always set
+   [temp]
+       family = MONOMIAL
+       order = CONSTANT
+   []
+
+   [heat_source]
+       family = MONOMIAL
+       order = CONSTANT
+   []
+   [fission_tally_std_dev]
+       family = MONOMIAL
+       order = CONSTANT
+[]
 
 
 # May want this for special parameters in the paper
