@@ -31,16 +31,17 @@ groups = mgxs.EnergyGroups()
 groups.group_edges = np.array([0.0, 20.0e6]) #  groups in eV
 
 # create temperature data for cross sections
+# isotropic angular data
 temps = [float(T) for T in range(T0,Tmax+1)]
-xsdata = openmc.XSdata('slab_xs', energy_groups=groups, temperatures=temps,num_delayed_groups=0) # ISOTROPIC
+xsdata = openmc.XSdata('slab_xs', energy_groups=groups, temperatures=temps,num_delayed_groups=0)
 xsdata.order = 0
 
-# Above isotropic, below S2. Need s2 for paper, but curious about isotropic results
-xsdata_s2 = openmc.XSdata('slab_xs_s2', energy_groups=groups, temperatures=temps, representation='angle', num_delayed_groups=0) # ANGUlAR DIST
+# S2 angular PMF
+xsdata_s2 = openmc.XSdata('slab_xs_s2', energy_groups=groups, temperatures=temps, representation='angle', num_delayed_groups=0)
 xsdata_s2.scatter_format = 'tabular' #set a pmf where -1 and 1 are only options for mu
-xsdata_s2.order = 2 # two points, -1 and 1
+xsdata_s2.order = 2 # two points, -1 and 1 TODO confirm tabular is right for this
 
-# populate XS data
+# populate XS data for each temperature
 for T in range(T0,Tmax+1):
     Sig_t = (Sig_t0 * T0) / T
     Sig_s = s*Sig_t
@@ -55,12 +56,12 @@ for T in range(T0,Tmax+1):
     xsdata_s2.set_nu_fission(np.array([nu_Sig_f]),temperature=T) # TODO this vs set_fission
 
 # export xsdata
-one_g_cross_sections_file = openmc.MGXSLibrary(groups) # initialize the library
-# one_g_cross_sections_file.add_xsdata(xsdata) # add benchmark XS data
-one_g_cross_sections_file.add_xsdata(xsdata_s2) # add benchmark XS data
-one_g_cross_sections_file.export_to_hdf5('one_gxs.h5') # write to disk
+one_g_XS_file = openmc.MGXSLibrary(groups) # initialize the library
+# one_g_XS__file.add_xsdata(xsdata) # add benchmark XS data
+one_g_XS_file.add_xsdata(xsdata_s2) # add benchmark XS data
+one_g_XS_file.export_to_hdf5('one_gxs.h5') # write to disk
 
-# create macroscopic object and export materials
+# create macroscopic object and export material with temperature XS library generated above
 slab = openmc.Material(1, "slab")
 slab.set_density('macro',1.)
 slab.add_macroscopic('slab_xs_s2')
@@ -68,13 +69,6 @@ slab.add_macroscopic('slab_xs_s2')
 materials = openmc.Materials([slab])
 materials.cross_sections = 'one_gxs.h5'
 materials.export_to_xml()
-
-# TODO I think this is obsolete now with the addition of the Macroscopic object
-# create material for slab
-# slab = openmc.Material(1, "slab",T0)
-# slab.set_density('atom/b-cm',num_dens) #probably want this one we don't want to load the nuclear data for A=180
-# mats = openmc.Materials([slab])
-# mats.export_to_xml()
 
 # create N x 1 x 1 regular mesh
 mesh = openmc.RegularMesh()
@@ -90,12 +84,20 @@ root_universe = openmc.Universe(name='root universe', cells=[root_cell])
 geom = openmc.Geometry(root_universe)
 geom.export_to_xml()
 
+# create MGXS tallies
+mesh_filter = openmc.MeshFilter(mesh)
+tally = openmc.Tally(tally_id=1, name="mesh_tally")
+tally.filters = [mesh_filter]
+tally.scores = ['flux']
+mgxs_tallies = openmc.Tallies([tally])
+mgxs_tallies.export_to_xml()
+
 # settings
 settings = openmc.Settings()
 batches = 100
 inactive = 30
 particles = 2000
-
+settings.energy_mode = 'multi-group'
 settings.batches = batches
 settings.inactive = inactive
 settings.particles = particles
@@ -109,6 +111,3 @@ settings.temperature = {'default': T0,
                         'method': 'interpolation',
                         'range': (0.0, 900.0)} # good to load all temperatures you could encounter in multiphysics
 settings.export_to_xml()
-
-# create MGXS tallies
-mgxs_tallies = openmc.Tallies()
