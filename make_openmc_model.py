@@ -7,7 +7,7 @@ import h5py
 T0 = 293
 Tmax = 900
 L0 = 100
-L = 106.47 # equilibrium length from paper (TODO perhaps use formula)
+L = 106.47 # equilibrium length from paper
 rho = 1.2 # g/cc
 N_A = 6.022e23 # Avagadro's number
 A = 180 # mass number for slab material
@@ -39,7 +39,9 @@ xsdata.order = 0
 # S2 angular PMF
 xsdata_s2 = openmc.XSdata('slab_xs_s2', energy_groups=groups, temperatures=temps, representation='angle', num_delayed_groups=0)
 xsdata_s2.scatter_format = 'tabular' #set a pmf where -1 and 1 are only options for mu
-xsdata_s2.order = 2 # two points, -1 and 1 TODO confirm tabular is right for this
+xsdata_s2.order = 2 # two points, -1 and 1
+xsdata_s2.num_azimuthal = 1 # need to set so that for any sampled angle azimuthally, we select the same XS
+xsdata_s2.num_polar = 1 # need to set so that for any sampled angle polar, we select the same XS
 
 # populate XS data for each temperature
 for T in range(T0,Tmax+1):
@@ -48,12 +50,13 @@ for T in range(T0,Tmax+1):
     nu_Sig_f = f*Sig_t
     # isotropic
     xsdata.set_total(np.array([Sig_t]),temperature=T)
-    xsdata.set_scatter_matrix(np.array([Sig_s]),temperature=T) # TODO figure out scatter matrix
-    xsdata.set_nu_fission(np.array([nu_Sig_f]),temperature=T) # TODO this vs set_fission
+    xsdata.set_scatter_matrix(np.array([[[Sig_s]]]),temperature=T)
+    xsdata.set_nu_fission(np.array([nu_Sig_f]),temperature=T)
     # s2
-    xsdata_s2.set_total(np.array([Sig_t]),temperature=T)
-    xsdata_s2.set_scatter_matrix(np.array([Sig_s]),temperature=T) # TODO figure out scatter matrix
-    xsdata_s2.set_nu_fission(np.array([nu_Sig_f]),temperature=T) # TODO this vs set_fission
+    # xsdata_s2.set_total(np.array([Sig_t]),temperature=T)
+    xsdata_s2.set_total(np.array([[[Sig_t]]]),temperature=T)
+    xsdata_s2.set_scatter_matrix(np.array([[[Sig_s]]]),temperature=T)
+    xsdata_s2.set_nu_fission(np.array([nu_Sig_f]),temperature=T)
 
 # export xsdata
 one_g_XS_file = openmc.MGXSLibrary(groups) # initialize the library
