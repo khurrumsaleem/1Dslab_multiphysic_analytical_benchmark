@@ -7,24 +7,13 @@ rho = 1.2 # g/cc
 P = 1.0e22 # eV/s
 q = 1e8 # eV
 k0= 1.25e19 # eV/(s-cm-K^2)
-# number of regions in the problem
-N = 4
+N = 4 # number of regions in the problem
 infdim = 50.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
 
   [Mesh]
     [centered_mesh]
-      type=GeneratedMeshGenerator
-      dim = 3
-      xmax = ${fparse -1*L/2}
-      xmin = ${fparse L/2}
-      ymax = ${fparse -1*infdim}
-      ymin = ${fparse infdim}
-      zmax = ${fparse -1*infdim}
-      zmin = ${fparse infdim}
-      nx = ${fparse N}
-      ny = 1
-      nz = 1
-      length_unit = 'cm'
+      type = FileMeshGenerator
+      file = mesh_in.e
     []
   []
 
