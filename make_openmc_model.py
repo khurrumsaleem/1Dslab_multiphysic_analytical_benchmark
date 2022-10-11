@@ -18,7 +18,7 @@ k0= 1.25e19 # eV/(s-cm-K^2)
 phi0 = 2.5e14 # 1/s-cm^2 flux at the origin
 s = 0.45 # Sigma_s/Sigma_t
 f = 1.5 # nu Sigma_f/Sigma_t
-nu = 30/11 # neutrons per fission
+nu = 30/11 # n per fission, this value comes from assuming there is no non-fisssion absorption and using the provided ratios
 lam = 0.5*(1+np.sqrt(1+(16*q*q*phi0*phi0)/(P*P))) # eigenvalue solution
 Sig_t0 = np.sqrt(P/((lam-1)*k0*L))/(T0) #macro XS
 sig_t0 = Sig_t0/num_dens # micro XS
@@ -33,41 +33,30 @@ groups.group_edges = np.array([0.0, 20.0e6]) #  groups in eV
 # create temperature data for cross sections
 # isotropic angular data
 temps = [float(T) for T in range(T0,Tmax+1)]
-xsdata = openmc.XSdata('slab_xs', energy_groups=groups, temperatures=temps,num_delayed_groups=0)
+xsdata = openmc.XSdata('slab_xs', energy_groups=groups, temperatures=temps, num_delayed_groups=0)
 xsdata.order = 0
-
-# S2 angular PMF
-xsdata_s2 = openmc.XSdata('slab_xs_s2', energy_groups=groups, temperatures=temps, representation='angle', num_delayed_groups=0)
-xsdata_s2.scatter_format = 'tabular' #set a pmf where -1 and 1 are only options for mu
-xsdata_s2.order = 2 # two points, -1 and 1
-xsdata_s2.num_azimuthal = 1 # need to set so that for any sampled angle azimuthally, we select the same XS
-xsdata_s2.num_polar = 1 # need to set so that for any sampled angle polar, we select the same XS
 
 # populate XS data for each temperature
 for T in range(T0,Tmax+1):
     Sig_t = (Sig_t0 * T0) / T
     Sig_s = s*Sig_t
     nu_Sig_f = f*Sig_t
+    Sig_a = nu_Sig_f / nu # assuming no non-fisssion absorption, Sig_a = Sig_f or Sig_A = Sig_t * f / nu
     # isotropic
     xsdata.set_total(np.array([Sig_t]),temperature=T)
     xsdata.set_scatter_matrix(np.array([[[Sig_s]]]),temperature=T)
+    xsdata.set_absorption(np.array([Sig_a]),temperature=T)
     xsdata.set_nu_fission(np.array([nu_Sig_f]),temperature=T)
-    # s2
-    # xsdata_s2.set_total(np.array([Sig_t]),temperature=T)
-    xsdata_s2.set_total(np.array([[[Sig_t]]]),temperature=T)
-    xsdata_s2.set_scatter_matrix(np.array([[[Sig_s]]]),temperature=T)
-    xsdata_s2.set_nu_fission(np.array([nu_Sig_f]),temperature=T)
 
 # export xsdata
 one_g_XS_file = openmc.MGXSLibrary(groups) # initialize the library
-# one_g_XS__file.add_xsdata(xsdata) # add benchmark XS data
-one_g_XS_file.add_xsdata(xsdata_s2) # add benchmark XS data
+one_g_XS_file.add_xsdata(xsdata) # add benchmark XS data
 one_g_XS_file.export_to_hdf5('one_gxs.h5') # write to disk
 
 # create macroscopic object and export material with temperature XS library generated above
 slab = openmc.Material(1, "slab")
 slab.set_density('macro',1.)
-slab.add_macroscopic('slab_xs_s2')
+slab.add_macroscopic('slab_xs')
 
 materials = openmc.Materials([slab])
 materials.cross_sections = 'one_gxs.h5'
