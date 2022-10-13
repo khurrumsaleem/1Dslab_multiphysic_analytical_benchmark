@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <settings>
   <run_mode>eigenvalue</run_mode>
-  <particles>2000</particles>
-  <batches>100</batches>
-  <inactive>30</inactive>
+  <particles>3000</particles>
+  <batches>150</batches>
+  <inactive>50</inactive>
   <source strength="1.0">
     <space type="fission">
       <parameters>-106.47 -50.0 -50.0 106.47 50.0 50.0</parameters>

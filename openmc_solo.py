@@ -26,6 +26,8 @@ sig_t0 = Sig_t0/num_dens # micro XS
 N = 4
 infdim = 50.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
 
+model = openmc.Model()
+
 # generate one group cross section data
 groups = mgxs.EnergyGroups()
 groups.group_edges = np.array([0.0, 20.0e6]) #  groups in eV
@@ -62,6 +64,8 @@ materials = openmc.Materials([slab])
 materials.cross_sections = 'one_gxs.h5'
 materials.export_to_xml()
 
+model.materials = materials
+
 # create N x 1 x 1 regular mesh
 mesh = openmc.RegularMesh()
 mesh.dimension = (N,1,1) # N slices in the x dimension, 1 in y and z dimensions
@@ -76,6 +80,8 @@ root_universe = openmc.Universe(name='root universe', cells=[root_cell])
 geom = openmc.Geometry(root_universe)
 geom.export_to_xml()
 
+model.geometry = geom
+
 # create MGXS tallies
 mesh_filter = openmc.MeshFilter(mesh)
 tally = openmc.Tally(tally_id=1, name="mesh_tally")
@@ -83,6 +89,8 @@ tally.filters = [mesh_filter]
 tally.scores = ['flux']
 mgxs_tallies = openmc.Tallies([tally])
 mgxs_tallies.export_to_xml()
+
+model.tallies = mgxs_tallies
 
 # settings
 settings = openmc.Settings()
@@ -107,3 +115,7 @@ settings.temperature = {'default': T0,
                         'method': 'interpolation',
                         'range': (0.0, 900.0)} # good to load all temperatures you could encounter in multiphysics
 settings.export_to_xml()
+
+model.settings = settings
+
+statepoint_file = model.run()
