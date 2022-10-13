@@ -114,8 +114,9 @@ settings.source = openmc.Source(space=uniform_dist,angle=bidirectional_x)
 settings.temperature = {'default': T0,
                         'method': 'interpolation',
                         'range': (0.0, 900.0)} # good to load all temperatures you could encounter in multiphysics
+settings.max_tracks = 100
 settings.export_to_xml()
 
 model.settings = settings
 
-statepoint_file = model.run()
+statepoint_file = model.run(tracks=True)
