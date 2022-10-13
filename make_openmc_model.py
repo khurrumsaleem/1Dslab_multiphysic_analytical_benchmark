@@ -14,7 +14,7 @@ A = 180 # mass number for slab material
 num_dens = rho*N_A/A
 P = 1.0e22 # eV/s
 q = 1e8 # eV
-k0= 1.25e19 # eV/(s-cm-K^2)
+k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
 phi0 = 2.5e14 # 1/s-cm^2 flux at the origin
 s = 0.45 # Sigma_s/Sigma_t
 f = 1.5 # nu Sigma_f/Sigma_t

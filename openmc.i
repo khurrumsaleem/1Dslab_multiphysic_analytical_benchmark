@@ -6,33 +6,47 @@ L = 106.47 # equilibrium length from paper (TODO perhaps use formula)
 rho = 1.2 # g/cc
 P = 1.0e22 # eV/s
 q = 1e8 # eV
-k0= 1.25e19 # eV/(s-cm-K^2)
+k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
 N = 4 # number of regions in the problem
 infdim = 50.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
 
-  [Mesh]
-    [centered_mesh]
-      type = FileMeshGenerator
-      file = mesh_in.e
-    []
+[Mesh]
+  [centered_mesh]
+    type = FileMeshGenerator
+    file = mesh_in.e
   []
-
-[AuxVariables]
-   # always set
-   [temp]
-       family = MONOMIAL
-       order = CONSTANT
-   []
-   [heat_source]
-       family = MONOMIAL
-       order = CONSTANT
-   []
-   [fission_tally_std_dev]
-       family = MONOMIAL
-       order = CONSTANT
-   []
 []
 
+# [AuxVariables]
+#    # always set
+#    [temp]
+#        family = MONOMIAL
+#        order = CONSTANT
+#    []
+#    [heat_source]
+#        family = MONOMIAL
+#        order = CONSTANT
+#    []
+#    [fission_tally_std_dev]
+#        family = MONOMIAL
+#        order = CONSTANT
+#    []
+# []
+
+[Kernels]
+  [heat_conduction]
+    type = HeatConduction
+    variable = temp
+  []
+  [heat_source]
+    type = CoupledForce
+    variable = temp
+    v = heat_source
+  []
+[]
+
+[Materials]
+[]
 
 # May want this for special parameters in the paper
 # Otherwise
