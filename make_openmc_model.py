@@ -89,6 +89,7 @@ settings = openmc.Settings()
 batches = 100
 inactive = 30
 particles = 2000
+# settings.run_mode = 'fixed source' # TODO run in fixed source, see what tracks look like (ensures patch and source angular distribtuion is working
 settings.energy_mode = 'multi-group'
 settings.batches = batches
 settings.inactive = inactive
@@ -98,10 +99,9 @@ settings.output = {'tallies': True}
 # Create a uniform spatial source distribution over fissionable zones  and a bidirectional angular distribution
 bounds = [-L, -infdim, -infdim, L, infdim, infdim]
 uniform_dist = openmc.stats.Box(bounds[:3], bounds[3:], only_fissionable=True)
-r = openmc.stats.Discrete([1.0],[1.0])
-cos_theta = openmc.stats.Discrete([0.0],[1.0])
+mu = openmc.stats.Discrete([0.0],[1.0])
 phi = openmc.stats.Discrete([0,np.pi],[0.5,0.5])
-bidirectional_x = openmc.stats.SphericalIndependent(r=r,cos_theta=cos_theta,phi=phi)
+bidirectional_x = openmc.stats.PolarAzimuthal(mu=mu,phi=phi)
 settings.source = openmc.Source(space=uniform_dist,angle=bidirectional_x)
 settings.temperature = {'default': T0,
                         'method': 'interpolation',
