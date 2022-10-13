@@ -8,3 +8,4 @@ for track in tracks:
   for i in range(0,num_particle_tracks):
     neutron = track.particle_tracks[i]
     print(neutron.states['u'])
+    print('\n')
