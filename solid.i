@@ -7,9 +7,12 @@ rho = 1.2 # g/cc
 P = 1.0e22 # eV/s
 q = 1e8 # eV
 k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
+phi0 = 2.5e14 # 1/s-cm^2 flux at the origin
 N = 4 # number of regions in the problem
 infdim = 50.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
 eV_to_J = 1.602e-19 # J per eV
+lam = ${fparse 0.5*(1+sqrt(1+(16*q*q*phi0*phi0)/(P*P)))} # eigenvalue solution
+h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
 
 [Mesh]
   [centered_mesh]

@@ -10,5 +10,6 @@ The a PDF of the paper is included in this repository.
 `python make_openmc_model.py`
 ## Generate the mesh
 `~/cardinal/cardinal-opt -i mesh.i --mesh-only`
-## run cardinal simulation using (optional) mpi paralellism and openmp parallelism
+## run cardinal simulation using (optional) mpi paralellism and openmp parallelism from either of the following commands
 `mpiexec -np 4 ~/cardinal/cardinal-opt -i openmc.i --n-threads=10`
+`mpiexec -np 4 ~/cardinal/cardinal-opt -i solid.i --n-threads=10`
