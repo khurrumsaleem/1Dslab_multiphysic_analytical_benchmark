@@ -9,7 +9,7 @@ q = 1e8 # eV
 k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
 N = 4 # number of regions in the problem
 infdim = 50.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
-
+eV_to_J = 1.602e-19 # J per eV
 [Mesh]
   [centered_mesh]
     type = FileMeshGenerator
@@ -48,14 +48,15 @@ infdim = 50.0 # length at which the reflective boundary conditions will be to si
 [Functions]
   [conductivity]
     type = ParsedFunction
-    value = ${k0 * temp}
+    value = ${fparse k0 * temp}
   []
 []
 
 [Materials]
-  type = GenericFunctionMaterial
+  type = HeatConductionMaterial
   prop_names = 'thermal_conductivity'
-  prop_values = conductivity
+  temp = temp
+  thermal_conductivity_temperature_function = conductivity
   block = ANY_BLOCK_ID
 []
 
@@ -64,9 +65,9 @@ infdim = 50.0 # length at which the reflective boundary conditions will be to si
 # This AuxVariable and AuxKernel is only here to get the postprocessors
 # to evaluate correctly. This can be deleted after MOOSE issue #17534 is fixed.
 [AuxVariables]
-    [dummy]
-    []
+  [dummy]
   []
+[]
 
 [AuxKernels]
   [dummy]
@@ -84,7 +85,7 @@ infdim = 50.0 # length at which the reflective boundary conditions will be to si
   solid_cell_level = 0
   solid_blocks = ANY_BLOCK_ID
   # scaling TODO just do everything in cm since scaling may be messed up rn
-  power = P
+  power = ${fparse P*eV_to_J} # in W
 []
 
 [Executioner]
