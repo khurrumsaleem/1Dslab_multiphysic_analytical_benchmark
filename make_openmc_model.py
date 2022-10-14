@@ -80,7 +80,7 @@ geom.export_to_xml()
 mesh_filter = openmc.MeshFilter(mesh)
 tally = openmc.Tally(tally_id=1, name="mesh_tally")
 tally.filters = [mesh_filter]
-tally.scores = ['flux','kappa-fission']
+tally.scores = ['flux','kappa-fission','nu-fission']
 mgxs_tallies = openmc.Tallies([tally])
 mgxs_tallies.export_to_xml()
 

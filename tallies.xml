@@ -10,6 +10,6 @@
   </filter>
   <tally id="1" name="mesh_tally">
     <filters>1</filters>
-    <scores>flux kappa-fission</scores>
+    <scores>flux kappa-fission nu-fission</scores>
   </tally>
 </tallies>
