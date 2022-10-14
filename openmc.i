@@ -17,21 +17,21 @@ infdim = 50.0 # length at which the reflective boundary conditions will be to si
   []
 []
 
-# [AuxVariables]
-#    # always set
-#    [temp]
-#        family = MONOMIAL
-#        order = CONSTANT
-#    []
-#    [heat_source]
-#        family = MONOMIAL
-#        order = CONSTANT
-#    []
-#    [fission_tally_std_dev]
-#        family = MONOMIAL
-#        order = CONSTANT
-#    []
-# []
+[AuxVariables]
+   # always set
+   [temp]
+       family = MONOMIAL
+       order = CONSTANT
+   []
+   [heat_source]
+       family = MONOMIAL
+       order = CONSTANT
+   []
+   [fission_tally_std_dev]
+       family = MONOMIAL
+       order = CONSTANT
+   []
+[]
 
 [Kernels]
   [heat_conduction]
@@ -45,7 +45,18 @@ infdim = 50.0 # length at which the reflective boundary conditions will be to si
   []
 []
 
+[Functions]
+  [conductivity]
+    type = ParsedFunction
+    value = ${k0 * temp}
+  []
+[]
+
 [Materials]
+  type = GenericFunctionMaterial
+  prop_names = 'thermal_conductivity'
+  prop_values = conductivity
+  block = ANY_BLOCK_ID
 []
 
 # May want this for special parameters in the paper
@@ -65,17 +76,6 @@ infdim = 50.0 # length at which the reflective boundary conditions will be to si
   []
 []
 
-# TODO may be useful depending on if MOOSE or OpenMC runs first
-# [ICs]
-#   [temp]
-#       type = ConstantIC
-#       variable = temp
-#       value = 293.0
-#   []
-# []
-
-# we probably want the mesh to be the same bewtween MOOSE and OpenMC
-# but allow both of them to change due to thermal expansion. TODO look into this
 [Problem]
   type = OpenMCCellAverageProblem
   initial_properties = xml
