@@ -60,7 +60,7 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
 [Functions]
   [conductivity]
     type = ParsedFunction
-    value = ${fparse k0 * temp} # TODO unit conversion check
+    value = '${k0} * t' #  TODO unit conversion check here 't' means temp
   []
 []
 
