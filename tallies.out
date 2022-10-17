@@ -2,24 +2,24 @@
 
  Mesh Index (1, 1, 1)
    Total Material
-     Flux                                 12.2629 +/- 0.0231098
+     Flux                                 12.2583 +/- 0.0258693
      Kappa-Fission Rate                   0 +/- 0
-     Nu-Fission Rate                      0.0808987 +/- 0.000152456
+     Nu-Fission Rate                      0.0808683 +/- 0.000170661
  Mesh Index (2, 1, 1)
    Total Material
-     Flux                                 12.9572 +/- 0.0221087
+     Flux                                 12.9829 +/- 0.0221608
      Kappa-Fission Rate                   0 +/- 0
-     Nu-Fission Rate                      0.0854794 +/- 0.000145852
+     Nu-Fission Rate                      0.0856484 +/- 0.000146196
  Mesh Index (3, 1, 1)
    Total Material
-     Flux                                 12.9584 +/- 0.0244315
+     Flux                                 12.9702 +/- 0.0226211
      Kappa-Fission Rate                   0 +/- 0
-     Nu-Fission Rate                      0.0854871 +/- 0.000161176
+     Nu-Fission Rate                      0.0855648 +/- 0.000149232
  Mesh Index (4, 1, 1)
    Total Material
-     Flux                                 12.2597 +/- 0.0245263
+     Flux                                 12.2556 +/- 0.0233168
      Kappa-Fission Rate                   0 +/- 0
-     Nu-Fission Rate                      0.0808779 +/- 0.000161801
+     Nu-Fission Rate                      0.0808507 +/- 0.000153822
  ============================>     TALLY 2     <============================
 
  Total Material

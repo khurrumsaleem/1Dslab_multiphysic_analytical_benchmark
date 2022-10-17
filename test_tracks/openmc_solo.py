@@ -14,7 +14,7 @@ A = 180 # mass number for slab material
 num_dens = rho*N_A/A
 P = 1.0e22 # eV/s
 q = 1e8 # eV
-k0= 1.25e19 # eV/(s-cm-K^2)
+k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
 phi0 = 2.5e14 # 1/s-cm^2 flux at the origin
 s = 0.45 # Sigma_s/Sigma_t
 f = 1.5 # nu Sigma_f/Sigma_t
@@ -43,11 +43,10 @@ for T in range(T0,Tmax+1):
     Sig_t = (Sig_t0 * T0) / T
     Sig_s = s*Sig_t
     nu_Sig_f = f*Sig_t
-    Sig_a = nu_Sig_f / nu # assuming no non-fisssion absorption, Sig_a = Sig_f or Sig_A = Sig_t * f / nu
-    # isotropic
+    # add values to xsdata object
     xsdata.set_total(np.array([Sig_t]),temperature=T)
     xsdata.set_scatter_matrix(np.array([[[Sig_s]]]),temperature=T)
-    xsdata.set_absorption(np.array([Sig_a]),temperature=T)
+    xsdata.set_absorption(np.array([0]),temperature=T)
     xsdata.set_nu_fission(np.array([nu_Sig_f]),temperature=T)
 
 # export xsdata
@@ -86,7 +85,7 @@ model.geometry = geom
 mesh_filter = openmc.MeshFilter(mesh)
 tally = openmc.Tally(tally_id=1, name="mesh_tally")
 tally.filters = [mesh_filter]
-tally.scores = ['flux']
+tally.scores = ['flux','nu-fission']
 mgxs_tallies = openmc.Tallies([tally])
 mgxs_tallies.export_to_xml()
 

@@ -2,13 +2,17 @@
 
  Mesh Index (1, 1, 1)
    Total Material
-     Flux                                 12.2396 +/- 0.0298053
+     Flux                                 13.9764 +/- 0.0256968
+     Nu-Fission Rate                      0.0922026 +/- 0.000169522
  Mesh Index (2, 1, 1)
    Total Material
-     Flux                                 12.9399 +/- 0.0266202
+     Flux                                 14.7996 +/- 0.0290633
+     Nu-Fission Rate                      0.0976337 +/- 0.000191732
  Mesh Index (3, 1, 1)
    Total Material
-     Flux                                 12.9608 +/- 0.0246361
+     Flux                                 14.7925 +/- 0.0273206
+     Nu-Fission Rate                      0.0975866 +/- 0.000180235
  Mesh Index (4, 1, 1)
    Total Material
-     Flux                                 12.2644 +/- 0.0251215
+     Flux                                 13.9801 +/- 0.0262626
+     Nu-Fission Rate                      0.0922274 +/- 0.000173255
