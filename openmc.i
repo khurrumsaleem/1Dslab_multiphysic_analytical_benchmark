@@ -1,6 +1,7 @@
 # GLOBAL VARS
 # problem physical parameters
 P = 1.0e22 # eV/s
+q = 1e8 # eV
 eV_to_J = 1.602e-19 # J per eV
 
 [Mesh]
@@ -31,9 +32,11 @@ eV_to_J = 1.602e-19 # J per eV
   initial_properties = xml
   verbose = true
   tally_type = mesh
+  tally_score = nu_fission
+  q_fission = ${fparse q*eV_to_J} # from eV to J
   solid_cell_level = 0
   solid_blocks = ANY_BLOCK_ID
-  power = ${fparse P*eV_to_J} # in W
+  power = ${fparse P*eV_to_J} # from eV/s to W
 []
 
 [Executioner]
