@@ -41,10 +41,11 @@ for T in range(T0,Tmax+1):
     Sig_t = (Sig_t0 * T0) / T
     Sig_s = s*Sig_t
     nu_Sig_f = f*Sig_t
+    Sig_a = nu_Sig_f / nu
     # add values to xsdata object
     xsdata.set_total(np.array([Sig_t]),temperature=T)
     xsdata.set_scatter_matrix(np.array([[[Sig_s]]]),temperature=T)
-    xsdata.set_absorption(np.array([0]),temperature=T)
+    xsdata.set_absorption(np.array([Sig_a]),temperature=T)
     xsdata.set_nu_fission(np.array([nu_Sig_f]),temperature=T)
 
 # export xsdata
