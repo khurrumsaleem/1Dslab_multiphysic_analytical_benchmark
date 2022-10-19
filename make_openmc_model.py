@@ -77,7 +77,7 @@ geom.export_to_xml()
 
 # create MGXS tallies
 mesh_filter = openmc.MeshFilter(mesh)
-tally = openmc.Tally(tally_id=1, name="mesh_tally")
+tally = openmc.Tally()
 tally.filters = [mesh_filter]
 tally.scores = ['flux','nu-fission']
 mgxs_tallies = openmc.Tallies([tally])
