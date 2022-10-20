@@ -33,10 +33,10 @@ eV_to_J = 1.602e-19 # J per eV
   verbose = true
   tally_type = mesh
   tally_score = nu_fission
-  q_fission = ${fparse q} # from eV to J
+  q_fission = ${fparse q} # eV
   solid_cell_level = 0
   solid_blocks = ANY_BLOCK_ID
-  power = ${fparse P*eV_to_J} # from eV/s to W
+  power = ${fparse P*eV_to_J} # convert from eV/s to W
 []
 
 [Executioner]
