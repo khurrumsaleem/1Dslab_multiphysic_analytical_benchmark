@@ -94,7 +94,7 @@ settings.energy_mode = 'multi-group'
 settings.batches = batches
 settings.inactive = inactive
 settings.particles = particles
-settings.output = {'tallies': True}
+settings.output = {'tallies': True,'summary':False}
 
 # Create a uniform spatial source distribution over fissionable zones  and a bidirectional angular distribution
 bounds = [-L, -infdim, -infdim, L, infdim, infdim]
