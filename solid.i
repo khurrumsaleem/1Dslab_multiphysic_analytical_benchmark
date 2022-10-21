@@ -32,7 +32,9 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
 # This AuxVariable and AuxKernel is only here to get the postprocessors
 # to evaluate correctly. This can be deleted after MOOSE issue #17534 is fixed.
 [AuxVariables]
-  [dummy]
+  [heat_source]
+    family = MONOMIAL
+    order = CONSTANT
   []
 []
 
@@ -48,19 +50,11 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
   []
 []
 
-[AuxKernels]
-  [dummy]
-    type = ConstantAux
-    variable = dummy
-    value = 0.0
-  []
-[]
-
 
 [Functions]
   [conductivity]
     type = ParsedFunction
-    value = '${k0} * t' #  TODO unit conversion check here 't' means temp
+    value = '${fparse k0*eV_to_J*100} * t' # here 't' means temp. the 10 and ev_to_J is to get units of W/m-K
   []
 []
 
@@ -74,14 +68,14 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
 [BCs]
   [left_convective_BC]
       type = ConvectiveFluxFunction
-      T_infinity = T0
+      T_infinity = ${T0}
       boundary = left
       coefficient = ${fparse h/k0}
       variable =temp
   []
   [righ_convective_BC]
       type = ConvectiveFluxFunction
-      T_infinity = T0
+      T_infinity = ${T0}
       boundary = right
       coefficient = ${fparse h/k0}
       variable =temp
