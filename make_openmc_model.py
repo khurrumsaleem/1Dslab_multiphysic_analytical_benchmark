@@ -18,7 +18,7 @@ k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
 phi0 = 2.5e14 # 1/s-cm^2 flux at the origin
 s = 0.45 # Sigma_s/Sigma_t
 f = 1.5 # nu Sigma_f/Sigma_t
-nu = 30/11 # n per fission, this value comes from assuming there is no non-fisssion absorption and using the provided ratios
+nu = f/(1-s) # n per fission, this value comes from assuming there is no non-fisssion absorption and using the provided ratios
 lam = 0.5*(1+np.sqrt(1+(16*q*q*phi0*phi0)/(P*P))) # eigenvalue solution
 Sig_t0 = np.sqrt(P/((lam-1)*k0*L))/(T0) #macro XS
 sig_t0 = Sig_t0/num_dens # micro XS
@@ -41,12 +41,15 @@ for T in range(T0,Tmax+1):
     Sig_t = (Sig_t0 * T0) / T
     Sig_s = s*Sig_t
     nu_Sig_f = f*Sig_t
-    Sig_a = nu_Sig_f / nu
+    Sig_f = nu_Sig_f / nu
+    Sig_a = Sig_f # no non fission absorptions
     # add values to xsdata object
     xsdata.set_total(np.array([Sig_t]),temperature=T)
     xsdata.set_scatter_matrix(np.array([[[Sig_s]]]),temperature=T)
     xsdata.set_absorption(np.array([Sig_a]),temperature=T)
+    xsdata.set_fission(np.array([Sig_f]),temperature=T)
     xsdata.set_nu_fission(np.array([nu_Sig_f]),temperature=T)
+    xsdata.set_kappa_fission(np.array([q*Sig_f]),temperature=T)
 
 # export xsdata
 one_g_XS_file = openmc.MGXSLibrary(groups) # initialize the library
@@ -80,7 +83,7 @@ geom.export_to_xml()
 mesh_filter = openmc.MeshFilter(mesh)
 tally = openmc.Tally()
 tally.filters = [mesh_filter]
-tally.scores = ['flux','nu-fission']
+tally.scores = ['kappa-fission','flux']
 mgxs_tallies = openmc.Tallies([tally])
 mgxs_tallies.export_to_xml()
 
@@ -89,7 +92,6 @@ settings = openmc.Settings()
 batches = 150
 inactive = 50
 particles = 3000
-# settings.run_mode = 'fixed source' # TODO run in fixed source, see what tracks look like (ensures patch and source angular distribtuion is working
 settings.energy_mode = 'multi-group'
 settings.batches = batches
 settings.inactive = inactive

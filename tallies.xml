@@ -10,6 +10,6 @@
   </filter>
   <tally id="1">
     <filters>1</filters>
-    <scores>flux nu-fission</scores>
+    <scores>kappa-fission flux</scores>
   </tally>
 </tallies>

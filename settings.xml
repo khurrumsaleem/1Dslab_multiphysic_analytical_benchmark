@@ -18,6 +18,7 @@
     </angle>
   </source>
   <output>
+    <summary>false</summary>
     <tallies>true</tallies>
   </output>
   <energy_mode>multi-group</energy_mode>
