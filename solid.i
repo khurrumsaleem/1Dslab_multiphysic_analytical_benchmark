@@ -1,15 +1,11 @@
 # GLOBAL VARS
 # problem physical parameters
 T0 = 293
-L0 = 100
 L = 106.47 # equilibrium length from paper (TODO perhaps use formula)
-rho = 1.2 # g/cc
 P = 1.0e22 # eV/s
 q = 1e8 # eV
 k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
 phi0 = 2.5e14 # 1/s-cm^2 flux at the origin
-N = 4 # number of regions in the problem
-infdim = 50.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
 eV_to_J = 1.602e-19 # J per eV
 lam = ${fparse 0.5*(1+sqrt(1+(16*q*q*phi0*phi0)/(P*P)))} # eigenvalue solution
 h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
@@ -59,10 +55,11 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
 []
 
 [Materials]
-  type = HeatConductionMaterial
-  temp = temp
-  thermal_conductivity_temperature_function = conductivity
-  block = ANY_BLOCK_ID
+  [thermal_parameters]
+    type = HeatConductionMaterial
+    temp = temp
+    thermal_conductivity_temperature_function = conductivity
+  []
 []
 
 [BCs]
@@ -71,14 +68,14 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
       T_infinity = ${T0}
       boundary = left
       coefficient = ${fparse h/k0}
-      variable =temp
+      variable = temp
   []
   [righ_convective_BC]
       type = ConvectiveFluxFunction
       T_infinity = ${T0}
       boundary = right
       coefficient = ${fparse h/k0}
-      variable =temp
+      variable = temp
   []
 []
 
@@ -120,8 +117,9 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
 []
 
 [Postprocessors]
-  [total_openmc_source]
+  [source_integral]
       type = ElementIntegralVariablePostprocessor
       variable = heat_source
+      execute_on = transfer
   []
 []
