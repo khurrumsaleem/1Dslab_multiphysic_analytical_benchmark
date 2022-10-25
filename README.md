@@ -11,5 +11,7 @@ The a PDF of the paper is included in this repository.
 ## Generate the mesh
 `~/cardinal/cardinal-opt -i mesh.i --mesh-only`
 ## run cardinal simulation using (optional) mpi paralellism and openmp parallelism from either of the following commands
-`mpiexec -np 4 ~/cardinal/cardinal-opt -i openmc.i --n-threads=10`
+### entire simulation
 `mpiexec -np 4 ~/cardinal/cardinal-opt -i solid.i --n-threads=10`
+### just openmc subapp
+`mpiexec -np 4 ~/cardinal/cardinal-opt -i openmc.i --n-threads=10`
