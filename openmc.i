@@ -39,9 +39,9 @@ eV_to_J = 1.602e-19 # J per eV
 
 [Executioner]
   type= Transient
-  nl_abs_tol = 1e-8
-  nl_forced_its = 5
-  verbose = true
+  # # nl_abs_tol = 1e-8
+  # steady_state_detection = true
+  # verbose = true
 []
 
 [Outputs]

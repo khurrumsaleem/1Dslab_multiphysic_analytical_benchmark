@@ -23,17 +23,6 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
   []
 []
 
-# May want this for special parameters in the paper
-# Otherwise
-# This AuxVariable and AuxKernel is only here to get the postprocessors
-# to evaluate correctly. This can be deleted after MOOSE issue #17534 is fixed.
-[AuxVariables]
-  [heat_source]
-    family = MONOMIAL
-    order = CONSTANT
-  []
-[]
-
 [Kernels]
   [heat_conduction]
     type = HeatConduction
@@ -46,6 +35,25 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
   []
 []
 
+# Otherwise
+# This AuxVariable and AuxKernel is only here to get the postprocessors
+# to evaluate correctly. This can be deleted after MOOSE issue #17534 is fixed.
+[AuxVariables]
+  [heat_source]
+    family = MONOMIAL
+    order = CONSTANT
+  []
+  [dummy]
+  []
+[]
+
+[AuxKernels]
+  [dummy]
+    type = ConstantAux
+    variable = dummy
+    value = 0.0
+  []
+[]
 
 [Functions]
   [conductivity]
@@ -67,14 +75,14 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
       type = ConvectiveFluxFunction
       T_infinity = ${T0}
       boundary = left
-      coefficient = ${fparse h/k0}
+      coefficient = ${h}
       variable = temp
   []
   [righ_convective_BC]
       type = ConvectiveFluxFunction
       T_infinity = ${T0}
       boundary = right
-      coefficient = ${fparse h/k0}
+      coefficient = ${h}
       variable = temp
   []
 []
@@ -88,9 +96,24 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
   []
 []
 
+[Executioner]
+  type = Transient
+  nl_abs_tol = 1e-7
+  nl_rel_tol = 1e-12
+  # num_steps = 5
+  petsc_options_iname = '-pc_type -pc_hypre_type'
+  petsc_options_value = 'hypre boomeramg'
+  steady_state_detection = true
+  verbose = true
+[]
+
+[Outputs]
+  exodus = true
+[]
+
 [Transfers]
   [heat_source_from_openmc]
-    type = MultiAppNearestNodeTransfer
+    type = MultiAppMeshFunctionTransfer
     from_multi_app = openmc
     variable = heat_source
     source_variable = heat_source
@@ -103,17 +126,6 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
     variable = temp
     source_variable = temp
   []
-[]
-
-[Executioner]
-  type=Steady
-  nl_abs_tol = 1e-8
-  nl_forced_its = 5
-  verbose = true
-[]
-
-[Outputs]
-  exodus = true
 []
 
 [Postprocessors]
