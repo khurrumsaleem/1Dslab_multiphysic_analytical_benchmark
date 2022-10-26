@@ -5,6 +5,9 @@ This repository aims to use Cardinal to benchmark against a Greisheimer and Koor
 
 The a PDF of the paper is included in this repository.
 
+The subdirectories with numbers correspond to the number of x elements in each
+simulation. The test_tracks directory is for verifying the S2 patch is as expected.
+
 # In order to run the simulation
 ## create the OpenMC XML files for Cardinal
 `python make_openmc_model.py`
