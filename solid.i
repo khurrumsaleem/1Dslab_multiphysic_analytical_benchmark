@@ -35,7 +35,6 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
   []
 []
 
-# Otherwise
 # This AuxVariable and AuxKernel is only here to get the postprocessors
 # to evaluate correctly. This can be deleted after MOOSE issue #17534 is fixed.
 [AuxVariables]

@@ -1,6 +1,7 @@
 # GLOBAL VARS
 # problem physical parameters
 P = 1.0e22 # eV/s
+q = 1e8 # eV
 eV_to_J = 1.602e-19 # J per eV
 
 [Mesh]
@@ -19,6 +20,7 @@ eV_to_J = 1.602e-19 # J per eV
   [heat_source]
       family = MONOMIAL
       order = CONSTANT
+      initial_condition = ${fparse q*eV_to_J}
   []
   [fission_tally_std_dev]
       family = MONOMIAL
