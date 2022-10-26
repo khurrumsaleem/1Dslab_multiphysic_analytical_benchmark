@@ -90,7 +90,7 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
   [openmc]
       type = TransientMultiApp
       app_type = CardinalApp
-      input_files = 'openmc.i'
+      input_files = 'openmc_50.i'
       execute_on = timestep_end
   []
 []
