@@ -36,6 +36,7 @@ eV_to_J = 1.602e-19 # J per eV
   tally_score = kappa_fission
   solid_cell_level = 0
   solid_blocks = ANY_BLOCK_ID
+  mesh_template = mesh_1000_in.e
   power = ${fparse P*eV_to_J} # convert from eV/s to W
 []
 
