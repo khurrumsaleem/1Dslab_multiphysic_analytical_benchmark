@@ -20,14 +20,15 @@ bin_boundaries = np.linspace(-L,L,num_voxels+1)
 # give one value in each bin paired with the bin boundaries.
 # then scale the weight of each bin by the flux
 plt.hist(bin_boundaries[:-1],bin_boundaries,weights=flux.mean,histtype='step') # plot flux vs position
-# TODO add error bars for flux bins
+# error bars for flux bins
 bin_average_values = (bin_boundaries[1:] + bin_boundaries[:-1])/2 # get bin centers
+plt.errorbar(bin_average_values,flux.mean,yerr=flux.std_dev,marker = '|',fmt='none',elinewidth=1,capsize=3,capthick=1)
 plt.title('Flux in Each Mesh Element')
 plt.xlabel('Position [cm]')
 plt.ylabel('Flux [n/cm^2-s]')
 plt.xlim([-(L+2),L+2])
 plt.xticks(bin_boundaries[::5])
-plt.ylim([flux_min-0.01,flux_max+0.01])
+plt.ylim([flux_min-0.005,flux_max+0.005])
 plt.savefig('flux_dist_50.png')
 plt.clf()
 # Determine relative error
@@ -39,7 +40,9 @@ plt.hist(flux_relative_error[nonzero], bins=50)
 plt.title('Relative Error Distribution for Flux')
 plt.xlabel('Relative Error')
 plt.ylabel('Frequency')
+# TODO compute error from analytical solutioin
+# paramters for analytical solution
+
+
 plt.savefig('relative_errors_50.png')
 plt.clf()
-
-# TODO compute error from analytical solutioin
