@@ -6,12 +6,19 @@ import matplotlib.pyplot as plt
 sp = openmc.StatePoint('statepoint.500.h5')
 tally = sp.get_tally()
 num_voxels = tally.shape[0] # this works because the mesh is N x 1 x 1, so the total number of bins is N
-
 # get scores for each flux
 flux = tally.get_slice(scores=['flux'])
 
-L = 106.47 # slab length from paper
-# plot using hist
+# paramters for analytical solution
+T0 = 293
+L = 106.47 # equilibrium length from paper (TODO perhaps use formula)
+P = 1.0e22 # eV/s
+q = 1e8 # eV
+k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
+phi0 = 2.5e14 # 1/s-cm^2 flux at the origin
+eV_to_J = 1.602e-19 # J per eV
+lam = 0.5*(1+np.sqrt(1+(16*q*q*phi0*phi0)/(P*P)))
+# plot flux data using hist
 flux.mean.shape = (num_voxels)
 flux_min = min(flux.mean)
 flux_max = max(flux.mean)
@@ -41,8 +48,11 @@ plt.title('Relative Error Distribution for Flux')
 plt.xlabel('Relative Error')
 plt.ylabel('Frequency')
 # TODO compute error from analytical solutioin
-# paramters for analytical solution
-
+xx = np.linspace(-L,L,num_voxels)
+print(lam)
+analytical_flux = phi0*np.sqrt(np.ones(num_voxels)-((lam-1)*P*P*np.multiply(xx,xx))/(L*L*q*q*phi0*phi0))
+print(analytical_flux)
+print(max(analytical_flux))
 
 plt.savefig('relative_errors_50.png')
 plt.clf()
