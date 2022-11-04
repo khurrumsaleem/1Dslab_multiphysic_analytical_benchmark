@@ -49,10 +49,14 @@ plt.xlabel('Relative Error')
 plt.ylabel('Frequency')
 # TODO compute error from analytical solutioin
 xx = np.linspace(-L,L,num_voxels)
-print(lam)
 analytical_flux = phi0*np.sqrt(np.ones(num_voxels)-((lam-1)*P*P*np.multiply(xx,xx))/(L*L*q*q*phi0*phi0))
-print(analytical_flux)
-print(max(analytical_flux))
-
+# print(analytical_flux)
+# print(max(analytical_flux))
 plt.savefig('relative_errors_50.png')
 plt.clf()
+plt.plot(xx,analytical_flux,'-bo')
+plt.xlabel('Position [cm]')
+plt.ylabel('Flux [n/cm^2-s]')
+plt.title('Analytical Flux for 50 Mesh Points')
+plt.savefig('analytical_50.png')
+#TODO scaling from total kappa fission tally to turn flux tally into correct units
