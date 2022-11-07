@@ -49,6 +49,7 @@ eV_to_J = 1.602e-19 # J per eV
 
 [Outputs]
   exodus = true
+  csv = true
 []
 
 [Postprocessors]
@@ -62,5 +63,14 @@ eV_to_J = 1.602e-19 # J per eV
   [max_heat_source]
     type = ElementExtremeValue
     variable = heat_source
+  []
+[]
+
+[VectorPostprocessors]
+  [temp]
+    type = ElementValueSampler
+    variable = 'temp'
+    sort_by = x
+    execute_on = timestep_end
   []
 []
