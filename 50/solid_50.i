@@ -86,23 +86,12 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
   []
 []
 
-[MultiApps]
-  [openmc]
-      type = TransientMultiApp
-      app_type = CardinalApp
-      input_files = 'openmc_50.i'
-      execute_on = timestep_end
-  []
-[]
-
 [Executioner]
   type = Transient
-  nl_abs_tol = 1e-7
-  nl_rel_tol = 1e-12
-  # num_steps = 5
+  nl_abs_tol = 1e-6
+  nl_rel_tol = 1e-11
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
-  steady_state_detection = true
   verbose = true
 []
 
@@ -110,22 +99,6 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
   exodus = true
 []
 
-[Transfers]
-  [heat_source_from_openmc]
-    type = MultiAppMeshFunctionTransfer
-    from_multi_app = openmc
-    variable = heat_source
-    source_variable = heat_source
-    from_postprocessors_to_be_preserved = heat_source
-    to_postprocessors_to_be_preserved = source_integral
-  []
-  [temp_to_openmc]
-    type = MultiAppMeshFunctionTransfer
-    to_multi_app = openmc
-    variable = temp
-    source_variable = temp
-  []
-[]
 
 [Postprocessors]
   [source_integral]
