@@ -2,7 +2,7 @@
 <settings>
   <run_mode>eigenvalue</run_mode>
   <particles>10000</particles>
-  <batches>500</batches>
+  <batches>300</batches>
   <inactive>100</inactive>
   <source strength="1.0">
     <space type="fission">

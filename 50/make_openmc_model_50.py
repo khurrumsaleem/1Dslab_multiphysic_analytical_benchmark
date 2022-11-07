@@ -89,7 +89,7 @@ mgxs_tallies.export_to_xml()
 
 # settings
 settings = openmc.Settings()
-batches = 500
+batches = 300
 inactive = 100
 particles = 10000
 settings.energy_mode = 'multi-group'
