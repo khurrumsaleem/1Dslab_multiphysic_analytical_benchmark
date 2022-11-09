@@ -51,7 +51,7 @@ eV_to_J = 1.602e-19 # J per eV
   # petsc_options_value = 'hypre boomeramg'
   steady_state_detection = true
   steady_state_tolerance = 1e-3
-  check_aux = true
+  # check_aux = true
   verbose = true
 []
 
@@ -72,7 +72,7 @@ eV_to_J = 1.602e-19 # J per eV
     variable = heat_source
     source_variable = heat_source
     from_postprocessors_to_be_preserved = heat_source
-    to_postprocessors_to_be_preserved = source_integral 
+    to_postprocessors_to_be_preserved = source_integral
   []
   [temp_from_solid]
     type = MultiAppMeshFunctionTransfer

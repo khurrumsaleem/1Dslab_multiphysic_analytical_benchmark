@@ -5,6 +5,7 @@ import h5py
 
 # problem physical parameters
 T0 = 293
+Tmin = T0 - 5 # lower bound to give data some range
 Tmax = 900
 L0 = 100
 L = 106.47 # equilibrium length from paper
@@ -32,12 +33,12 @@ groups.group_edges = np.array([0.0, 20.0e6]) #  groups in eV
 
 # create temperature data for cross sections
 # isotropic angular data
-temps = [float(T) for T in range(T0,Tmax+1)]
+temps = [float(T) for T in range(Tmin,Tmax+1)]
 xsdata = openmc.XSdata('slab_xs', energy_groups=groups, temperatures=temps, num_delayed_groups=0)
 xsdata.order = 0
 
 # populate XS data for each temperature
-for T in range(T0,Tmax+1):
+for T in range(Tmin,Tmax+1):
     Sig_t = (Sig_t0 * T0) / T
     Sig_s = s*Sig_t
     nu_Sig_f = f*Sig_t
