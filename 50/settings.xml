@@ -23,6 +23,6 @@
   </output>
   <energy_mode>multi-group</energy_mode>
   <temperature_default>293</temperature_default>
-  <temperature_method>interpolation</temperature_method>
+  <temperature_method>nearest</temperature_method>
   <temperature_range>0.0 900.0</temperature_range>
 </settings>
