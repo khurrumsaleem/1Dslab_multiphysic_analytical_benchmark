@@ -108,5 +108,5 @@ bidirectional_x = openmc.stats.PolarAzimuthal(mu=mu,phi=phi)
 settings.source = openmc.Source(space=uniform_dist,angle=bidirectional_x)
 settings.temperature = {'default': T0,
                         'method': 'nearest',
-                        'range': (0.0, 900.0)} # good to load all temperatures you could encounter in multiphysics
+                        'range': (Tmin, Tmax)} # good to load all temperatures you could encounter in multiphysics
 settings.export_to_xml()
