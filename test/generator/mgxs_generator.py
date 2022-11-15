@@ -67,6 +67,7 @@ onegxs_lib.legendre_order = 3
 # check library and build
 onegxs_lib.check_library_for_openmc_mgxs()
 onegxs_lib.build_library()
+onegxs_lib.add_to_tallies_file(model.tallies)
 
 # run model
 sp = model.run()

@@ -1,60 +1,48 @@
- ============================>     TALLY 1     <============================
+ ===========================>     TALLY 15     <============================
 
- Cell 0
+ Material 1
    Incoming Energy [0, 20000000)
      Total Material
-       Flux                                 0.0743875 +/- 8.6653e-05
- ============================>     TALLY 2     <============================
+       Flux                                 0.0747583 +/- 0.000421537
+       Total Reaction Rate                  13.3605 +/- 0.0838156
+       Absorption Rate                      1.00903 +/- 0.00509497
+       Nu-Fission Rate                      1.88874 +/- 0.00865243
+       Fission Rate                         0.739457 +/- 0.00338686
+ ===========================>     TALLY 23     <============================
 
- Cell 0
+ Material 1
    Incoming Energy [0, 20000000)
      Total Material
-       Total Reaction Rate                  13.2856 +/- 0.0168628
- ============================>     TALLY 3     <============================
+       Flux                                 0.0747942 +/- 0.000329503
+       Nu-Fission Rate                      1.88747 +/- 0.0148323
+ ===========================>     TALLY 17     <============================
 
- Cell 0
+ Material 1
    Incoming Energy [0, 20000000)
-     Total Material
-       Flux                                 0.0743875 +/- 8.6653e-05
- ============================>     TALLY 4     <============================
+     Outgoing Energy [0, 20000000)
+       Legendre expansion, P0
+         Total Material
+           Scattering Production Rate           12.3723 +/- 0.0695863
+       Legendre expansion, P1
+         Total Material
+           Scattering Production Rate           2.70448 +/- 0.0169985
+       Legendre expansion, P2
+         Total Material
+           Scattering Production Rate           1.10927 +/- 0.00672876
+       Legendre expansion, P3
+         Total Material
+           Scattering Production Rate           0.565578 +/- 0.00653358
+ ===========================>     TALLY 20     <============================
 
- Cell 0
+ Material 1
    Incoming Energy [0, 20000000)
-     Total Material
-       Absorption Rate                      1.00421 +/- 0.0011308
- ============================>     TALLY 5     <============================
+     Outgoing Energy [0, 20000000)
+       Total Material
+         Scattering Production Rate           12.3723 +/- 0.0695863
+         Scattering Rate                      12.3689 +/- 0.0694799
+ ===========================>     TALLY 22     <============================
 
- Cell 0
-   Incoming Energy [0, 20000000)
-     Total Material
-       Flux                                 0.0743875 +/- 8.6653e-05
- ============================>     TALLY 6     <============================
-
- Cell 0
-   Incoming Energy [0, 20000000)
-     Total Material
-       Scattering Rate                      12.2814 +/- 0.0157819
- ============================>     TALLY 7     <============================
-
- Cell 0
-   Incoming Energy [0, 20000000)
-     Total Material
-       Flux                                 0.0743875 +/- 8.6653e-05
- ============================>     TALLY 8     <============================
-
- Cell 0
-   Incoming Energy [0, 20000000)
-     Total Material
-       Fission Rate                         0.737093 +/- 0.000769605
- ============================>     TALLY 9     <============================
-
- Cell 0
-   Incoming Energy [0, 20000000)
-     Total Material
-       Nu-Fission Rate                      1.8826 +/- 0.00256036
- ===========================>     TALLY 10     <============================
-
- Cell 0
+ Material 1
    Outgoing Energy [0, 20000000)
      Total Material
-       Nu-Fission Rate                      1.8826 +/- 0.00256036
+       Nu-Fission Rate                      1.88747 +/- 0.0148323
