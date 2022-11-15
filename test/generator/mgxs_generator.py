@@ -34,8 +34,8 @@ model.geometry = geometry
 
 # define settings
 settings = openmc.Settings()
-batches = 200
-inactive = 50
+batches = 20
+inactive = 10
 particles = 5000
 settings.batches = batches
 settings.inactive = inactive
@@ -53,20 +53,29 @@ model.settings = settings
 groups = mgxs.EnergyGroups()
 groups.group_edges = np.array([0.0, 20.0e6]) #  groups in eV
 
-total = mgxs.TotalXS(domain=root_cell, energy_groups=groups)
-absorption = mgxs.AbsorptionXS(domain=root_cell, energy_groups=groups)
-scattering = mgxs.ScatterXS(domain=root_cell, energy_groups=groups)
-fission = mgxs.FissionXS(domain=root_cell, energy_groups=groups)
-chi = mgxs.Chi(domain=root_cell, energy_groups=groups)
-
-tallies = openmc.Tallies()
-tallies += total.tallies.values()
-tallies += absorption.tallies.values()
-tallies += scattering.tallies.values()
-tallies += fission.tallies.values()
-tallies += chi.tallies.values()
-model.tallies = tallies
+# create mgxs library object
+onegxs_lib = openmc.mgxs.Library(geometry) # initialize the library
+onegxs_lib.energy_groups = groups
+onegxs_lib.mgxs_types = ['total', 'absorption', 'nu-fission', 'fission',
+                       'nu-scatter matrix', 'multiplicity matrix', 'chi']
+# Specify a "cell" domain type for the cross section tally filters
+onegxs_lib.domain_type = "material"
+# Specify the cell domains over which to compute multi-group cross sections
+onegxs_lib.domains = geometry.get_all_materials().values()
+# Set the Legendre order to 3 for P3 scattering
+onegxs_lib.legendre_order = 3
+# check library and build
+onegxs_lib.check_library_for_openmc_mgxs()
+onegxs_lib.build_library()
 
 # run model
-model.run()
+sp = model.run()
 
+# load statepoint
+statepoint = openmc.StatePoint(sp, autolink=True)
+
+# merge tallies and load from statepoint
+onegxs_lib.load_from_statepoint(statepoint)
+onegxs_file = onegxs_lib.create_mg_library(xs_type='macro')
+# onegxs_file.export_to_hdf5()
+onegxs_lib.build_hdf5_store(filename='onegxs.h5',directory="/home/lgross/1Dslab_multiphysic_analytical_benchmark/test")
