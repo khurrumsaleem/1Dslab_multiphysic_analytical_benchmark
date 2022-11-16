@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <tallies>
-  <filter id="1" type="material">
-    <bins>1</bins>
+  <filter id="34" type="cell">
+    <bins>0 1</bins>
   </filter>
   <filter id="2" type="energy">
     <bins>0.0 20000000.0</bins>
@@ -12,32 +12,32 @@
   <filter id="12" type="legendre">
     <order>3</order>
   </filter>
-  <tally id="15">
-    <filters>1 2</filters>
+  <tally id="39">
+    <filters>34 2</filters>
     <nuclides>total</nuclides>
     <scores>flux total absorption nu-fission fission</scores>
     <estimator>tracklength</estimator>
   </tally>
-  <tally id="23">
-    <filters>1 2</filters>
+  <tally id="50">
+    <filters>34 2</filters>
     <nuclides>total</nuclides>
     <scores>flux nu-fission</scores>
     <estimator>analog</estimator>
   </tally>
-  <tally id="17">
-    <filters>1 2 11 12</filters>
+  <tally id="43">
+    <filters>34 2 11 12</filters>
     <nuclides>total</nuclides>
     <scores>nu-scatter</scores>
     <estimator>analog</estimator>
   </tally>
-  <tally id="20">
-    <filters>1 2 11</filters>
+  <tally id="47">
+    <filters>34 2 11</filters>
     <nuclides>total</nuclides>
     <scores>nu-scatter scatter</scores>
     <estimator>analog</estimator>
   </tally>
-  <tally id="22">
-    <filters>1 11</filters>
+  <tally id="51">
+    <filters>34 11</filters>
     <nuclides>total</nuclides>
     <scores>nu-fission</scores>
     <estimator>analog</estimator>
