@@ -13,8 +13,8 @@ cold_fuel = openmc.Material(material_id=1,name="cold_fuel")
 hot_fuel = openmc.Material(material_id=2,name="hot_fuel")
 # default names for the cross section set used in the CE file to generate the data are set1,set2,...
 # there are two cells in the model and we computed XS for each
-cold_fuel.add_macroscopic('set1')
-hot_fuel.add_macroscopic('set2')
+cold_fuel.add_macroscopic('temp_lib')
+hot_fuel.add_macroscopic('temp_lib')
 materials = openmc.Materials([cold_fuel,hot_fuel])
 materials.cross_sections = 'onegxs.h5'
 materials.export_to_xml()
