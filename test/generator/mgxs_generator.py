@@ -62,7 +62,7 @@ groups.group_edges = np.array([0.0, 20.0e6]) #  groups in eV
 onegxs_lib = openmc.mgxs.Library(geometry) # initialize the library
 onegxs_lib.energy_groups = groups
 onegxs_lib.mgxs_types = ['total', 'absorption', 'nu-fission', 'fission',
-                       'nu-scatter matrix', 'multiplicity matrix', 'chi']
+                        'nu-scatter matrix','scatter matrix', 'multiplicity matrix', 'chi']
 # Specify a "cell" domain type for the cross section tally filters
 onegxs_lib.domain_type = "cell"
 # Specify the cell domains over which to compute multi-group cross sections
@@ -84,20 +84,29 @@ statepoint = openmc.StatePoint(sp, autolink=True)
 onegxs_lib.load_from_statepoint(statepoint)
 onegxs_file = onegxs_lib.create_mg_library(xs_type='macro')
 
+# create xsdata object w gropu structure and two temperature library
+xsdata = openmc.XSdata('temp_lib',energy_groups = groups,temperatures = np.array([Tmin,Tmax]) )
+xsdata.order = 3
 
-# NEED something like this,
-# xsdata = openmc.XSdata(energy_groups = groups,temperatures = np.([[Tmin,Tmax]]))
-# xsdata.add_data(onegxs_lib.get_xsdata())
+# set cold data
+xsdata.set_total_mgxs(onegxs_lib.get_mgxs(cold_cell,'total'),temperature=Tmin,subdomain='all')
+xsdata.set_absorption_mgxs(onegxs_lib.get_mgxs(cold_cell,'absorption'),temperature=Tmin,subdomain='all')
+# xsdata.set_nu_fission_mgxs(onegxs_lib.get_mgxs(cold_cell,'nu-fission'),temperature=Tmin,subdomain='all')
+xsdata.set_fission_mgxs(onegxs_lib.get_mgxs(cold_cell,'fission'),temperature=Tmin,subdomain='all')
+xsdata.set_scatter_matrix_mgxs(onegxs_lib.get_mgxs(cold_cell,'scatter matrix'),temperature=Tmin,subdomain='all')
+xsdata.set_multiplicity_matrix_mgxs(onegxs_lib.get_mgxs(cold_cell,'multiplicity matrix'),temperature=Tmin,subdomain='all')
+xsdata.set_chi_mgxs(onegxs_lib.get_mgxs(cold_cell,'chi'),temperature=Tmin,subdomain='all')
 
-# this almost workrs
-# grab data from openmc.mgxs.Library and set tempearture of each xsdata object
-xsdata_cold = onegxs_lib.get_xsdata(xsdata_name='set1',domain=cold_cell)
-xsdata_cold.temperature = Tmin
-xsdata_hot = onegxs_lib.get_xsdata(xsdata_name='set2',domain=hot_cell)
-xsdata_hot.temperature = Tmax
-print(xsdata_cold.temperature)
-print(xsdata_hot.temperature)
+# set hot data
+xsdata.set_total_mgxs(onegxs_lib.get_mgxs(hot_cell,'total'),temperature=Tmax,subdomain='all')
+xsdata.set_absorption_mgxs(onegxs_lib.get_mgxs(hot_cell,'absorption'),temperature=Tmax,subdomain='all')
+# xsdata.set_nu_fission_mgxs(onegxs_lib.get_mgxs(hot_cell,'nu-fission'),temperature=Tmax,subdomain='all')
+xsdata.set_fission_mgxs(onegxs_lib.get_mgxs(hot_cell,'fission'),temperature=Tmax,subdomain='all')
+xsdata.set_scatter_matrix_mgxs(onegxs_lib.get_mgxs(hot_cell,'scatter matrix'),temperature=Tmax,subdomain='all')
+xsdata.set_multiplicity_matrix_mgxs(onegxs_lib.get_mgxs(hot_cell,'multiplicity matrix'),temperature=Tmax,subdomain='all')
+xsdata.set_chi_mgxs(onegxs_lib.get_mgxs(hot_cell,'chi'),temperature=Tmax,subdomain='all')
 
+# creat MGXSLibrary and export to hdf5
 temp_lib = openmc.MGXSLibrary(groups)
-temp_lib.add_xsdatas([xsdata_cold,xsdata_hot])
+temp_lib.add_xsdata(xsdata)
 temp_lib.export_to_hdf5(filename='/home/lgross/1Dslab_multiphysic_analytical_benchmark/test/onegxs.h5')
