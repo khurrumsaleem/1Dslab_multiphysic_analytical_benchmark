@@ -13,20 +13,37 @@ eV_to_J = 1.602e-19 # J per eV
 []
 
 [AuxVariables]
-  # always set
+  [cell_id]
+    family = MONOMIAL
+    order = CONSTANT
+  []
+  [cell_instance]
+    family = MONOMIAL
+    order = CONSTANT
+  []
+[]
+
+[AuxKernels]
+  [cell_id]
+    type = CellIDAux
+    variable = cell_id
+  []
+  [cell_instance]
+    type = CellInstanceAux
+    variable = cell_instance
+  []
+[]
+
+[ICs]
   [temp]
-      family = MONOMIAL
-      order = CONSTANT
-      initial_condition = ${T0}
+    type = ConstantIC
+    variable = temp
+    value = ${T0}
   []
   [heat_source]
-      family = MONOMIAL
-      order = CONSTANT
-      initial_condition = ${fparse q*eV_to_J}
-  []
-  [fission_tally_std_dev]
-      family = MONOMIAL
-      order = CONSTANT
+    type = ConstantIC
+    variable = heat_source
+    value = ${fparse q*eV_to_J}
   []
 []
 
@@ -36,7 +53,7 @@ eV_to_J = 1.602e-19 # J per eV
   verbose = true
   tally_type = mesh
   tally_score = kappa_fission
-  solid_cell_level = 0
+  solid_cell_level = 1
   solid_blocks = ANY_BLOCK_ID
   mesh_template = mesh_50_in.e
   power = ${fparse P*eV_to_J} # convert from eV/s to W
@@ -44,15 +61,9 @@ eV_to_J = 1.602e-19 # J per eV
 
 [Executioner]
   type = Transient
-  # nl_abs_tol = 1e-6
-  # nl_rel_tol = 1e-11
-  # num_steps = 5
-  # petsc_options_iname = '-pc_type -pc_hypre_type'
-  # petsc_options_value = 'hypre boomeramg'
-  steady_state_detection = true
-  steady_state_tolerance = 1e-3
-  # check_aux = true
+  check_aux = true
   verbose = true
+  num_steps = 2
 []
 
 [MultiApps]
@@ -61,7 +72,8 @@ eV_to_J = 1.602e-19 # J per eV
       app_type = CardinalApp
       input_files = 'solid_50.i'
       execute_on = timestep_end
-      sub_cycling = true
+      sub_cycling = false
+      interpolate_transfers = false
   []
 []
 
