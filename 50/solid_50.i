@@ -19,7 +19,14 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
 
 [Variables]
   [temp]
-    initial_condition = ${T0}
+  []
+[]
+
+[ICs]
+  [temp]
+    type = ConstantIC
+    variable = temp
+    value = ${T0}
   []
 []
 
@@ -41,23 +48,15 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
   [heat_source]
     family = MONOMIAL
     order = CONSTANT
-  []
-  [dummy]
-  []
-[]
-
-[AuxKernels]
-  [dummy]
-    type = ConstantAux
-    variable = dummy
-    value = 0.0
+    initial_condition = ${fparse q*eV_to_J}
   []
 []
 
 [Functions]
   [conductivity]
     type = ParsedFunction
-    value = '${fparse k0*eV_to_J*100} * t' # here 't' means temp. the 10 and ev_to_J is to get units of W/m-K
+    value = '${fparse k0*eV_to_J*100} * t' # here 't' means temp. the 100 and ev_to_J is to get units of W/m-K
+    # value = ${fparse k0*eV_to_J} TODO see if neg temp is caused by thiisi
   []
 []
 
@@ -70,12 +69,18 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
 []
 
 [BCs]
-  [left_convective_BC]
-      type = ConvectiveFluxFunction
-      T_infinity = ${T0}
-      boundary = left
-      coefficient = ${h}
-      variable = temp
+  # [left_convective_BC]
+  #     type = ConvectiveFluxFunction
+  #     T_infinity = ${T0}
+  #     boundary = left
+  #     coefficient = ${h}
+  #     variable = temp
+  # []
+  [test_BC]
+    type = DirichletBC
+    variable = temp
+    value = 310
+    boundary = left
   []
   [righ_convective_BC]
       type = ConvectiveFluxFunction
@@ -88,8 +93,8 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
 
 [Executioner]
   type = Transient
-  nl_abs_tol = 1e-6
-  nl_rel_tol = 1e-11
+  nl_abs_tol = 1e-5
+  nl_rel_tol = 1e-7
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   verbose = true
