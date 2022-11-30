@@ -8,7 +8,7 @@ k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
 phi0 = 2.5e14 # 1/s-cm^2 flux at the origin
 eV_to_J = 1.602e-19 # J per eV
 lam = ${fparse 0.5*(1+sqrt(1+(16*q*q*phi0*phi0)/(P*P)))} # eigenvalue solution
-h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
+h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P))*eV_to_J*100 } # to get to W/m^2-K
 
 [Mesh]
   [centered_mesh]
@@ -56,7 +56,6 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
   [conductivity]
     type = ParsedFunction
     value = '${fparse k0*eV_to_J*100} * t' # here 't' means temp. the 100 and ev_to_J is to get units of W/m-K
-    # value = ${fparse k0*eV_to_J} TODO see if neg temp is caused by thiisi
   []
 []
 
@@ -93,8 +92,8 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P)) }
 
 [Executioner]
   type = Transient
-  nl_abs_tol = 1e-5
-  nl_rel_tol = 1e-7
+  nl_abs_tol = 5e-4
+  nl_rel_tol = 5e-6
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   verbose = true
