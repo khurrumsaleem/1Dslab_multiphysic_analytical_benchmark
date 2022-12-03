@@ -63,7 +63,7 @@ eV_to_J = 1.602e-19 # J per eV
   type = Transient
   check_aux = true
   verbose = true
-  num_steps = 2
+  num_steps = 4
 []
 
 [MultiApps]
