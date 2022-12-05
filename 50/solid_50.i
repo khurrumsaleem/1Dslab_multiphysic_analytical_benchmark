@@ -68,18 +68,12 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P))*eV_to_J*100 } # to get to W
 []
 
 [BCs]
-  # [right_convective_BC]
-  #     type = ConvectiveFluxFunction
-  #     T_infinity = ${T0}
-  #     variable = temp
-  #     boundary = right
-  #     coefficient = ${h}
-  # []
-  [test_BC]
-    type = DirichletBC
-    variable = temp
-    boundary = right
-    value = 310
+  [right_convective_BC]
+      type = ConvectiveFluxFunction
+      T_infinity = ${T0}
+      variable = temp
+      boundary = right
+      coefficient = ${h}
   []
   [left_convective_BC]
       type = ConvectiveFluxFunction
@@ -93,7 +87,7 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P))*eV_to_J*100 } # to get to W
 [Executioner]
   type = Transient
   nl_abs_tol = 5e-4
-  nl_rel_tol = 5e-5
+  nl_rel_tol = 1e-6
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   verbose = true
