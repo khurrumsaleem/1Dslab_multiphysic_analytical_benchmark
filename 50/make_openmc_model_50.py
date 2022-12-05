@@ -21,8 +21,8 @@ s = 0.45 # Sigma_s/Sigma_t
 f = 1.5 # nu Sigma_f/Sigma_t
 nu = f/(1-s) # n per fission, this value comes from assuming there is no non-fisssion absorption and using the provided ratios
 lam = 0.5*(1+np.sqrt(1+(16*q*q*phi0*phi0)/(P*P))) # eigenvalue solution
-Sig_t0 = np.sqrt(P/((lam-1)*k0*L))/(T0) #macro XS
-sig_t0 = Sig_t0/num_dens # micro XS
+Sig_t0 = np.sqrt(P/((lam-1)*k0*L))/(T0) # 1/cm
+sig_t0 = Sig_t0/num_dens # cm^2
 # number of regions in the problem
 N = 50
 infdim = 50.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
