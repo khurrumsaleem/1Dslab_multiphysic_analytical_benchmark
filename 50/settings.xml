@@ -6,7 +6,7 @@
   <inactive>100</inactive>
   <source strength="1.0">
     <space type="fission">
-      <parameters>-106.47 -50.0 -50.0 106.47 50.0 50.0</parameters>
+      <parameters>-106.47 -0.5 -0.5 106.47 0.5 0.5</parameters>
     </space>
     <angle reference_uvw="0.0 0.0 1.0" type="mu-phi">
       <mu type="discrete">

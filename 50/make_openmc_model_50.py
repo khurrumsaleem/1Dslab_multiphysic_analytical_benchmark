@@ -25,7 +25,7 @@ Sig_t0 = np.sqrt(P/((lam-1)*k0*L))/(T0) # 1/cm
 sig_t0 = Sig_t0/num_dens # cm^2
 # number of regions in the problem
 N = 50
-infdim = 50.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
+infdim = 0.5 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
 
 # generate one group cross section data
 groups = mgxs.EnergyGroups()
@@ -102,8 +102,8 @@ settings.output = {'tallies': True,'summary':False}
 # Create a uniform spatial source distribution over fissionable zones  and a bidirectional angular distribution
 bounds = [-L, -infdim, -infdim, L, infdim, infdim]
 uniform_dist = openmc.stats.Box(bounds[:3], bounds[3:], only_fissionable=True)
-mu = openmc.stats.Discrete([0.0],[1.0])
-phi = openmc.stats.Discrete([0,np.pi],[0.5,0.5])
+mu = openmc.stats.Discrete([0.0],[1.0]) # exactly halfway between 1 and -1, i.e. in the xy plane
+phi = openmc.stats.Discrete([0,np.pi],[0.5,0.5]) # either directly x or -x
 bidirectional_x = openmc.stats.PolarAzimuthal(mu=mu,phi=phi)
 settings.source = openmc.Source(space=uniform_dist,angle=bidirectional_x)
 settings.temperature = {'default': T0,
