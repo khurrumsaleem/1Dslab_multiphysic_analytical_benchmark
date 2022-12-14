@@ -86,8 +86,8 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P))*eV_to_J*100 } # to get to W
 
 [Executioner]
   type = Transient
-  nl_abs_tol = 5e-4
-  nl_rel_tol = 1e-6
+  nl_abs_tol = 1e-7
+  nl_rel_tol = 1e-9
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   verbose = true
