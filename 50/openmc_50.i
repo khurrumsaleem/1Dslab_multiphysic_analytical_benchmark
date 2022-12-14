@@ -3,6 +3,7 @@
 T0 = 293
 P = 1.0e22 # eV/s
 q = 1e8 # eV
+L = 106.47 # equilibrium length
 eV_to_J = 1.602e-19 # J per eV
 
 [Mesh]
@@ -43,7 +44,7 @@ eV_to_J = 1.602e-19 # J per eV
   [heat_source]
     type = ConstantIC
     variable = heat_source
-    value = ${fparse q*eV_to_J}
+    value = ${fparse q*eV_to_J/(L*1*1)} # W/m^3
   []
 []
 

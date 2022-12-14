@@ -1,7 +1,7 @@
 # GLOBAL VARS
 # problem physical parameters
 T0 = 293
-L = 106.47 # equilibrium length from paper (TODO perhaps use formula)
+L = 106.47 # equilibrium length
 P = 1.0e22 # eV/s
 q = 1e8 # eV
 k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
