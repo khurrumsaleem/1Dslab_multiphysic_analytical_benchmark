@@ -50,6 +50,7 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P))*eV_to_J*100 } # to get to W
     order = CONSTANT
     initial_condition = ${fparse q*eV_to_J}
   []
+  # TODO add analytical solution Aux to plot error and compare easily
 []
 
 [Functions]
@@ -100,8 +101,12 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P))*eV_to_J*100 } # to get to W
 
 [Postprocessors]
   [source_integral]
-      type = ElementIntegralVariablePostprocessor
-      variable = heat_source
-      execute_on = transfer
+    type = ElementIntegralVariablePostprocessor
+    variable = heat_source
+    execute_on = transfer
+  []
+  [hval]
+    type = Receiver
+    default = ${h}
   []
 []
