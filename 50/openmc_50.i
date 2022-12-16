@@ -41,7 +41,7 @@ eV_to_J = 1.602e-19 # J per eV
     variable = temp
     value = ${T0}
   []
-  [heat_source]
+  [heat_source_IC]
     type = ConstantIC
     variable = heat_source
     value = ${fparse q*eV_to_J/(L*1*1)} # W/m^3
@@ -53,6 +53,7 @@ eV_to_J = 1.602e-19 # J per eV
   initial_properties = xml
   verbose = true
   tally_type = mesh
+  tally_name = heat_source
   tally_score = kappa_fission
   solid_cell_level = 1
   solid_blocks = ANY_BLOCK_ID
