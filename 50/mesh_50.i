@@ -1,7 +1,9 @@
 # Geometry variables
-L = 106.47 # equilibrium length from paper (TODO perhaps use formula)
+# NOTE THE GEOMETRY IS IN CM TO MATCH OPENMC AND THUS
+# ALL PHYSICAL PARAMETERS NEED TO USE CM FOR LENGTH
+L = 106.47 # cm equilibrium length from paper
 N = 50 # number of regions in the problem
-infdim = 0.5 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
+infdim = 0.5 # cm need y=z=1 length for y,z contribution factor of 1 to the power integral
 
 [Mesh]
   [centered_mesh]
