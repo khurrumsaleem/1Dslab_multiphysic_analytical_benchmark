@@ -30,6 +30,10 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     family = MONOMIAL
     order = CONSTANT
   []
+  [analytical_temp]
+    family = MONOMIAL
+    order = CONSTANT
+  []
 []
 
 [AuxKernels]
@@ -44,7 +48,7 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   [analytical_temp]
     type = FunctionAux
     variable = analytical_temp
-    function = analytical_temp
+    function = analytical_temp_formula
   []
   [temp_error_computer]
     type = FunctionAux
@@ -54,13 +58,14 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
 []
 
 [Functions]
-  [analytical_temp]
+  [analytical_temp_formula]
     type = ParsedFunction
-    value = '${fparse Sig_t0*L*sqrt( (q*phi0*L/P)*(*phi0*L/P) - (lam -1)*x*x)}'
+    # value = '${fparse Sig_t0*L*sqrt((q*phi0*L/P)*(*phi0*L/P) -(lam -1)*x*x)}' TODO fix syntax error in this line
+    value = '${fparse Sig_t0}'
   []
   [temp_error_formula]
     type = ParsedFunction
-    value = analytical_temp - temp
+    value = 'analytical_temp - temp'
   []
 []
 
@@ -148,11 +153,6 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   [temp]
     type = ElementValueSampler
     variable = 'temp'
-    sort_by = x
-    execute_on = timestep_end
-  []
-  [temp_error]
-    variable = 'temp_error'
     sort_by = x
     execute_on = timestep_end
   []
