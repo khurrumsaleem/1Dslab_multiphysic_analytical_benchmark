@@ -41,7 +41,7 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     type = CellInstanceAux
     variable = cell_instance
   []
-  [analytical temp]
+  [analytical_temp]
     type = FunctionAux
     variable = analytical_temp
     function = analytical_temp
@@ -58,9 +58,9 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     type = ParsedFunction
     value = '${fparse Sig_t0*L*sqrt( (q*phi0*L/P)*(*phi0*L/P) - (lam -1)*x*x)}'
   []
-  [temp_error]
+  [temp_error_formula]
     type = ParsedFunction
-    value = ${fparse analytical_temp-temp}$
+    value = analytical_temp - temp
   []
 []
 
