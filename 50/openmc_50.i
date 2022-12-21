@@ -30,10 +30,10 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     family = MONOMIAL
     order = CONSTANT
   []
-  [analytical_temp]
-    family = MONOMIAL
-    order = CONSTANT
-  []
+  # [analytical_temp]
+  #   family = MONOMIAL
+  #   order = CONSTANT
+  # []
 []
 
 [AuxKernels]
@@ -45,28 +45,29 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     type = CellInstanceAux
     variable = cell_instance
   []
-  [analytical_temp]
-    type = FunctionAux
-    variable = analytical_temp
-    function = analytical_temp_formula
-  []
-  [temp_error_computer]
-    type = FunctionAux
-    variable = temp_error
-    function = temp_error_formula
-  []
+  # [analytical_temp]
+  #   type = FunctionAux
+  #   variable = analytical_temp
+  #   function = analytical_temp_formula
+  # []
+  # [temp_error_computer]
+  #   type = FunctionAux
+  #   variable = temp_error
+  #   function = temp_error_formula
+  # []
 []
 
 [Functions]
   [analytical_temp_formula]
     type = ParsedFunction
-    # value = '${fparse Sig_t0*L*sqrt((q*phi0*L/P)*(*phi0*L/P) -(lam -1)*x*x)}' TODO fix syntax error in this line
-    value = '${fparse Sig_t0}'
+    value = '${fparse Sig_t0*L*sqrt((q*L*phi0/P)*(q*L*phi0/P) - (lam -1)*x*x)}'
   []
-  [temp_error_formula]
-    type = ParsedFunction
-    value = 'analytical_temp - temp'
-  []
+  # [temp_error]
+  #   type = ParsedFunction
+  #   vals = 'analytical_temp temp'
+  #   vars = 'analytical_temp temp'
+  #   value = 'analytical_temp - temp'
+  # []
 []
 
 [ICs]
@@ -146,6 +147,12 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   [max_heat_source]
     type = ElementExtremeValue
     variable = heat_source
+  []
+  [L2_temp_error]
+    type = ElementL2Error
+    variable = temp
+    function = analytical_temp_formula
+    execute_on = timestep_end
   []
 []
 
