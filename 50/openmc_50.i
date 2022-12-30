@@ -60,7 +60,9 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
 [Functions]
   [analytical_temp_formula]
     type = ParsedFunction
-    value = '${fparse Sig_t0*L*sqrt((q*L*phi0/P)*(q*L*phi0/P) - (lam -1)*x*x)}'
+    vars = 'Sig_t0    L    q    phi0    lam    P'
+    vals = '${Sig_t0} ${L} ${q} ${phi0} ${lam} ${P}'
+    value = 'Sig_t0*L*sqrt((q*L*phi0/P)*(q*L*phi0/P) - (lam -1)*x*x)'
   []
   # [temp_error]
   #   type = ParsedFunction
