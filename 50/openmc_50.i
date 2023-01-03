@@ -150,11 +150,19 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     type = ElementExtremeValue
     variable = heat_source
   []
-  [L2_temp_error]
+  [L2_distance_analytic_temp_to_field]
     type = ElementL2Error
     variable = temp
     function = analytical_temp_formula
     execute_on = timestep_end
+  []
+  [L2_norm_temp_analytical]
+    type = #TODO figure ths one out
+  []
+  [ratio_diff_to_analytical_norm]
+    type = ParsedPostProcessor
+    function = 'L2_distance_analytic_temp_to_field / L2_norm_temp_analytical'
+    pp_names = 'L2_distance_analytic_temp_to_field L2_norm_temp_analytical'
   []
 []
 
