@@ -30,10 +30,10 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     family = MONOMIAL
     order = CONSTANT
   []
-  # [analytical_temp]
-  #   family = MONOMIAL
-  #   order = CONSTANT
-  # []
+  [dummy_zero]
+    family = MONOMIAL
+    order = CONSTANT
+  []
 []
 
 [AuxKernels]
@@ -83,6 +83,11 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     variable = heat_source
     value = ${fparse q*eV_to_J/(L*1*1)} # W/cm^3
   []
+  [dummy_zero]
+    type = ConstantIC
+    variable = dummy_zero
+    value = 0
+  []
 []
 
 [Problem]
@@ -102,7 +107,7 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   type = Transient
   check_aux = true
   verbose = true
-  num_steps = 4
+  num_steps = 10
 []
 
 [MultiApps]
@@ -157,12 +162,16 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     execute_on = timestep_end
   []
   [L2_norm_temp_analytical]
-    type = #TODO figure ths one out
+    type = ElementL2Error
+    variable = dummy_zero
+    function = analytical_temp_formula
+    execute_on = timestep_end
   []
   [ratio_diff_to_analytical_norm]
-    type = ParsedPostProcessor
+    type = ParsedPostprocessor
     function = 'L2_distance_analytic_temp_to_field / L2_norm_temp_analytical'
     pp_names = 'L2_distance_analytic_temp_to_field L2_norm_temp_analytical'
+    execute_on = timestep_end
   []
 []
 
