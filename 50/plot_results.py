@@ -30,9 +30,9 @@ system_tallied_power.mean.shape = (1)
 flux.mean.shape = (num_voxels)
 # correct by the source strength and voxel volume
 V_voxel = (L*infdim*infdim)/num_voxels
-print(V_voxel)
+# print(V_voxel)
 c = P/system_tallied_power.mean[0]
-print("c = ",c)
+# print("c = ",c)
 flux = c*flux#/V_voxel TODO figure out about V_voxel, tbh could just be unconverged flux?
 flux_min = min(flux.mean)
 flux_max = max(flux.mean)
