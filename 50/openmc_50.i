@@ -107,7 +107,9 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   type = Transient
   check_aux = true
   verbose = true
-  num_steps = 10
+  # num_steps = 10
+  steady_state_detection = true
+  steady_state_tolerance = 1e-4
 []
 
 [MultiApps]
