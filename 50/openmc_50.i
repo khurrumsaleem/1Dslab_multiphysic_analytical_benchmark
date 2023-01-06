@@ -101,6 +101,8 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   solid_blocks = ANY_BLOCK_ID
   mesh_template = mesh_50_in.e
   power = ${fparse P*eV_to_J} # convert from eV/s to W
+  relaxation = constant
+  relaxation_factor = 0.22
 []
 
 [Executioner]
