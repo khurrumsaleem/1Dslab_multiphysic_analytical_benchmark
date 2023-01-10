@@ -105,8 +105,4 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P))*eV_to_J } # to get to W/cm^
     variable = heat_source
     execute_on = transfer
   []
-  [hval]
-    type = Receiver
-    default = ${h}
-  []
 []
