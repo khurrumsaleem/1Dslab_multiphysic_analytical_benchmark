@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<settings>
+  <run_mode>eigenvalue</run_mode>
+  <particles>10000</particles>
+  <batches>300</batches>
+  <inactive>100</inactive>
+  <source strength="1.0">
+    <space type="fission">
+      <parameters>-106.47 -0.5 -0.5 106.47 0.5 0.5</parameters>
+    </space>
+    <angle reference_uvw="0.0 0.0 1.0" type="mu-phi">
+      <mu type="discrete">
+        <parameters>0.0 1.0</parameters>
+      </mu>
+      <phi type="discrete">
+        <parameters>0.0 3.141592653589793 0.5 0.5</parameters>
+      </phi>
+    </angle>
+  </source>
+  <output>
+    <summary>false</summary>
+    <tallies>true</tallies>
+  </output>
+  <energy_mode>multi-group</energy_mode>
+  <temperature_default>293</temperature_default>
+  <temperature_method>nearest</temperature_method>
+  <temperature_range>288 900</temperature_range>
+</settings>
