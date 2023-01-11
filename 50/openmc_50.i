@@ -45,15 +45,9 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     type = CellInstanceAux
     variable = cell_instance
   []
-  # [analytical_temp]
-  #   type = FunctionAux
-  #   variable = analytical_temp
-  #   function = analytical_temp_formula
-  # []
   # [temp_error_computer]
-  #   type = FunctionAux
-  #   variable = temp_error
-  #   function = temp_error_formula
+  #   type = ParsedAux
+  #   # TODO
   # []
 []
 
@@ -64,12 +58,6 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     vals = '${Sig_t0} ${L} ${q} ${phi0} ${lam} ${P}'
     value = 'Sig_t0*L*sqrt((q*L*phi0/P)*(q*L*phi0/P) - (lam -1)*x*x)'
   []
-  # [temp_error]
-  #   type = ParsedFunction
-  #   vals = 'analytical_temp temp'
-  #   vars = 'analytical_temp temp'
-  #   value = 'analytical_temp - temp'
-  # []
 []
 
 [ICs]
@@ -101,8 +89,7 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   solid_blocks = ANY_BLOCK_ID
   mesh_template = mesh_50_in.e
   power = ${fparse P*eV_to_J} # convert from eV/s to W
-  relaxation = constant
-  relaxation_factor = 0.22
+  relaxation = robbins_monro
 []
 
 [Executioner]
