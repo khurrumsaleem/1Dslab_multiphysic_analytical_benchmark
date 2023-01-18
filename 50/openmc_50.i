@@ -88,6 +88,10 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   solid_cell_level = 1
   solid_blocks = ANY_BLOCK_ID
   mesh_template = mesh_50_in.e
+  inactive_batches = 100
+  k_trigger = rel_err
+  k_trigger_threshold = 100
+  max_batches = 500
   power = ${fparse P*eV_to_J} # convert from eV/s to W
   relaxation = robbins_monro
 []
