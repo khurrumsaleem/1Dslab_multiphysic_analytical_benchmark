@@ -26,6 +26,10 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     family = MONOMIAL
     order = CONSTANT
   []
+  [temp_analytical]
+    family = MONOMIAL
+    order = CONSTANT
+  []
   [temp_error]
     family = MONOMIAL
     order = CONSTANT
@@ -45,18 +49,20 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     type = CellInstanceAux
     variable = cell_instance
   []
-  # [temp_error_computer]
-  #   type = ParsedAux
-  #   # TODO
-  # []
+  [temp_error_computer]
+    type = ParsedAux
+    variable = temp_error
+    function = 'temp_analytical - temp'
+    args = 'temp_analytical temp'
+  []
 []
 
 [Functions]
   [analytical_temp_formula]
     type = ParsedFunction
-    vars = 'Sig_t0    L    q    phi0    lam    P'
-    vals = '${Sig_t0} ${L} ${q} ${phi0} ${lam} ${P}'
-    value = 'Sig_t0*L*sqrt((q*L*phi0/P)*(q*L*phi0/P) - (lam -1)*x*x)'
+    vars = 'Sig_t0    T0    L    q    phi0    lam    P'
+    vals = '${Sig_t0} ${T0} ${L} ${q} ${phi0} ${lam} ${P}'
+    value = 'Sig_t0*T0*sqrt((q*L*phi0/P)*(q*L*phi0/P) - (lam -1)*x*x)'
   []
 []
 
@@ -70,6 +76,11 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     type = ConstantIC
     variable = heat_source
     value = ${fparse q*eV_to_J/(L*1*1)} # W/cm^3
+  []
+  [temp_analytical]
+    type = FunctionIC
+    variable = temp_analytical
+    function = analytical_temp_formula
   []
   [dummy_zero]
     type = ConstantIC
@@ -173,6 +184,12 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   [temp]
     type = ElementValueSampler
     variable = 'temp'
+    sort_by = x
+    execute_on = timestep_end
+  []
+  [temp_error]
+    type = ElementValueSampler
+    variable = 'temp_error'
     sort_by = x
     execute_on = timestep_end
   []

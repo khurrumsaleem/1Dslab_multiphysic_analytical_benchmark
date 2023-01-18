@@ -1,3 +1,5 @@
 *solid0.e
 moose_test-opt
 *.h5
+*.csv
+.jitcache
