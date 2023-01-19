@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 # paramters for analytical solution
 T0 = 293
 L = 106.47 # equilibrium length from paper
-infdim = 50.0 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
+infdim = 1.0 # relective boundary at each end to simulate infiniteness, but needs to be 1 for 1D power integral to hold 
 P = 1.0e22 # eV/s
 q = 1e8 # eV
 k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
@@ -14,7 +14,7 @@ eV_to_J = 1.602e-19 # J per eV
 lam = 0.5*(1+np.sqrt(1+(16*q*q*phi0*phi0)/(P*P)))
 
 # Load statepoint file and get the number of bins
-sp = openmc.StatePoint('statepoint.300.h5')
+sp = openmc.StatePoint('statepoint.319.h5')
 
 # grab mesh tally from tally 1 get scores for each flux
 tally_1 = sp.get_tally()
@@ -33,7 +33,7 @@ V_voxel = (L*infdim*infdim)/num_voxels
 # print(V_voxel)
 c = P/system_tallied_power.mean[0]
 # print("c = ",c)
-flux = c*flux#/V_voxel TODO figure out about V_voxel, tbh could just be unconverged flux?
+flux = c*flux/V_voxel
 flux_min = min(flux.mean)
 flux_max = max(flux.mean)
 flux.std_dev.shape= (num_voxels)
@@ -61,6 +61,7 @@ plt.hist(flux_relative_error[nonzero], bins=50)
 plt.title('Relative Error Distribution for Flux')
 plt.xlabel('Relative Error')
 plt.ylabel('Frequency')
+
 # TODO compute error from analytical solutioin
 xx = np.linspace(-L,L,num_voxels)
 analytical_flux = phi0*np.sqrt(np.ones(num_voxels)-((lam-1)*P*P*np.multiply(xx,xx))/(L*L*q*q*phi0*phi0))
