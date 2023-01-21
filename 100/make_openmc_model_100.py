@@ -90,9 +90,9 @@ mgxs_tallies.export_to_xml()
 
 # settings
 settings = openmc.Settings()
-batches = 100
-inactive = 50
-particles = 20000 # 2x particles per batch compared to 50 since mesh elements are twice as small now
+batches = 150
+inactive = 100
+particles = 500000
 settings.energy_mode = 'multi-group'
 settings.batches = batches
 settings.inactive = inactive
