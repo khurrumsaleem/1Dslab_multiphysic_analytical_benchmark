@@ -39,7 +39,7 @@ use_saved_statepoints = False
 
 # Number of cell layers to consider
 # Only keeping this to avoid rewriting loops, but this case only needs one study
-n_layers = [3]
+n_layers = [4]
 
 # Number of inactive batches to run
 n_inactive = 250
