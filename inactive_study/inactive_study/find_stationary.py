@@ -6,16 +6,16 @@ import statistics as stat
 
 # collect argument for type of stationary detection: window, all, last half
 ap = ArgumentParser(description="Program to analyze Shannon entropy data and detect convergence of the fission source.")
-ap.add_argument('--detector', dest = 'detector', choices =['all','half','window'], required=True,
+ap.add_argument('--method', dest = 'method', choices =['all','half','window'], required=True,
                 help = "The type of way to detect steady state. Options are all, half, or window")
 opts, rem_args = ap.parse_known_args()
-if(opts.detector == "window"):
+if(opts.method == "window"):
     ap.add_argument('--window_length', dest = 'window_length',required = True, type = int,
                     help =" The window length must be specified if window is the detectio method")
 args = ap.parse_args()
 # variable to be used in logic for which way to detect steady state
-method = args.detector
-if(args.detector == "window"):
+method = args.method
+if(args.method == "window"):
     window_length = args.window_length
 
 # eigenvalue batching
@@ -79,11 +79,13 @@ elif(method == "half"):
         low =  mean - stdev
         high = mean + stdev
         if(high - entropy[0][j] > 0 and entropy[0][j]-low > 0):
-            print("Iteration", j, "produced a value within one standard deviation of the mean for the last half of entropy values.")
+            print("Iteration", j, "produced a value within one standard deviation of the "
+                  "mean for the last half of entropy values. It is recommended to do at "
+                  "least this many inactive cycles.")
             break
         else:
             continue
-else: 
+else:
     # use all batches as data points
     for j in range(1,len(entropy[0])):
         entropy_slice = entropy[0][0:j]
@@ -92,7 +94,9 @@ else:
         low =  mean - stdev
         high = mean + stdev
         if(high - entropy[0][j] > 0 and entropy[0][j]-low > 0):
-            print("Iteration", j, "produced a value within one standard deviation of the mean of the last j entropy values")
+            print("Iteration", j, "produced a value within one standard deviation of the "
+                  "mean of the last j entropy values. It is recommended to do at "
+                  "least this many inactive cycles.")
             break
         else:
             continue
