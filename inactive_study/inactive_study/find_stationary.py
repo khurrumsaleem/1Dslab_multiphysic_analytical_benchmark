@@ -22,7 +22,7 @@ if(args.method == "window"):
 n_inactive = 250
 n_active = 50
 
-n = 3
+n = 25000
 sp_file = 'statepoint_' + str(n) + '_layers.h5'
 
 entropy = []

@@ -39,7 +39,7 @@ use_saved_statepoints = False
 
 # Number of cell layers to consider
 # Only keeping this to avoid rewriting loops, but this case only needs one study
-n_layers = [4]
+n_layers = [25000] # using this kind of as a misnomer but it is the number of particles per batch
 
 # Number of inactive batches to run
 n_inactive = 250

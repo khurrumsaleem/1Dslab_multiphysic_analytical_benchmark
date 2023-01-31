@@ -105,8 +105,8 @@ model.tallies = mgxs_tallies
 # settings
 settings = openmc.Settings()
 batches = 300
-inactive = 50
-particles = 250000
+inactive = 100
+particles = 25000
 settings.energy_mode = 'multi-group'
 settings.batches = batches
 settings.inactive = inactive
