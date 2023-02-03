@@ -95,7 +95,7 @@ else:
         high = mean + stdev
         if(high - entropy[0][j] > 0 and entropy[0][j]-low > 0):
             print("Iteration", j, "produced a value within one standard deviation of the "
-                  "mean of the last j entropy values. It is recommended to do at "
+                  "mean of the last", j ,"entropy values. It is recommended to do at "
                   "least this many inactive cycles.")
             break
         else:
