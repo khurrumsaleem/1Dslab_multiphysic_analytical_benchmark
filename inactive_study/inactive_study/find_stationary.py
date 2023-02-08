@@ -2,7 +2,6 @@ from argparse import ArgumentParser
 import numpy as np
 import openmc
 import sys
-import statistics as stat
 
 # collect argument for type of stationary detection: window, all, last half
 ap = ArgumentParser(description="Program to analyze Shannon entropy data and detect convergence of the fission source.")
