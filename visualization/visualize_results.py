@@ -8,23 +8,23 @@ n_elems = [50,100,250,500,1000]
 
 # mesh size vs error
 # collect error norm data
-norms = []
+log_norms = []
 for n in n_elems:
     filename = 'openmc_' + str(n) + '_out.csv'
     df = pd.read_csv(filename)
     last_val  = df.iloc[len(df)-1,-1]
-    norms.append(last_val)
+    log_norms.append(np.log(last_val))
 
+log_N = np.log(n_elems)
 # plot element size vs computed error
-plt.plot(n_elems,norms,'-ro',label=r'$\epsilon=\frac{||T_{a}-T_{x}||_{2}}{||T_{a}||_{2}}$')
-plt.xticks([0,50,100,250,500,1000])
-plt.yticks(np.linspace(0.0010,0.0017,6))
-# plt.yticks(np.linspace(0.0010,0.0017,5))
-plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
-plt.xlabel('Number of X Mesh Elements')
-plt.ylabel('Error Norm $\epsilon$')
+plt.plot(log_N,log_norms,'-ro',label=r'$\log(\epsilon)=log(\frac{||T_{a}-T_{x}||_{2}}{||T_{a}||_{2}})$')
+plt.yticks(np.log(np.linspace(0.0010,0.0017,6)))
+plt.yticks(np.linspace(-6.35,-6.85,6))
+# plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
+plt.xlabel('Log of number of X elements $\log(N)$')
+plt.ylabel('Log of Error Norm $log(\epsilon)$')
 plt.title('Error from Analytical Solution for Varying Mesh Elements',y=1.05)
-plt.legend(bbox_to_anchor=[0.9,0.985])
+plt.legend(bbox_to_anchor=[0.985,0.985])
 plt.grid()
 plt.savefig('error_study.png')
 plt.clf()
