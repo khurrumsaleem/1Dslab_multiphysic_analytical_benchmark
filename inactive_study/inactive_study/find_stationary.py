@@ -46,8 +46,6 @@ with openmc.StatePoint(sp_file) as sp:
     averaging_k = sp.k_generation[(n_inactive - averaging_batches):n_inactive]
     k_generation_avg.append(sum(averaging_k) / len(averaging_k))
 
-# TODO maybe add parameter to throw out certain number of starting values and go from that instead of 1
-# detecting stationarity.
 if(method == "window"):
     # detect when entropy of current batch is within window (mean +/- std of window)
     for j in range(window_length,len(entropy[0])):
