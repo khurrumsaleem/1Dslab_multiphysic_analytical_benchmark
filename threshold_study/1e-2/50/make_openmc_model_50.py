@@ -84,15 +84,16 @@ geom.export_to_xml()
 mesh_filter = openmc.MeshFilter(mesh)
 tally = openmc.Tally()
 tally.filters = [mesh_filter]
-tally.scores = ['kappa-fission','flux'] # This is duplicate
+# tally.scores = ['flux']
+tally.scores = ['kappa-fission','flux']
 mgxs_tallies = openmc.Tallies([tally])
 mgxs_tallies.export_to_xml()
 
 # settings
 settings = openmc.Settings()
 batches = 150
-inactive = 100
-particles = 500000
+inactive = 50
+particles = 25000
 settings.energy_mode = 'multi-group'
 settings.batches = batches
 settings.inactive = inactive
