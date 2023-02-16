@@ -5,7 +5,7 @@
 `~/cardinal/cardinal-opt -i mesh_100.i --mesh-only`
 ## run cardinal simulation using (optional) mpi paralellism and openmp parallelism from either of the following commands
 ### entire simulation
-`mpiexec -np 4 ~/cardinal/cardinal-opt -i openmc_100.i --n-threads=10`
+`mpiexec -np 4 ~/cardinal/cardinal-opt -i openmc_100_1e-4.i --n-threads=10`
 ### just solid subapp
 `mpiexec -np 4 ~/cardinal/cardinal-opt -i solid_100.i --n-threads=10`
 
