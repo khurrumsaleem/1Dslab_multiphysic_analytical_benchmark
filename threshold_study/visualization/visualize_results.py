@@ -65,10 +65,11 @@ for f in sp_files:
     raw_kappa_fission_mesh_tallies.append(sp.get_tally(id=1).get_slice(scores=['kappa-fission']))
     eigs.append(sp.keff.n)
 
+
 nu_fission_rate = float(openmc.StatePoint(sp_files[0]).get_tally(id=2).get_slice(scores=['nu-fission']).mean[0])
 fission_rate = float(openmc.StatePoint(sp_files[0]).get_tally(id=2).get_slice(scores=['fission']).mean[0])
-print(tallied_global_system_powers[0].mean[0]/fission_rate) # fission rate computed is very close to provided value
-print(nu_fission_rate/fission_rate) # nu is as expected
+# print(tallied_global_system_powers[0].mean[0]/fission_rate) # fission rate computed is very close to provided value
+# print(nu_fission_rate/fission_rate) # nu is as expected
 
 # compute source strengths and convert flux to proper n/cm^2-s unit
 # P [=] ev/s , voxel_volume [=] cm^3, power.mean[0], ev/sp
@@ -87,6 +88,13 @@ xx_50 = np.linspace(-L/2,L/2,n_elems[0])
 # populate data frames
 df_temp_50 = pd.read_csv("openmc_50_out_temp_0004.csv")
 temp_50 = df_temp_50.loc[:,"temp"]
+plt.plot(xx_50,temp_50,'-ro')
+plt.xlabel("X coordinate")
+plt.ylabel("Temperature")
+plt.title("Temperature for 50 Mesh Elements")
+plt.savefig('temp_50.png')
+plt.clf()
+
 # populate ratio vars
 for i in range (len(temp_50)):
     ratio_50.append(float(temp_50[i]/flux_mesh_tallies[0].mean[i]))
@@ -108,6 +116,14 @@ plt.xlabel('X coordniate')
 plt.ylabel('numerical to analytical ratio $\phi(x)$')
 plt.title('Ratio numerical to analytical flux')
 plt.savefig('num_to_analytical_flux.png')
+plt.clf()
+
+
+plt.plot(xx_50,flux_mesh_tallies[0].mean.flat,'-ko')
+plt.title("numericall flux vs position")
+plt.xlabel('X coordniate')
+plt.ylabel('Numerical $\phi(x)$')
+plt.savefig("numerical_flux.png")
 plt.clf()
 
 fission_source = []
