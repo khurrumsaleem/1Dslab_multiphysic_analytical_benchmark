@@ -113,7 +113,7 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   check_aux = true
   verbose = true
   steady_state_detection = true
-  steady_state_tolerance = 1e-4
+  steady_state_tolerance = 1e-5
 []
 
 [MultiApps]
