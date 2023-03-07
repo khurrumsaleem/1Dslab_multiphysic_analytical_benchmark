@@ -4,9 +4,9 @@ import numpy as np
 import h5py
 
 # problem physical parameters
-T0 = 293
-Tmin = T0 - 5 # lower bound to give data some range
-Tmax = 900
+T0 = 293 # heat sink temp and reference temp for XS
+Tmin = 308 # lower bound near expected analytical min 311
+Tmax = 358 # analytical solution expected to max around 345
 L0 = 100
 L = 106.47 # equilibrium length from paper
 rho = 1.2 # g/cc
@@ -74,7 +74,12 @@ mesh.upper_right = (L/2,infdim,infdim)
 root_cell, cells = mesh.build_cells(['vacuum','vacuum','reflective','reflective','reflective','reflective']) # xmin , x max, ymin, ymax, zmin, zmax. internal surfaces transmission by default
 # fill cells with slab
 for cell in cells:
+    # cell IDs run from 2 to N+1, but we need to access 0 to N-1, offset 2
+    mesh_id = cell.id - 2
+    Tx = Tmin + (Tmax - Tmin)/(N-1) * mesh_id
+    cell.temperature = Tx
     cell.fill = slab
+
 # create universe from filled cells, create geometry from universe and export the geometry
 root_universe = openmc.Universe(name='root universe', cells=[root_cell])
 geom = openmc.Geometry(root_universe)
@@ -95,7 +100,7 @@ mgxs_tallies.export_to_xml()
 settings = openmc.Settings()
 batches = 150
 inactive = 50
-particles = 25000
+particles = 50000
 settings.energy_mode = 'multi-group'
 settings.batches = batches
 settings.inactive = inactive

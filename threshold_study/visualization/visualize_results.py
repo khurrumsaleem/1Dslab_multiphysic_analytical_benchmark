@@ -113,7 +113,7 @@ for i in range(50):
     num_to_analy.append(float(flux_mesh_tallies[0].mean[i] / phi[i]))
 plt.plot(xx_50,num_to_analy,'-go',)
 plt.xlabel('X coordniate')
-plt.ylabel('numerical to analytical ratio $\phi(x)$')
+plt.ylabel('numerical $\phi(x)$ to analytical $\phi(x)$ ratio')
 plt.title('Ratio numerical to analytical flux')
 plt.savefig('num_to_analytical_flux.png')
 plt.clf()
@@ -126,12 +126,17 @@ plt.ylabel('Numerical $\phi(x)$')
 plt.savefig("numerical_flux.png")
 plt.clf()
 
-fission_source = []
+kappa_fission_means = []
+kappa_fission_std_dev = []
 # flux error ratio
 for i in range(50):
-    fission_source.append(float(kappa_fission_mesh_tallies[0].mean[i]))
-plt.plot(xx_50,fission_source,'-ko')
+    kappa_fission_means.append(float(kappa_fission_mesh_tallies[0].mean[i]))
+    kappa_fission_std_dev.append(float(kappa_fission_mesh_tallies[0].std_dev[i]))
+plt.plot(xx_50,kappa_fission_means,'-ko')
+plt.errorbar(xx_50,kappa_fission_means,yerr=kappa_fission_std_dev,marker = '|',fmt='none',elinewidth=1,capsize=3,capthick=1)
 plt.xlabel('X coordniate')
-plt.ylabel('heat source')
+plt.ylabel('heat source [ev/cm^3-s]')
+plt.title('Tallied Kappa Fission (Units Converted Using SS)')
 plt.savefig('heat_source.png')
 plt.clf()
+print(kappa_fission_std_dev)
