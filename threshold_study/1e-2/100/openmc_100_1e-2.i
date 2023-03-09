@@ -18,14 +18,6 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
 []
 
 [AuxVariables]
-  [cell_id]
-    family = MONOMIAL
-    order = CONSTANT
-  []
-  [cell_instance]
-    family = MONOMIAL
-    order = CONSTANT
-  []
   [temp_analytical]
     family = MONOMIAL
     order = CONSTANT
@@ -41,14 +33,6 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
 []
 
 [AuxKernels]
-  [cell_id]
-    type = CellIDAux
-    variable = cell_id
-  []
-  [cell_instance]
-    type = CellInstanceAux
-    variable = cell_instance
-  []
   [temp_error_computer]
     type = ParsedAux
     variable = temp_error
@@ -100,10 +84,8 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   solid_cell_level = 1
   solid_blocks = ANY_BLOCK_ID
   mesh_template = mesh_100_in.e
-  inactive_batches = 100
-  tally_trigger = rel_err
-  tally_trigger_threshold = 1e-2
-  max_batches = 500
+  inactive_batches = 50
+  batches = 100
   power = ${fparse P*eV_to_J} # convert from eV/s to W
   relaxation = robbins_monro
 []
@@ -152,13 +134,6 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
 [Postprocessors]
   [heat_source]
     type = ElementIntegralVariablePostprocessor
-    variable = heat_source
-  []
-  [max_tally_rel_err]
-    type = FissionTallyRelativeError
-  []
-  [max_heat_source]
-    type = ElementExtremeValue
     variable = heat_source
   []
   [L2_distance_analytic_temp_to_field]
