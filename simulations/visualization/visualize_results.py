@@ -13,9 +13,7 @@ phi0 = 2.5e14 # n/cm^2-s
 q = 1e8 # ev/s
 lam = 0.5*(1+np.sqrt(1+(16*q*q*phi0*phi0)/(P*P)))
 
-# dictionary of errors for each triger threshold
-error_data = []
-# collect error norm data organized by threshold
+error_data = [] # list to house the error for each mesh size
 for n in n_elems:
     filename = f"openmc_{n}_1e-2_out.csv"
     df_norms = pd.read_csv(filename)
@@ -26,7 +24,7 @@ for n in n_elems:
 plt.plot(log_N,error_data,'-ro',label=r'$\epsilon=\frac{||T_{a} - T_{x} ||_{2}}{|| T_{a} ||_{2}}$')
 plt.yticks(np.linspace(-6.5,-10,6))
 # plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
-plt.xlabel('Log of number of X elements $\log(N)$') 
+plt.xlabel('Log of number of X elements $\log(N)$')
 plt.ylabel('Log of Error Norm $log(\epsilon)$')
 plt.title('Error from Analytical Solution for Varying Mesh Elements \n Steady State Tolerance 1e-5',y=1)
 plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
@@ -34,57 +32,58 @@ plt.grid()
 plt.savefig('error_study.png')
 plt.clf()
 
-# lists to contain data for each mesh size
-sp_files = {}
-raw_flux_mesh_tallies = [] # units from openmc
-flux_mesh_tallies = [] # proper flux units n/cm^2-s
-tallied_global_system_powers = []
-raw_kappa_fission_mesh_tallies = [] # units from openmc
-kappa_fission_mesh_tallies = [] # proper power units ev/cm^3-s
-voxel_volumes = []
-source_strengths = []
-eigs = [] # eigenvalues to fix normalization of flux
+# dictionaries of statepoint filenames and voxel volumes
+# key in each case is n (the number of mesh elements).
+# convention applies to rest of dictionaries unless otherwise noted
+sp_filenames = {}
+voxel_volumes = {}
 
-# generate list of statepoints
+# generate filenames and compute voxel volumes
 for n in n_elems:
-    sp_files.append('statepoint_' + str(n) + '.h5')
-    voxel_volumes.append(L/n)
+    sp_filenames[n] = f'statepoint_{n}.h5'
+    voxel_volumes[n] = L/n # implied division by 1 x 1 (y by z) cross sectional are
+
+# dictionaries of raw tally data for each mesh size
+raw_flux_mesh_tallies = {} # units of n-cm/sp
+tallied_global_system_powers = {} # units of eV-cm/sp
+raw_kappa_fission_mesh_tallies = {} # units of eV-cm/sp
+nu_fission_rates = {} # units of particles/sp - INTEGRAL QUANTITY, store foat
+fission_rates = {} # units of fissions/sp - INTEGRAL QUANTITY, store foat
+eigs = {} # k effective - one data point per mesh size, store float
 
 # populate flux, system tallied power, and local kappa fission rates with
 # openmc.Tally objects from each simulation (openmc units)
-for f in sp_files:
-    sp = openmc.StatePoint(f)
-    raw_flux_mesh_tallies.append(sp.get_tally(id=1).get_slice(scores=['flux']))
-    tallied_global_system_powers.append(sp.get_tally(id=3).get_slice(scores=['kappa-fission']))
-    raw_kappa_fission_mesh_tallies.append(sp.get_tally(id=1).get_slice(scores=['kappa-fission']))
-    eigs.append(sp.keff.n)
+for n in n_elems:
+    sp = openmc.StatePoint(sp_filenames[n])
+    raw_flux_mesh_tallies[n] = sp.get_tally(id=1).get_slice(scores=['flux'])
+    tallied_global_system_powers[n] = sp.get_tally(id=3).get_slice(scores=['kappa-fission'])
+    raw_kappa_fission_mesh_tallies[n] = sp.get_tally(id=1).get_slice(scores=['kappa-fission'])
+    nu_fission_rates[n] = float(openmc.StatePoint(sp_filenames[0]).get_tally(id=2).get_slice(scores=['nu-fission']).mean[0])
+    fission_rates[n] = float(openmc.StatePoint(sp_filenames[0]).get_tally(id=2).get_slice(scores=['fission']).mean[0])
+    eigs[n] = float(sp.keff.n)
 
-
-nu_fission_rate = float(openmc.StatePoint(sp_files[0]).get_tally(id=2).get_slice(scores=['nu-fission']).mean[0])
-fission_rate = float(openmc.StatePoint(sp_files[0]).get_tally(id=2).get_slice(scores=['fission']).mean[0])
-# print(tallied_global_system_powers[0].mean[0]/fission_rate) # fission rate computed is very close to provided value
-# print(nu_fission_rate/fission_rate) # nu is as expected
-
+source_strengths = {}
 # compute source strengths and convert flux to proper n/cm^2-s unit
 # P [=] ev/s , voxel_volume [=] cm^3, power.mean[0], ev/sp
-for power,voxel_volume,keff in zip(tallied_global_system_powers,voxel_volumes,eigs):
-    source_strengths.append(P*nu_fission_rate/(keff*voxel_volume*float(power.mean[0]))) # units of sp/cm^3-s
+for n in n_elems:
+    source_strengths[n] = P*nu_fission_rates[n]/(eigs[n]*voxel_volumes[n]*float(tallied_global_system_powers[n].mean[0])) # units of sp/cm^3-s
 
+flux_mesh_tallies = {} # proper flux units n/cm^2-s
+kappa_fission_mesh_tallies = {} # proper power units ev/cm^3-s
 # convert to correct units for flux and kappa fission
-for flux,power,ss in zip(raw_flux_mesh_tallies,raw_kappa_fission_mesh_tallies,source_strengths):
-    flux_mesh_tallies.append(flux * ss)
-    kappa_fission_mesh_tallies.append(power * ss)
+for n in n_elems:
+    flux_mesh_tallies[n] = raw_flux_mesh_tallies[n] * source_strengths[n]
+    kappa_fission_mesh_tallies[n] = raw_kappa_fission_mesh_tallies[n] * source_strengths[n]
 
 # PLOTTING T/phi for the 50 and 10000 case
 # dictionaries to house data for plotting
+xx = {} # key is number of elements, value is numpy array of mesh center points
 temps = {} # key is number of elements, value is data frame read in from csv
 ratios = {} # key is number of elements, value is numpary array of ratio of temp to flux for each element
-xx = {} # key is number of elements, value is numpy array of mesh center points
-# generate x coords
+
 for n in n_elems:
     xx[n] = np.linspace(-L/2,L/2,n)
     temps[n] = pd.read_csv(f"openmc_{n}_temp.csv")
-# populate dictionaries
 
 for n in n_elems:
     plt.plot(xx[n],temps[n].loc[:,"temp"],'-ro')
