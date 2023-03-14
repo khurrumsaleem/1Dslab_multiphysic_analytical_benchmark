@@ -24,12 +24,12 @@ for n in n_elems:
 plt.plot(log_N,error_data,'-ro',label=r'$\epsilon=\frac{||T_{a} - T_{x} ||_{2}}{|| T_{a} ||_{2}}$')
 plt.yticks(np.linspace(-6.5,-10,6))
 # plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
-plt.xlabel('Log of number of X elements $\log(N)$')
-plt.ylabel('Log of Error Norm $log(\epsilon)$')
-plt.title('Error from Analytical Solution for Varying Mesh Elements \n Steady State Tolerance 1e-5',y=1)
+plt.xlabel("Log of number of X elements $\log(N)$")
+plt.ylabel("Log of Error Norm $log(\epsilon)$")
+plt.title("Error from Analytical Solution for Varying Mesh Elements \n Steady State Tolerance 1e-5",y=1)
 plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
 plt.grid()
-plt.savefig('error_study.png')
+plt.savefig("error_study.png")
 plt.clf()
 
 # dictionaries of statepoint filenames and voxel volumes
@@ -58,8 +58,8 @@ for n in n_elems:
     raw_flux_mesh_tallies[n] = sp.get_tally(id=1).get_slice(scores=['flux'])
     tallied_global_system_powers[n] = sp.get_tally(id=3).get_slice(scores=['kappa-fission'])
     raw_kappa_fission_mesh_tallies[n] = sp.get_tally(id=1).get_slice(scores=['kappa-fission'])
-    nu_fission_rates[n] = float(openmc.StatePoint(sp_filenames[0]).get_tally(id=2).get_slice(scores=['nu-fission']).mean[0])
-    fission_rates[n] = float(openmc.StatePoint(sp_filenames[0]).get_tally(id=2).get_slice(scores=['fission']).mean[0])
+    nu_fission_rates[n] = float(openmc.StatePoint(sp_filenames[n]).get_tally(id=2).get_slice(scores=['nu-fission']).mean[0])
+    fission_rates[n] = float(openmc.StatePoint(sp_filenames[n]).get_tally(id=2).get_slice(scores=['fission']).mean[0])
     eigs[n] = float(sp.keff.n)
 
 source_strengths = {}
@@ -75,68 +75,68 @@ for n in n_elems:
     flux_mesh_tallies[n] = raw_flux_mesh_tallies[n] * source_strengths[n]
     kappa_fission_mesh_tallies[n] = raw_kappa_fission_mesh_tallies[n] * source_strengths[n]
 
-# PLOTTING T/phi for the 50 and 10000 case
 # dictionaries to house data for plotting
 xx = {} # key is number of elements, value is numpy array of mesh center points
 temps = {} # key is number of elements, value is data frame read in from csv
-ratios = {} # key is number of elements, value is numpary array of ratio of temp to flux for each element
 
 for n in n_elems:
     xx[n] = np.linspace(-L/2,L/2,n)
-    temps[n] = pd.read_csv(f"openmc_{n}_temp.csv")
+    temps[n] = pd.read_csv(f"openmc_{n}_temp.csv").loc[:,"temp"]
 
 for n in n_elems:
-    plt.plot(xx[n],temps[n].loc[:,"temp"],'-ro')
+    plt.plot(xx[n],temps[n],'-ro')
     plt.xlabel("X coordinate [cm]")
     plt.ylabel("Temperature [K]")
     plt.title(f"Temperature for {n} Mesh Elements")
-    plt.savefig(f'temp_{n}.png')
+    plt.savefig(f"temp_{n}.png")
     plt.clf()
 
-# populate ratio vars
-# for i in range (len(temp_50)):
-#     ratio_50.append(float(temp_50[i]/flux_mesh_tallies[0].mean[i]))
-# plt.plot(xx_50,ratio_50,'-bo',label="50 x-elem")
-# plt.xlabel('X coordniate')
-# plt.ylabel('$T(x)/\phi(x)$')
-# plt.title('temp to flux ratio for each element')
-# plt.legend()
-# plt.savefig('ratio_T_to_flux.png')
-# plt.clf()
+# dictioinaries for flux results and comparisons to temp and analytical solution key is number of elements
+ratios_T_to_phi = {} # list of ratios of temp to flux for each element
+analytical_phi = {}
+ratios_flux_num_to_analy = {}
+# compute T/phi for each case
+for n in n_elems:
+    ratios_T_to_phi[n] = [] # empty list to store ratios T to phi
+    ratios_flux_num_to_analy[n] = [] # empty list to store ratios numerical to analytical flux
+    analytical_phi[n] = phi0*np.sqrt(1- ((lam - 1)*P*P*np.multiply(xx[n],xx[n]))/(L*L*q*q*phi0*phi0))
+    for i in range(n):
+        ratios_flux_num_to_analy[n].append(float(flux_mesh_tallies[n].mean[i]/analytical_phi[n][i]))
+        ratios_T_to_phi[n].append(float(temps[n][i]/flux_mesh_tallies[n].mean[i]))
+    # numerical to analytical ratio
+    plt.plot(xx[n],ratios_flux_num_to_analy[n],'-go',label=f"{n} x-elem")
+    plt.xlabel("X Coordinate [cm]")
+    plt.ylabel(r"Numerical $\phi(x)$ to Analytical $\phi(x)$ Ratio")
+    plt.title(f"Ratio Numerical to Analytical Flux {n} Mesh Elements")
+    plt.legend()
+    plt.savefig(f"num_to_analytical_flux_{n}.png")
+    plt.clf()
+    # T to phi ratio
+    plt.plot(xx[n],ratios_T_to_phi[n],'-bo',label=f"{n} x-elem")
+    plt.xlabel("X Coordinate [cm]")
+    plt.ylabel(r"Ratio $\frac{T(x)}{phi(x)}$ ")
+    plt.title(f"Temp to Flux Ratio for {n} Mesh Elements")
+    plt.legend()
+    plt.savefig(f"ratio_T_to_flux_{n}.png")
+    plt.clf()
 
-# num_to_analy = []
-# # flux numerical to analytical ratio
-# phi = phi0*np.sqrt(1- ((lam - 1)*P*P*np.multiply(xx_50,xx_50))/(L*L*q*q*phi0*phi0))
-# for i in range(50):
-#     num_to_analy.append(float(flux_mesh_tallies[0].mean[i] / phi[i]))
-# plt.plot(xx_50,num_to_analy,'-go',)
-# plt.xlabel('X coordniate')
-# plt.ylabel('numerical $\phi(x)$ to analytical $\phi(x)$ ratio')
-# plt.title('Ratio numerical to analytical flux')
-# plt.savefig('num_to_analytical_flux.png')
-# plt.clf()
-
-
-# plt.plot(xx_50,flux_mesh_tallies[0].mean.flat,'-ko')
-# plt.title("numericall flux vs position")
-# plt.xlabel('X coordniate')
-# plt.ylabel('Numerical $\phi(x)$')
-# plt.savefig("numerical_flux.png")
-# plt.clf()
-
-# kappa_fission_means = []
-# kappa_fission_std_dev = []
-# # flux error ratio
-# for i in range(50):
-#     kappa_fission_means.append(float(kappa_fission_mesh_tallies[0].mean[i]))
-#     kappa_fission_std_dev.append(float(kappa_fission_mesh_tallies[0].std_dev[i]))
-# plt.plot(xx_50,kappa_fission_means,'-ko')
-# plt.errorbar(xx_50,kappa_fission_means,yerr=kappa_fission_std_dev,marker = '|',fmt='none',elinewidth=1,capsize=3,capthick=1)
-# plt.xlabel('X coordniate')
-# plt.ylabel('heat source [ev/cm^3-s]')
-# plt.title('Tallied Kappa Fission (Units Converted Using SS)')
-# plt.savefig('heat_source.png')
-# plt.clf()
+kappa_fission_means = {}
+kappa_fission_std_dev = {}
+# flux error ratio
+for n in n_elems:
+    kappa_fission_means[n] = []
+    kappa_fission_std_dev[n] = []
+    for i in range(n):
+        kappa_fission_means[n].append(float(kappa_fission_mesh_tallies[n].mean[i]))
+        kappa_fission_std_dev[n].append(float(kappa_fission_mesh_tallies[n].std_dev[i]))
+    plt.plot(xx[n],kappa_fission_means[n],'-ko',label=f"{n} x-elem")
+    if(n==50):
+        plt.errorbar(xx[n],kappa_fission_means[n],yerr=kappa_fission_std_dev[n],marker = '|',fmt='none',elinewidth=1,capsize=3,capthick=1)
+    plt.xlabel('X Coordniate [cm]')
+    plt.ylabel("Heat Source [ev/cm^3-s]")
+    plt.title("Tallied Kappa Fission (Units Converted Using SS)")
+    plt.savefig(f"heat_source_{n}.png")
+    plt.clf()
 
 
 # iterations to steady state plot
