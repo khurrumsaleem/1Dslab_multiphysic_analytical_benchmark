@@ -114,7 +114,7 @@ for n in n_elems:
     # T to phi ratio
     plt.plot(xx[n],ratios_T_to_phi[n],'-bo',label=f"{n} x-elem")
     plt.xlabel("X Coordinate [cm]")
-    plt.ylabel(r"Ratio $\frac{T(x)}{phi(x)}$ ")
+    plt.ylabel(r"Ratio $\frac{T(x)}{\phi(x)}$ ")
     plt.title(f"Temp to Flux Ratio for {n} Mesh Elements")
     plt.legend()
     plt.savefig(f"ratio_T_to_flux_{n}.png")
@@ -130,8 +130,6 @@ for n in n_elems:
         kappa_fission_means[n].append(float(kappa_fission_mesh_tallies[n].mean[i]))
         kappa_fission_std_dev[n].append(float(kappa_fission_mesh_tallies[n].std_dev[i]))
     plt.plot(xx[n],kappa_fission_means[n],'-ko',label=f"{n} x-elem")
-    if(n==50):
-        plt.errorbar(xx[n],kappa_fission_means[n],yerr=kappa_fission_std_dev[n],marker = '|',fmt='none',elinewidth=1,capsize=3,capthick=1)
     plt.xlabel('X Coordniate [cm]')
     plt.ylabel("Heat Source [ev/cm^3-s]")
     plt.title("Tallied Kappa Fission (Units Converted Using SS)")
@@ -141,7 +139,7 @@ for n in n_elems:
 
 # iterations to steady state plot
 m = [50,100,250,500,1000]
-its = [31,46,72,101,143]
+its = [33,48,72,102,144]
 
 fig, ax = plt.subplots()
 plt.plot(m,its,'-bo')

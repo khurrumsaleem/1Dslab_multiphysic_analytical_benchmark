@@ -50,7 +50,7 @@ for T in range(Tmin,Tmax+1):
     xsdata.set_absorption(np.array([Sig_a]),temperature=T)
     xsdata.set_fission(np.array([Sig_f]),temperature=T)
     xsdata.set_nu_fission(np.array([nu_Sig_f]),temperature=T)
-    xsdata.set_kappa_fission(np.array([q*Sig_f]),temperature=T)
+    xsdata.set_kappa_fission(np.array([q*Sig_t]),temperature=T) # note q is provided per total reaction, so this is the heat released
 
 # export xsdata
 one_g_XS_file = openmc.MGXSLibrary(groups) # initialize the library
