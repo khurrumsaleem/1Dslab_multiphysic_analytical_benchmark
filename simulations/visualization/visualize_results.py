@@ -32,6 +32,10 @@ plt.grid()
 plt.savefig("error_study.png")
 plt.clf()
 
+# linear polynomial fit to get slope of line of best fit
+p = np.polyfit(log_N,error_data,1)
+# print("polyfit:" , p)
+
 # dictionaries of statepoint filenames and voxel volumes
 # key in each case is n (the number of mesh elements).
 # convention applies to rest of dictionaries unless otherwise noted
@@ -60,13 +64,15 @@ for n in n_elems:
     raw_kappa_fission_mesh_tallies[n] = sp.get_tally(id=1).get_slice(scores=['kappa-fission'])
     nu_fission_rates[n] = float(openmc.StatePoint(sp_filenames[n]).get_tally(id=2).get_slice(scores=['nu-fission']).mean[0])
     fission_rates[n] = float(openmc.StatePoint(sp_filenames[n]).get_tally(id=2).get_slice(scores=['fission']).mean[0])
-    eigs[n] = float(sp.keff.n)
+    eigs[n] = [float(sp.keff.n),float(sp.keff.s)]
+
+# print(eigs)
 
 source_strengths = {}
 # compute source strengths and convert flux to proper n/cm^2-s unit
-# P [=] ev/s , voxel_volume [=] cm^3, power.mean[0], ev/sp
+# P [=] ev/s, nu_fission_rates [=] n/sp, voxel_volume [=] cm^3, eigs [=] n/sp, voxel_volumes [=] cm^3, tallied_global_system_powers.mean[0], ev/sp
 for n in n_elems:
-    source_strengths[n] = P*nu_fission_rates[n]/(eigs[n]*voxel_volumes[n]*float(tallied_global_system_powers[n].mean[0])) # units of sp/cm^3-s
+    source_strengths[n] = P*nu_fission_rates[n]/(eigs[n][0]*voxel_volumes[n]*float(tallied_global_system_powers[n].mean[0])) # units of sp/cm^3-s
 
 flux_mesh_tallies = {} # proper flux units n/cm^2-s
 kappa_fission_mesh_tallies = {} # proper power units ev/cm^3-s
@@ -119,6 +125,18 @@ for n in n_elems:
     plt.legend()
     plt.savefig(f"ratio_T_to_flux_{n}.png")
     plt.clf()
+
+
+
+# plot all error ratios on one plot
+for n in n_elems:
+    plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
+plt.xlabel("X Coordinate [cm]")
+plt.ylabel(r"Numerical $\phi(x)$ to Analytical $\phi(x)$ Ratio")
+plt.title(f"Ratio Numerical to Analytical Flux All Meshes")
+plt.legend()
+plt.savefig("flux_num_to_analy_ratios.png")
+plt.clf()
 
 kappa_fission_means = {}
 kappa_fission_std_dev = {}
