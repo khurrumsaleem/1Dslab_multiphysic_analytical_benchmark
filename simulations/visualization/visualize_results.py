@@ -138,6 +138,47 @@ plt.legend()
 plt.savefig("flux_num_to_analy_ratios.png")
 plt.clf()
 
+# compute error norm
+flux_means = {}
+flux_std_dev = {}
+flux_deviations = {}
+flux_dev_norms = {}
+analytical_norms = {}
+error_norm = {}
+# flux error ratio
+for n in n_elems:
+    flux_means[n] = []
+    flux_std_dev[n] = []
+    flux_deviations[n] = []
+    # compute mean, stdev, and analytical - numerical
+    for i in range(n):
+        flux_means[n].append(float(flux_mesh_tallies[n].mean[i]))
+        flux_std_dev[n].append(float(flux_mesh_tallies[n].std_dev[i]))
+        flux_deviations[n].append(analytical_phi[n][i]-float(flux_mesh_tallies[n].mean[i]))
+    # take the norm of the deviation and analytical solution
+    flux_dev_norms[n] = np.linalg.norm(flux_deviations[n],ord=2)
+    analytical_norms[n] = np.linalg.norm(analytical_phi[n],ord=2)
+    # ratio is error norm
+    error_norm[n] = float(flux_dev_norms[n]/analytical_norms[n])
+    # plt.plot(xx[n],flux_means[n],'-ko',label=f"{n} x-elem")
+    # plt.errorbar(xx[n],flux_means[n],yerr=flux_std_dev[n],marker = '|',fmt='none',elinewidth=1,capsize=3,capthick=1)
+    # plt.xlabel('X Coordniate [cm]')
+    # plt.ylabel("Flux [n/cm^2-s]")
+    # plt.title("Tallied Flux (Units Converted Using SS)")
+    # plt.grid()
+    # plt.savefig(f"flux_{n}.png")
+    plt.clf()
+
+for n in n_elems:
+    plt.plot([n],[error_norm[n]],'-o',label=f"{n}")
+plt.xlabel("number of elements")
+plt.ylabel("error norm")
+plt.xticks([n for n in n_elems])
+plt.grid()
+plt.savefig("flux_error_norms.png")
+plt.clf()
+
+
 kappa_fission_means = {}
 kappa_fission_std_dev = {}
 # flux error ratio
