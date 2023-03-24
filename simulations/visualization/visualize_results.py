@@ -9,9 +9,12 @@ n_elems = [50,100,250,500,1000]
 log_N = np.log(n_elems)
 L = 106.47 # equilibrium length from paper
 P = 1.0e22 # eV/s
+T0 = 293 # K
 phi0 = 2.5e14 # n/cm^2-s
 q = 1e8 # ev/s
+k0= 1.25e19 # eV/(s-cm-K^2) k(T) = k0 T(x)
 lam = 0.5*(1+np.sqrt(1+(16*q*q*phi0*phi0)/(P*P)))
+Sig_t0 = np.sqrt(P/((lam-1)*k0*L))/(T0)
 
 error_data = [] # list to house the error for each mesh size
 for n in n_elems:
@@ -100,15 +103,20 @@ for n in n_elems:
 # dictioinaries for flux results and comparisons to temp and analytical solution key is number of elements
 ratios_T_to_phi = {} # list of ratios of temp to flux for each element
 analytical_phi = {}
+analytical_T = {}
 ratios_flux_num_to_analy = {}
+ratios_temp_num_to_analy = {}
 # compute T/phi for each case
 for n in n_elems:
     ratios_T_to_phi[n] = [] # empty list to store ratios T to phi
+    ratios_temp_num_to_analy[n] = []
     ratios_flux_num_to_analy[n] = [] # empty list to store ratios numerical to analytical flux
     analytical_phi[n] = phi0*np.sqrt(1- ((lam - 1)*P*P*np.multiply(xx[n],xx[n]))/(L*L*q*q*phi0*phi0))
+    analytical_T[n] = Sig_t0*T0*np.sqrt( (q*q*L*L*phi0*phi0)/(P*P) - (lam-1)*np.multiply(xx[n],xx[n]))
     for i in range(n):
         ratios_flux_num_to_analy[n].append(float(flux_mesh_tallies[n].mean[i]/analytical_phi[n][i]))
         ratios_T_to_phi[n].append(float(temps[n][i]/flux_mesh_tallies[n].mean[i]))
+        ratios_temp_num_to_analy[n].append(float(temps[n][i]/analytical_T[n][i]))
     # numerical to analytical ratio
     plt.plot(xx[n],ratios_flux_num_to_analy[n],'-go',label=f"{n} x-elem")
     plt.xlabel("X Coordinate [cm]")
@@ -126,15 +134,25 @@ for n in n_elems:
     plt.savefig(f"ratio_T_to_flux_{n}.png")
     plt.clf()
 
+# plot all temp error ratios on one plot
+for n in n_elems:
+    plt.plot(xx[n],ratios_temp_num_to_analy[n],label=f"{n} x-elem")
+plt.xlabel("X Coordinate [cm]")
+plt.ylabel(r"Numerical $T(x)$ to Analytical $T(x)$ Ratio")
+plt.title(f"Ratio Numerical to Analytical Temp All Meshes")
+plt.legend(ncol=2)
+plt.grid()
+plt.savefig("temp_num_to_analy_ratios.png")
+plt.clf()
 
-
-# plot all error ratios on one plot
+# plot all flux error ratios on one plot
 for n in n_elems:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
 plt.xlabel("X Coordinate [cm]")
 plt.ylabel(r"Numerical $\phi(x)$ to Analytical $\phi(x)$ Ratio")
 plt.title(f"Ratio Numerical to Analytical Flux All Meshes")
-plt.legend()
+plt.legend(ncol=2)
+plt.grid()
 plt.savefig("flux_num_to_analy_ratios.png")
 plt.clf()
 
