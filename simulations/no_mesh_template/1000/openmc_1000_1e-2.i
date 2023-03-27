@@ -13,7 +13,7 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
 [Mesh]
   [centered_mesh]
     type = FileMeshGenerator
-    file = mesh_100_in.e
+    file = mesh_1000_in.e
   []
 []
 
@@ -78,12 +78,13 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   type = OpenMCCellAverageProblem
   initial_properties = xml
   verbose = true
-  tally_type = mesh
+  tally_type = cell
+  tally_blocks = '0'
   tally_name = heat_source
   tally_score = kappa_fission
   solid_cell_level = 1
   solid_blocks = ANY_BLOCK_ID
-  mesh_template = mesh_100_in.e
+  # mesh_template = mesh_1000_in.e
   inactive_batches = 50
   batches = 100
   power = ${fparse P*eV_to_J} # convert from eV/s to W
@@ -102,7 +103,7 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   [solid]
       type = TransientMultiApp
       app_type = CardinalApp
-      input_files = 'solid_100.i'
+      input_files = 'solid_1000.i'
       execute_on = timestep_end
       sub_cycling = false
       interpolate_transfers = false
