@@ -189,9 +189,9 @@ for n in n_elems:
 
 for n in n_elems:
     plt.plot([n],[error_norm[n]],'-o',label=f"{n}")
-plt.xlabel("number of elements")
-plt.ylabel("error norm")
-plt.yscale("log")
+plt.xlabel("Number of Elements")
+plt.ylabel("Flux Error Norm")
+plt.title("Flux Error Norm vs Mesh Size With SS Detection")
 plt.xticks([n for n in n_elems])
 plt.grid()
 plt.savefig("flux_error_norms.png")
