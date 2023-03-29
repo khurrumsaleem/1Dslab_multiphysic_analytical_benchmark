@@ -91,8 +91,6 @@ temps = {} # key is number of elements, value is data frame read in from csv
 for n in n_elems:
     xx[n] = np.linspace(-L/2,L/2,n)
     temps[n] = pd.read_csv(f"openmc_{n}_temp.csv").loc[:,"temp"]
-
-for n in n_elems:
     plt.plot(xx[n],temps[n],'-ro')
     plt.xlabel("X coordinate [cm]")
     plt.ylabel("Temperature [K]")
@@ -145,17 +143,6 @@ plt.grid()
 plt.savefig("temp_num_to_analy_ratios.png")
 plt.clf()
 
-# plot all flux error ratios on one plot
-for n in n_elems:
-    plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
-plt.xlabel("X Coordinate [cm]")
-plt.ylabel(r"Numerical $\phi(x)$ to Analytical $\phi(x)$ Ratio")
-plt.title(f"Ratio Numerical to Analytical Flux All Meshes. 200 Picard Iterations")
-plt.legend(ncol=2)
-plt.grid()
-plt.savefig("flux_num_to_analy_ratios.png")
-plt.clf()
-
 # compute error norm
 flux_means = {}
 flux_std_dev = {}
@@ -163,16 +150,22 @@ flux_deviations = {}
 flux_dev_norms = {}
 analytical_norms = {}
 error_norm = {}
+sigma_r = {}
 # flux error ratio
 for n in n_elems:
     flux_means[n] = []
     flux_std_dev[n] = []
     flux_deviations[n] = []
+    sigma_r[n] = []
     # compute mean, stdev, and analytical - numerical
     for i in range(n):
         flux_means[n].append(float(flux_mesh_tallies[n].mean[i]))
         flux_std_dev[n].append(float(flux_mesh_tallies[n].std_dev[i]))
         flux_deviations[n].append(analytical_phi[n][i]-float(flux_mesh_tallies[n].mean[i]))
+    # compute uncertainty in ratio
+    # sigma_r^2 = flux_std_dev^2 / analytical_phi^2
+    for i in range(n):
+        sigma_r[n].append(float( flux_std_dev[n][i]/analytical_phi[n][i]) )
     # take the norm of the deviation and analytical solution
     flux_dev_norms[n] = np.linalg.norm(flux_deviations[n],ord=2)
     analytical_norms[n] = np.linalg.norm(analytical_phi[n],ord=2)
@@ -188,6 +181,47 @@ for n in n_elems:
     # plt.savefig(f"flux_{n}.png")
     plt.clf()
 
+# plot all flux error ratios on one plot
+for n in n_elems:
+    plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
+plt.xlabel("X Coordinate [cm]")
+plt.ylabel(r"Numerical $\phi(x)$ to Analytical $\phi(x)$ Ratio")
+plt.title(f"Ratio Numerical to Analytical Flux All Meshes. 200 Picard Iterations")
+plt.legend(ncol=2)
+plt.grid()
+plt.savefig("flux_num_to_analy_ratios.png")
+plt.clf()
+
+print( [np.mean(sigma_r[n]) for n in n_elems] )
+
+# plot individual C/E with error bars
+for n in n_elems:
+    plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
+    plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
+    plt.xlabel("X Coordinate [cm]")
+    plt.ylabel(r"Numerical $\phi(x)$ to Analytical $\phi(x)$ Ratio")
+    plt.title(f"Computed to Expected Ratio with Error Bars. \n {n} Elements. 200 Picard Iterations")
+    # plt.legend()
+    plt.grid()
+    plt.savefig(f"flux_num_to_analy_ratio_w_error_bars_{n}_elem.png")
+    plt.clf()
+
+# compute and plot flux relative errors all on one plot
+rel_err = {}
+for n in n_elems:
+    rel_err[n] = []
+    for i in range(n):
+        rel_err[n].append(np.divide(flux_std_dev[n][i],flux_means[n][i]))
+    plt.plot(xx[n],rel_err[n],label=f"{n}")
+
+plt.xlabel("Position [cm]")
+plt.ylabel("Relative Error")
+plt.title("Relative Errors for Each Mesh Size (200 Picard)")
+plt.grid()
+plt.legend()
+plt.savefig("relative_errors.png",bbox_inches='tight')
+plt.clf()
+
 for n in n_elems:
     plt.plot([n],[error_norm[n]],'-o',label=f"{n}")
 plt.xlabel("Number of Elements")
@@ -197,7 +231,6 @@ plt.xticks([n for n in n_elems])
 plt.grid()
 plt.savefig("flux_error_norms.png")
 plt.clf()
-
 
 kappa_fission_means = {}
 kappa_fission_std_dev = {}
