@@ -192,16 +192,14 @@ plt.grid()
 plt.savefig("flux_num_to_analy_ratios.png")
 plt.clf()
 
-print( [np.mean(sigma_r[n]) for n in n_elems] )
-
 # plot individual C/E with error bars
 for n in n_elems:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
     plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
     plt.xlabel("X Coordinate [cm]")
     plt.ylabel(r"Numerical $\phi(x)$ to Analytical $\phi(x)$ Ratio")
+    plt.axis([-54, 54, 0.998, 1.006])
     plt.title(f"Computed to Expected Ratio with Error Bars. \n {n} Elements. 200 Picard Iterations")
-    # plt.legend()
     plt.grid()
     plt.savefig(f"flux_num_to_analy_ratio_w_error_bars_{n}_elem.png")
     plt.clf()
