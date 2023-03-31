@@ -56,9 +56,9 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
     variable = temp
     value = ${T0}
   []
-  [heat_source_IC]
+  [kappa_fission_IC]
     type = ConstantIC
-    variable = heat_source
+    variable = kappa_fission
     value = ${fparse q*eV_to_J/(L*1*1)} # W/cm^3
   []
   [temp_analytical]
@@ -79,14 +79,15 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   verbose = true
   tally_type = cell
   tally_blocks = '0'
-  tally_name = heat_source
-  tally_score = kappa_fission
+  tally_score = 'kappa_fission flux'
+  source_rate_normalization = 'kappa_fission'
   solid_cell_level = 1
   solid_blocks = ANY_BLOCK_ID
   inactive_batches = 50
   batches = 100
   power = ${fparse P*eV_to_J} # convert from eV/s to W
   relaxation = robbins_monro
+  export_properties = true
 []
 
 [Executioner]
@@ -108,12 +109,12 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
 []
 
 [Transfers]
-  [heat_source_to_solid]
+  [kappa_fission_to_solid]
     type = MultiAppMeshFunctionTransfer
     to_multi_app = solid
-    variable = heat_source
-    source_variable = heat_source
-    from_postprocessors_to_be_preserved = heat_source
+    variable = kappa_fission
+    source_variable = kappa_fission
+    from_postprocessors_to_be_preserved = kappa_fission
     to_postprocessors_to_be_preserved = source_integral
   []
   [temp_from_solid]
@@ -133,9 +134,9 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
 []
 
 [Postprocessors]
-  [heat_source]
+  [kappa_fission]
     type = ElementIntegralVariablePostprocessor
-    variable = heat_source
+    variable = kappa_fission
   []
   [L2_distance_analytic_temp_to_field]
     type = ElementL2Error
@@ -167,6 +168,12 @@ Sig_t0 = ${fparse sqrt(P/((lam-1)*k0*L))/(T0)}
   [temp_error]
     type = ElementValueSampler
     variable = 'temp_error'
+    sort_by = x
+    execute_on = 'FINAL'
+  []
+  [flux]
+    type = ElementValueSampler
+    variable = 'flux'
     sort_by = x
     execute_on = 'FINAL'
   []

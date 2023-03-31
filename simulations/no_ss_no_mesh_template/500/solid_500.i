@@ -35,17 +35,17 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P))*eV_to_J } # to get to W/cm^
     type = HeatConduction
     variable = temp
   []
-  [heat_source]
+  [kappa_fission]
     type = CoupledForce
     variable = temp
-    v = heat_source
+    v = kappa_fission
   []
 []
 
 # This AuxVariable and AuxKernel is only here to get the postprocessors
 # to evaluate correctly. This can be deleted after MOOSE issue #17534 is fixed.
 [AuxVariables]
-  [heat_source]
+  [kappa_fission]
     family = MONOMIAL
     order = CONSTANT
     initial_condition = ${fparse q*eV_to_J}
@@ -100,7 +100,7 @@ h = ${fparse 1/(sqrt(L*(lam-1)/(k0*P)) - (2*T0)/(P))*eV_to_J } # to get to W/cm^
 [Postprocessors]
   [source_integral]
     type = ElementIntegralVariablePostprocessor
-    variable = heat_source
+    variable = kappa_fission
     execute_on = transfer
   []
 []
