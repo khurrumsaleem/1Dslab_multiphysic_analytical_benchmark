@@ -6,7 +6,7 @@ import pandas as pd
 
 # list mesh element sizes that will be used to iterate through all cases
 # n_elems = [50,100,250,500,1000]
-n_elems = [50,100,250,500]
+n_elems = [50,100,250,500,1000]
 log_N = np.log(n_elems)
 L = 106.47 # equilibrium length from paper
 P = 1.0e22 # eV/s
