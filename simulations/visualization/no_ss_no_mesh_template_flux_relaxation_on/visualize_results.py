@@ -30,7 +30,7 @@ plt.yticks(np.linspace(-6,-10,6))
 # plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
 plt.xlabel(r"Log of number of X elements $\log(N)$")
 plt.ylabel(r"Log of Error Norm $log(\epsilon_{T})$")
-plt.title("Temperature Error Norm vs Mesh Size \n 200 Picard Iterations",y=1)
+# plt.title("Temperature Error Norm vs Mesh Size \n 200 Picard Iterations",y=1)
 plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
 plt.grid()
 plt.savefig("temp_error_norms.png")
@@ -93,12 +93,17 @@ for n in n_elems:
     xx[n] = np.linspace(-L/2,L/2,n)
     temps[n] = pd.read_csv(f"openmc_{n}_temp.csv").loc[:,"temp"]
     cardinal_fluxes[n] = pd.read_csv(f"openmc_{n}_flux.csv").loc[:,"flux"]
-    # plt.plot(xx[n],temps[n])
-    # plt.xlabel("X coordinate [cm]")
-    # plt.ylabel("Temperature [K]")
+    if(n==50):
+        plt.plot(xx[n],temps[n],'-ro')
+    else:
+        plt.plot(xx[n],temps[n])
+    plt.xticks([-60,-40,-20,0,20,40,60])
+    plt.xlabel("X coordinate [cm]")
+    plt.ylabel("Temperature [K]")
     # plt.title(f"Temperature for {n} Mesh Elements")
-    # plt.savefig(f"temp_{n}.png")
-    # plt.clf()
+    plt.grid()
+    plt.savefig(f"temp_{n}.png")
+    plt.clf()
 
 # dictioinaries for flux results and comparisons to temp and analytical solution key is number of elements
 ratios_T_to_phi = {} # list of ratios of temp to flux for each element
@@ -120,22 +125,26 @@ for n in n_elems:
         ratios_temp_num_to_analy[n].append(float(temps[n][i]/analytical_T[n][i]))
     # numerical to analytical ratio
     plt.plot(xx[n],ratios_flux_num_to_analy[n],'-go',label=f"{n} x-elem")
+    plt.xticks([-60,-40,-20,0,20,40,60])
     plt.xlabel("X Coordinate [cm]")
     plt.ylabel(r"Numerical $\phi(x)$ to Analytical $\phi(x)$ Ratio")
     plt.title(f"Ratio Numerical to Analytical Flux {n} Mesh Elements")
     plt.legend()
+    plt.grid()
     plt.savefig(f"num_to_analytical_flux_{n}.png")
     plt.clf()
 
 # plot all temp error ratios on one plot
 for n in n_elems:
     plt.plot(xx[n],ratios_temp_num_to_analy[n],label=f"{n} x-elem")
+plt.xticks([-60,-40,-20,0,20,40,60])
+plt.yticks([0.9995,1.000,1.001,1.002,1.003,1.004,1.0045])
 plt.xlabel("X Coordinate [cm]")
 plt.ylabel(r"Numerical $T(x)$ to Analytical $T(x)$ Ratio")
-plt.title(f"Ratio Numerical to Analytical Temp All Meshes. 200 Picard Iterations")
+# plt.title(f"Ratio Numerical to Analytical Temp All Meshes. 200 Picard Iterations")
 plt.legend(ncol=2)
 plt.grid()
-plt.savefig("temp_num_to_analy_ratios.png")
+plt.savefig("temp_num_to_analy_ratios.png",bbox_inches='tight')
 plt.clf()
 
 # compute error norm
@@ -176,17 +185,19 @@ for n in n_elems:
     # plt.title("Tallied Flux (Units Converted Using SS)")
     # plt.grid()
     # plt.savefig(f"flux_{n}.png")
-    plt.clf()
+    # plt.clf()
 
 # plot all flux error ratios on one plot
 for n in n_elems:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
+plt.xticks([-60,-40,-20,0,20,40,60])
+plt.yticks([0.9995,1.000,1.001,1.002,1.003,1.004,1.0045])
 plt.xlabel("X Coordinate [cm]")
 plt.ylabel(r"Numerical $\phi(x)$ to Analytical $\phi(x)$ Ratio")
-plt.title("Ratio Numerical to Analytical Flux All Meshes. 200 Picard Iterations")
+# plt.title("Ratio Numerical to Analytical Flux All Meshes. 200 Picard Iterations")
 plt.legend(ncol=2)
 plt.grid()
-plt.savefig("flux_num_to_analy_ratios.png")
+plt.savefig("flux_num_to_analy_ratios.png",bbox_inches='tight')
 plt.clf()
 
 # # plot individual C/E with error bars
@@ -219,6 +230,7 @@ plt.clf()
 
 
 log_flux_error_norms = [np.log(flux_error_norms[n]) for n in n_elems]
+print(log_flux_error_norms)
 # linear polynomial fit to get slope of line of best fit
 pf = np.polyfit(log_N,log_flux_error_norms,1)
 print("polyfit:" , pf)
@@ -226,7 +238,7 @@ print("polyfit:" , pf)
 plt.plot(log_N,log_flux_error_norms,'-o',label=r'$\epsilon_{\phi}=\frac{||\phi_{a} - \phi_{x} ||_{2}}{|| \phi_{a} ||_{2}}$')
 plt.xlabel(r"Log of number of X elements $\log(N)$")
 plt.ylabel(r"Log of Error Norm $log(\epsilon_{\phi})$")
-plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
+# plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
 plt.yticks(np.linspace(-6,-10,6))
 plt.grid()
 plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
