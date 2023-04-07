@@ -31,7 +31,7 @@ for n in n_elems:
     xx[n] = pd.read_csv(f"openmc_{n}_temp.csv").loc[:,"x"]
     temps[n] = pd.read_csv(f"openmc_{n}_temp.csv").loc[:,"temp"]
     cardinal_fluxes[n] = pd.read_csv(f"openmc_{n}_flux.csv").loc[:,"flux"]
-
+ones = np.ones(len(xx[1000]))
 
 # plot 50 mesh element temperature
 plt.plot(xx[50],temps[50],'-ro')
@@ -57,8 +57,8 @@ for n in n_elems:
     ratios_temp_num_to_analy[n] = []
     ratios_flux_num_to_analy[n] = [] 
     for i in range(n):
-        ratios_flux_num_to_analy[n].append(cardinal_fluxes[n][i]/analytical_phi[n][i]-1)
-        ratios_temp_num_to_analy[n].append(temps[n][i]/analytical_T[n][i]-1)
+        ratios_flux_num_to_analy[n].append(cardinal_fluxes[n][i]/analytical_phi[n][i])
+        ratios_temp_num_to_analy[n].append(temps[n][i]/analytical_T[n][i])
 
 # #plot individual C/E
 # for n in n_elems:
@@ -66,7 +66,7 @@ for n in n_elems:
 #     plt.xticks([-60,-40,-20,0,20,40,60])
 #     plt.yticks(np.linspace(np.min(ratios_flux_num_to_analy[n]),np.max(ratios_flux_num_to_analy[n]),5))
 #     plt.xlabel("X Coordinate [cm]")
-#     plt.ylabel(r"Flux C/E - 1")
+#     plt.ylabel(r"Flux C/E")
 #     plt.title(f"Ratio Numerical to Analytical Flux {n} Mesh Elements")
 #     plt.legend()
 #     plt.grid()
@@ -76,14 +76,18 @@ for n in n_elems:
 # plot all temp C/E on one plot
 for n in n_elems:
     plt.plot(xx[n],ratios_temp_num_to_analy[n],label=f"{n} x-elem")
+plt.plot(xx[1000],ones,'k',label="exact")
 plt.xticks([-60,-40,-20,0,20,40,60])
 dict_min = min(i for v in ratios_temp_num_to_analy.values() for i in v)
 dict_max = max(i for v in ratios_temp_num_to_analy.values() for i in v)
-plt.yticks(np.linspace(dict_min,dict_max,8))
+# plt.yticks(np.linspace(dict_min,dict_max,8))
+plt.yticks([0.99994,0.99995,0.99996,0.99997,0.99998,0.99999,1,1.00001,1.00002])
 plt.gca().yaxis.tick_right()
 plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.1e'))
 plt.xlabel("X Coordinate [cm]",fontsize=16)
-plt.ylabel(r"Temperature C/E - 1",fontsize=16)
+plt.ylabel(r"Temperature C/E",fontsize=16)
+plt.gca().yaxis.tick_right()
+plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.6f'))
 plt.yticks()
 # plt.title(f"Ratio Numerical to Analytical Temp All Meshes. 200 Picard Iterations")
 plt.legend(ncol=2)
@@ -101,7 +105,7 @@ plt.yticks(np.linspace(dict_min,dict_max,8))
 plt.gca().yaxis.tick_right()
 plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.1e'))
 plt.xlabel("X Coordinate [cm]",fontsize=16)
-plt.ylabel(r"Flux C/E - 1",fontsize=16)
+plt.ylabel(r"Flux C/E",fontsize=16)
 # plt.title("Ratio Numerical to Analytical Flux All Meshes. 200 Picard Iterations")
 plt.legend(ncol=2)
 plt.grid()
