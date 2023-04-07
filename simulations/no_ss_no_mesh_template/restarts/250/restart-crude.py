@@ -96,7 +96,7 @@ tally.filters = [mesh_filter]
 tally.scores = ['kappa-fission','flux']
 # tally nu-fission rate over entire volume
 tally_global = openmc.Tally()
-tally_global.scores = ['nu-fission','fission']
+tally_global.scores = ['kappa-fission']
 mgxs_tallies = openmc.Tallies([tally,tally_global])
 mgxs_tallies.export_to_xml()
 
@@ -123,4 +123,4 @@ settings.temperature = {'default': T0,
                         'range': (Tmin, Tmax)} # good to load all temperatures you could encounter in multiphysics
 settings.export_to_xml()
 
-openmc.run(mpi_args=['mpiexec','-n','2'],threads=16)
+openmc.run(mpi_args=['mpiexec','-n','2'],threads=20)

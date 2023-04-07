@@ -96,7 +96,7 @@ tally.filters = [mesh_filter]
 tally.scores = ['kappa-fission','flux']
 # tally nu-fission rate over entire volume
 tally_global = openmc.Tally()
-tally_global.scores = ['nu-fission','fission']
+tally_global.scores = ['kappa-fission']
 mgxs_tallies = openmc.Tallies([tally,tally_global])
 mgxs_tallies.export_to_xml()
 
