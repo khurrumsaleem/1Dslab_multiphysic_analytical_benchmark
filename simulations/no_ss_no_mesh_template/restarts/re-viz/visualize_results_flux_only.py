@@ -5,8 +5,7 @@ from matplotlib import ticker as mtick
 import pandas as pd
 
 # list mesh element sizes that will be used to iterate through all cases
-# n_elems = [50,100,250,500,1000]
-n_elems = [50,100,500,1000]
+n_elems = [50,100,250,500,1000]
 log_N = np.log(n_elems)
 L = 106.47 # equilibrium length from paper
 P = 1.0e22 # eV/s
@@ -54,7 +53,7 @@ for n in n_elems:
         tallied_global_system_powers[n] = sp.get_tally(id=2).get_slice(scores=['kappa-fission'])
     eigs[n] = [float(sp.keff.n),float(sp.keff.s)]
 
-# print(eigs)
+print(eigs)
 
 source_strengths = {}
 # compute source strengths and convert flux to proper n/cm^2-s unit
