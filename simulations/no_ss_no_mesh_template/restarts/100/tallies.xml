@@ -13,6 +13,6 @@
     <scores>kappa-fission flux</scores>
   </tally>
   <tally id="2">
-    <scores>nu-fission fission</scores>
+    <scores>kappa-fission</scores>
   </tally>
 </tallies>

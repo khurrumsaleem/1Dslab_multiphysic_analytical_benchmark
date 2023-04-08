@@ -123,4 +123,4 @@ settings.temperature = {'default': T0,
                         'range': (Tmin, Tmax)} # good to load all temperatures you could encounter in multiphysics
 settings.export_to_xml()
 
-openmc.run(mpi_args=['mpiexec','-n','2'],threads=20)
+openmc.run(mpi_args=['mpiexec','-n','2'],threads=3)

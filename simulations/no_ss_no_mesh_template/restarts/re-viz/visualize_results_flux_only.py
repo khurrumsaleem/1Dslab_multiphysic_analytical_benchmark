@@ -47,10 +47,7 @@ for n in n_elems:
     sp = openmc.StatePoint(sp_filenames[n])
     raw_flux_mesh_tallies[n] = sp.get_tally(id=1).get_slice(scores=['flux'])
     raw_kappa_fission_mesh_tallies[n] = sp.get_tally(id=1).get_slice(scores=['kappa-fission'])
-    if(n==1000):
-        tallied_global_system_powers[n] = np.sum(raw_kappa_fission_mesh_tallies[n].mean)
-    else:
-        tallied_global_system_powers[n] = sp.get_tally(id=2).get_slice(scores=['kappa-fission'])
+    tallied_global_system_powers[n] = sp.get_tally(id=2).get_slice(scores=['kappa-fission'])
     eigs[n] = [float(sp.keff.n),float(sp.keff.s)]
 
 print(eigs)
@@ -59,11 +56,7 @@ source_strengths = {}
 # compute source strengths and convert flux to proper n/cm^2-s unit
 # P [=] ev/s, nu_fission_rates [=] n/sp, voxel_volume [=] cm^3, eigs [=] n/sp, voxel_volumes [=] cm^3, tallied_global_system_powers.mean[0], ev/sp
 for n in n_elems:
-    # source_strengths_old[n] = P*nu_fission_rates[n]/(eigs[n][0]*voxel_volumes[n]*float(tallied_global_system_powers[n].mean[0])) # units of sp/cm^3-s
-    if(n==1000):
-        source_strengths[n] = P/(voxel_volumes[n]*float(tallied_global_system_powers[n])) # units of sp/cm^3-s
-    else:
-        source_strengths[n] = P/(voxel_volumes[n]*float(tallied_global_system_powers[n].mean[0])) # units of sp/cm^3-s
+    source_strengths[n] = P/(voxel_volumes[n]*float(tallied_global_system_powers[n].mean[0])) # units of sp/cm^3-s
 
 
 flux_mesh_tallies = {} # proper flux units n/cm^2-s
@@ -123,7 +116,7 @@ for n in n_elems:
     # plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
 plt.plot(xx[1000],ones,'k',label="exact")
 plt.xticks([-60,-40,-20,0,20,40,60])
-# plt.yticks([-1.5e-3,-1e-3,-0.5e-3,0,0.5e-3,1e-3,1.5e-3])
+plt.yticks([1-0.6e-3,1-0.4e-3,1-0.2e-3,1,1+0.2e-3,1+0.4e-3,1+0.6e-3])
 plt.xlabel("X Coordinate [cm]",fontsize=16)
 plt.ylabel(r"Flux C/E",fontsize=16)
 plt.gca().yaxis.tick_right()
@@ -140,7 +133,7 @@ for n in n_elems:
     plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
     plt.plot(xx[1000],ones,'k',label="exact")
     plt.xticks([-60,-40,-20,0,20,40,60])
-    # plt.yticks([-1.5e-3,-1e-3,-0.5e-3,0,0.5e-3,1e-3,1.5e-3])
+    plt.yticks([1-1.5e-3,1-1e-3,1-0.5e-3,1,1+0.5e-3,1+1e-3,1+1.5e-3])
     plt.xlabel("X Coordinate [cm]",fontsize=16)
     plt.ylabel(r"Flux C/E",fontsize=16)
     plt.gca().yaxis.tick_right()
