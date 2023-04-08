@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 import pandas as pd
+# TODO cleanup
 
 # list mesh element sizes that will be used to iterate through all cases
 # n_elems = [50,100,250,500,1000]
@@ -90,7 +91,7 @@ xx = {} # key is number of elements, value is numpy array of mesh center points
 temps = {} # key is number of elements, value is data frame read in from csv
 cardinal_fluxes = {}
 for n in n_elems:
-    xx[n] = np.linspace(-L/2,L/2,n)
+    xx[n] = pd.read_csv(f"openmc_{n}_temp.csv").loc[:,"x"]
     temps[n] = pd.read_csv(f"openmc_{n}_temp.csv").loc[:,"temp"]
     cardinal_fluxes[n] = pd.read_csv(f"openmc_{n}_flux.csv").loc[:,"flux"]
     if(n==50):
@@ -120,7 +121,7 @@ for n in n_elems:
     analytical_T[n] = Sig_t0*T0*np.sqrt( (q*q*L*L*phi0*phi0)/(P*P) - (lam-1)*np.multiply(xx[n],xx[n]))
     for i in range(n):
         # ratios_flux_num_to_analy[n].append(float(flux_mesh_tallies[n].mean[i]/analytical_phi[n][i])) # openmc flux tally way
-        ratios_flux_num_to_analy[n].append(float(cardinal_fluxes[n][i]/analytical_phi[n][i]))
+        ratios_flux_num_to_analy[n].append(float(cardinal_fluxes[n][i])/analytical_phi[n][i])
         # ratios_T_to_phi[n].append(float(temps[n][i]/flux_mesh_tallies[n].mean[i]))
         ratios_temp_num_to_analy[n].append(float(temps[n][i]/analytical_T[n][i]))
     # numerical to analytical ratio
@@ -138,7 +139,9 @@ for n in n_elems:
 for n in n_elems:
     plt.plot(xx[n],ratios_temp_num_to_analy[n],label=f"{n} x-elem")
 plt.xticks([-60,-40,-20,0,20,40,60])
-plt.yticks([0.9995,1.000,1.001,1.002,1.003,1.004,1.0045])
+plt.yticks([0.9995,1.000,1.001])
+
+# plt.yticks([0.9995,1.000,1.001,1.002,1.003,1.004,1.0045])
 plt.xlabel("X Coordinate [cm]",fontsize=16)
 plt.ylabel(r"Numerical $T(x)$ to Analytical $T(x)$ Ratio",fontsize=16)
 # plt.title(f"Ratio Numerical to Analytical Temp All Meshes. 200 Picard Iterations")
@@ -191,7 +194,9 @@ for n in n_elems:
 for n in n_elems:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
 plt.xticks([-60,-40,-20,0,20,40,60])
-plt.yticks([0.9995,1.000,1.001,1.002,1.003,1.004,1.0045])
+plt.yticks([0.9995,1.000,1.001])
+
+# plt.yticks([0.9995,1.000,1.001,1.002,1.003,1.004,1.0045])
 plt.xlabel("X Coordinate [cm]",fontsize=16)
 plt.ylabel(r"Numerical $\phi(x)$ to Analytical $\phi(x)$ Ratio",fontsize=16)
 # plt.title("Ratio Numerical to Analytical Flux All Meshes. 200 Picard Iterations")
