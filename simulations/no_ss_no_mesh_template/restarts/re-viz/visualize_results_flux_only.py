@@ -110,6 +110,18 @@ for n in n_elems:
     flux_error_norms[n] = float(flux_dev_norms[n]/analytical_norms[n])
 
 
+# plot numerical flux for 50 mesh elements
+plt.plot(xx[50],flux_means[50],'-')
+plt.errorbar(xx[50],flux_means[50],yerr=flux_std_dev[50],marker = '|',fmt='none',elinewidth=1,capsize=4,capthick=2)
+plt.xlabel("X Coordinate [cm]",fontsize=16)
+plt.ylabel("Flux [cm]",fontsize=16)
+plt.grid()
+plt.savefig("flux_50.png")
+plt.clf()
+
+for n in [50,100,1000]:
+    print(f"n={n}",np.divide(np.array(flux_std_dev[n]),np.array(flux_means[n])))
+
 # plot all flux C/E
 for n in n_elems:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
