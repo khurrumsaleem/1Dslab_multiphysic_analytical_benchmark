@@ -111,16 +111,18 @@ for n in n_elems:
 
 
 # plot numerical flux for 50 mesh elements
-plt.plot(xx[50],flux_means[50],'-')
+plt.plot(xx[50],flux_means[50],'-o')
 plt.errorbar(xx[50],flux_means[50],yerr=flux_std_dev[50],marker = '|',fmt='none',elinewidth=1,capsize=4,capthick=2)
 plt.xlabel("X Coordinate [cm]",fontsize=16)
-plt.ylabel("Flux [cm]",fontsize=16)
+plt.xticks([-60,-40,-20,0,20,40,60])
+plt.ylabel(r"Flux [n/$cm^{2}$-s]",fontsize=16)
 plt.grid()
-plt.savefig("flux_50.png")
+plt.rcParams['figure.figsize'] = [4, 4]
+plt.savefig("flux_50.png", bbox_inches="tight")
 plt.clf()
 
-for n in [50,100,1000]:
-    print(f"n={n}",np.divide(np.array(flux_std_dev[n]),np.array(flux_means[n])))
+# for n in [50,100,1000]:
+#     print(f"n={n}",np.divide(np.array(flux_std_dev[n]),np.array(flux_means[n])))
 
 # plot all flux C/E
 for n in n_elems:
