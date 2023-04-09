@@ -40,7 +40,7 @@ plt.xlabel("X coordinate [cm]",fontsize=16)
 plt.ylabel("Temperature [K]",fontsize=16)
 # plt.title(f"Temperature for {50} Mesh Elements")
 plt.grid()
-plt.savefig(f"temp_{n}.png",bbox_inches='tight')
+plt.savefig(f"temp_50.png",bbox_inches='tight')
 plt.clf()
 
 # dictioinaries for C/E plots
@@ -59,6 +59,14 @@ for n in n_elems:
     for i in range(n):
         ratios_flux_num_to_analy[n].append(cardinal_fluxes[n][i]/analytical_phi[n][i])
         ratios_temp_num_to_analy[n].append(temps[n][i]/analytical_T[n][i])
+
+# plot analytical flux for 50
+plt.plot(xx[50],analytical_phi[50],'-o')
+plt.xlabel("X Coordinate [cm]")
+plt.ylabel("Flux [n/cm^2-s]")
+plt.grid()
+plt.savefig("analytical_flux_50.png")
+plt.clf()
 
 # #plot individual C/E
 # for n in n_elems:
