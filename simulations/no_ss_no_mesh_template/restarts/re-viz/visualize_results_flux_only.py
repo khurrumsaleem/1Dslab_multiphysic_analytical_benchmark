@@ -18,9 +18,10 @@ Sig_t0 = np.sqrt(P/((lam-1)*k0*L))/(T0)
 
 # read in x coordinates from CSV
 xx = {} # key is number of elements, value is numpy array of mesh center points
+ones = {} # need a ones vector of every mesh size for the C/E
 for n in n_elems:
     xx[n] = pd.read_csv(f"openmc_{n}_temp.csv").loc[:,"x"]
-ones = np.ones(len(xx[1000]))
+    ones[n] = np.ones(len(xx[n]))
 
 # dictionaries of statepoint filenames and voxel volumes
 # key in each case is n (the number of mesh elements).
@@ -128,7 +129,7 @@ plt.clf()
 for n in n_elems:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
     # plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
-plt.plot(xx[1000],ones,'k',label="exact")
+plt.plot(xx[n],ones[n],'k',label="exact")
 plt.xticks([-60,-40,-20,0,20,40,60])
 plt.yticks([1-0.6e-3,1-0.4e-3,1-0.2e-3,1,1+0.2e-3,1+0.4e-3,1+0.6e-3])
 plt.xlabel("X Coordinate [cm]",fontsize=16)
@@ -144,10 +145,10 @@ plt.clf()
 # individual C/E with error bars
 for n in n_elems:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
-    plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
-    plt.plot(xx[1000],ones,'k',label="exact")
+    plt.errorbar(xx[n],ones[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.35,capsize=3,capthick=1)
+    plt.plot(xx[n],ones[n],'k',label="exact")
     plt.xticks([-60,-40,-20,0,20,40,60])
-    plt.yticks([1-1.5e-3,1-1e-3,1-0.5e-3,1,1+0.5e-3,1+1e-3,1+1.5e-3])
+    plt.yticks([1-1e-3,1-0.5e-3,1,1+0.5e-3,1+1e-3])
     plt.xlabel("X Coordinate [cm]",fontsize=16)
     plt.ylabel(r"Flux C/E",fontsize=16)
     plt.gca().yaxis.tick_right()
@@ -163,7 +164,7 @@ log_flux_error_norms = [np.log10(flux_error_norms[n]) for n in n_elems]
 # # linear polynomial fit to get slope of line of best fit
 # pf = np.polyfit(log_N,log_flux_error_norms,1)
 # print("polyfit:" , pf)
-print(log_flux_error_norms)
+
 # plot mesh elements vs flux error norms
 plt.plot(log_N,log_flux_error_norms,'-o',label=r'$\epsilon_{\phi}=\frac{||\phi_{a} - \phi_{x} ||_{2}}{|| \phi_{a} ||_{2}}$')
 plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
