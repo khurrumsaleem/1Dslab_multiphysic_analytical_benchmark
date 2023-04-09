@@ -6,7 +6,7 @@ import pandas as pd
 
 # list mesh element sizes that will be used to iterate through all cases
 n_elems = [50,100,250,500,1000]
-log_N = np.log(n_elems)
+log_N = np.log10(n_elems)
 L = 106.47 # equilibrium length from paper
 P = 1.0e22 # eV/s
 T0 = 293 # K
@@ -158,19 +158,20 @@ for n in n_elems:
     plt.clf()
 
 
-log_flux_error_norms = [np.log(flux_error_norms[n]) for n in n_elems]
+log_flux_error_norms = [np.log10(flux_error_norms[n]) for n in n_elems]
 # print(log_flux_error_norms)
 # # linear polynomial fit to get slope of line of best fit
 # pf = np.polyfit(log_N,log_flux_error_norms,1)
 # print("polyfit:" , pf)
-
+print(log_flux_error_norms)
 # plot mesh elements vs flux error norms
 plt.plot(log_N,log_flux_error_norms,'-o',label=r'$\epsilon_{\phi}=\frac{||\phi_{a} - \phi_{x} ||_{2}}{|| \phi_{a} ||_{2}}$')
 plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
 plt.ylabel(r"Log of Error Norm $log(\epsilon_{\phi})$",fontsize=16)
 # plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
-plt.yticks(np.linspace(-6,-10,6))
+plt.xticks(log_N)
+plt.yticks([-3.6,-3.7,-3.8,-3.9])
 plt.grid()
-plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
+plt.legend(bbox_to_anchor=[0.985,0.215],fontsize=14)
 plt.savefig("flux_error_norms.png",bbox_inches='tight')
 plt.clf()

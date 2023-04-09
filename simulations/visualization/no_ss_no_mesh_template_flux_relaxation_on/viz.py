@@ -10,7 +10,7 @@ import pandas as pd
 # list mesh element sizes that will be used to iterate through all cases
 # n_elems = [50,100,250,500,1000]
 n_elems = [50,100,250,500,1000]
-log_N = np.log(n_elems)
+log_N = np.log10(n_elems)
 L = 106.47 # equilibrium length from paper
 P = 1.0e22 # eV/s
 T0 = 293 # K
@@ -128,11 +128,12 @@ for n in n_elems:
     filename = f"openmc_{n}_out.csv"
     df_norms = pd.read_csv(filename)
     last_val  = df_norms.iloc[len(df_norms)-1,-1]
-    log_temp_error_norms.append(np.log(last_val))
-
+    log_temp_error_norms.append(np.log10(last_val))
+print(log_temp_error_norms)
 # plot the error for each threshold against the number of mesh elements
 plt.plot(log_N,log_temp_error_norms,'-ro',label=r'$\epsilon_{T}=\frac{||T_{a} - T_{x} ||_{2}}{|| T_{a} ||_{2}}$')
-plt.yticks(np.linspace(-6,-10,6))
+plt.xticks(log_N)
+plt.yticks([-2.75,-3,-3.25,-3.5,-3.75,-4,-4.25])
 # plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
 plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
 plt.ylabel(r"Log of Error Norm $log(\epsilon_{T})$",fontsize=16)
@@ -144,36 +145,37 @@ plt.clf()
 
 # linear polynomial fit to get slope of line of best fit temp
 pt = np.polyfit(log_N,log_temp_error_norms,1)
-print("polyfit:" , pt)
+print("polyfit pt:" , pt)
 
-# compute flux error norm
-flux_deviations = {}
-flux_dev_norms = {}
-analytical_norms = {}
-flux_error_norms = {}
-# flux error ratio
-for n in n_elems:
-    flux_deviations[n] = []
-    # compute mean, stdev, and analytical - numerical
-    for i in range(n):
-        flux_deviations[n].append(analytical_phi[n][i]-cardinal_fluxes[n][i])
-    flux_dev_norms[n] = np.linalg.norm(flux_deviations[n],ord=2)
-    analytical_norms[n] = np.linalg.norm(analytical_phi[n],ord=2)
-    # ratio is error norm
-    flux_error_norms[n] = flux_dev_norms[n]/analytical_norms[n]
+# MOVED TO RESTARTS DIRECTORY BUT COMMENTED OUT FOR POSTERITY
+# # compute flux error norm
+# flux_deviations = {}
+# flux_dev_norms = {}
+# analytical_norms = {}
+# flux_error_norms = {}
+# # flux error ratio
+# for n in n_elems:
+#     flux_deviations[n] = []
+#     # compute mean, stdev, and analytical - numerical
+#     for i in range(n):
+#         flux_deviations[n].append(analytical_phi[n][i]-cardinal_fluxes[n][i])
+#     flux_dev_norms[n] = np.linalg.norm(flux_deviations[n],ord=2)
+#     analytical_norms[n] = np.linalg.norm(analytical_phi[n],ord=2)
+#     # ratio is error norm
+#     flux_error_norms[n] = flux_dev_norms[n]/analytical_norms[n]
 
-log_flux_error_norms = [np.log(flux_error_norms[n]) for n in n_elems]
-print(log_flux_error_norms)
-# linear polynomial fit to get slope of line of best fit
-pf = np.polyfit(log_N,log_flux_error_norms,1)
-print("polyfit:" , pf)
+# log_flux_error_norms = [np.log10(flux_error_norms[n]) for n in n_elems]
+# print(log_flux_error_norms)
+# # linear polynomial fit to get slope of line of best fit
+# pf = np.polyfit(log_N,log_flux_error_norms,1)
+# print("polyfit pf:" , pf)
 
-plt.plot(log_N,log_flux_error_norms,'-o',label=r'$\epsilon_{\phi}=\frac{||\phi_{a} - \phi_{x} ||_{2}}{|| \phi_{a} ||_{2}}$')
-plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
-plt.ylabel(r"Log of Error Norm $log(\epsilon_{\phi})$",fontsize=16)
-# plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
-plt.yticks(np.linspace(-6,-10,6))
-plt.grid()
-plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
-plt.savefig("flux_error_norms.png",bbox_inches='tight')
-plt.clf()
+# plt.plot(log_N,log_flux_error_norms,'-o',label=r'$\epsilon_{\phi}=\frac{||\phi_{a} - \phi_{x} ||_{2}}{|| \phi_{a} ||_{2}}$')
+# plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
+# plt.ylabel(r"Log of Error Norm $log(\epsilon_{\phi})$",fontsize=16)
+# # plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
+# plt.yticks(np.linspace(-6,-10,6))
+# plt.grid()
+# plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
+# plt.savefig("flux_error_norms.png",bbox_inches='tight')
+# plt.clf()
