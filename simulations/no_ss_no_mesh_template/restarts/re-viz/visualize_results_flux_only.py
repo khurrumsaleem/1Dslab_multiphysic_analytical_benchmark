@@ -141,12 +141,29 @@ plt.grid()
 plt.savefig("flux_num_to_analy_ratios.png",bbox_inches='tight')
 plt.clf()
 
+# OLD WAY
+# # individual C/E with error bars
+# for n in n_elems:
+#     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
+#     plt.errorbar(xx[n],ones[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.35,capsize=3,capthick=1)
+#     plt.plot(xx[n],ones[n],'k',label="exact")
+#     plt.xticks([-60,-40,-20,0,20,40,60])
+#     plt.yticks([1-1e-3,1-0.5e-3,1,1+0.5e-3,1+1e-3])
+#     plt.xlabel("X Coordinate [cm]",fontsize=16)
+#     plt.ylabel(r"Flux C/E",fontsize=16)
+#     plt.gca().yaxis.tick_right()
+#     plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.4f'))
+#     plt.legend()
+#     plt.grid()
+#     plt.savefig(f"{n}_flux_CE_error_bars.png",bbox_inches='tight')
+#     plt.clf()
 
-# individual C/E with error bars
 for n in n_elems:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
-    plt.errorbar(xx[n],ones[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.35,capsize=3,capthick=1)
     plt.plot(xx[n],ones[n],'k',label="exact")
+    plt.plot(xx[n],ones[n]+two_sigma_r[n],'-m')
+    plt.plot(xx[n],ones[n]-two_sigma_r[n],'-m')
+    plt.gca().fill_between(xx[n],ones[n]+two_sigma_r[n],ones[n]-two_sigma_r[n],color='lightgray')
     plt.xticks([-60,-40,-20,0,20,40,60])
     plt.yticks([1-1e-3,1-0.5e-3,1,1+0.5e-3,1+1e-3])
     plt.xlabel("X Coordinate [cm]",fontsize=16)
