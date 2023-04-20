@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from matplotlib import ticker as mtick
 import pandas as pd
 
-# list mesh element sizes that will be used to iterate through all cases
-n_elems = [50,100,250,500,1000]
+# mesh element sizes that will be used to iterate through all cases
+n_elems = np.array([50,100,250,500,1000])
 log_N = np.log10(n_elems)
 L = 106.47 # equilibrium length from paper
 P = 1.0e22 # eV/s
@@ -73,14 +73,16 @@ analytical_phi = {}
 ratios_flux_num_to_analy = {}
 # compute T/phi for each case
 for n in n_elems:
-    ratios_flux_num_to_analy[n] = [] # empty list to store ratios numerical to analytical flux
+    ratios_flux_num_to_analy[n] = np.zeros(n)
     analytical_phi[n] = phi0*np.sqrt(1- ((lam - 1)*P*P*np.multiply(xx[n],xx[n]))/(L*L*q*q*phi0*phi0))
     for i in range(n):
-        ratios_flux_num_to_analy[n].append(float(flux_mesh_tallies[n].mean[i]/analytical_phi[n][i])) # openmc flux tally way
+        ratios_flux_num_to_analy[n][i] = float(flux_mesh_tallies[n].mean[i]/analytical_phi[n][i]) # openmc flux tally way
 
 # compute error norm and uncertainty in ratio
 flux_means = {}
-flux_std_dev = {}
+flux_std_devs = {}
+KF_means = {}
+KF_std_devs = {}
 flux_deviations = {}
 flux_dev_norms = {}
 analytical_norms = {}
@@ -89,31 +91,35 @@ sigma_r = {}
 two_sigma_r = {}
 # flux error ratio
 for n in n_elems:
-    flux_means[n] = []
-    flux_std_dev[n] = []
-    flux_deviations[n] = []
-    sigma_r[n] = []
-    two_sigma_r[n] = []
+    flux_means[n] = np.zeros(n)
+    flux_std_devs[n] = np.zeros(n)
+    flux_deviations[n] = np.zeros(n)
+    KF_means[n] = np.zeros(n)
+    KF_std_devs[n] = np.zeros(n)
+    sigma_r[n] = np.zeros(n)
     # analytical - numerical
     for i in range(n):
-        flux_means[n].append(float(flux_mesh_tallies[n].mean[i]))
-        flux_deviations[n].append(analytical_phi[n][i]-float(flux_means[n][i]))
-        flux_std_dev[n].append(float(flux_mesh_tallies[n].std_dev[i]))
+        flux_means[n][i] = float(flux_mesh_tallies[n].mean[i])
+        flux_deviations[n][i] = analytical_phi[n][i]-float(flux_means[n][i])
+        flux_std_devs[n][i] = float(flux_mesh_tallies[n].std_dev[i])
+        KF_means[n][i] = float(kappa_fission_mesh_tallies[n].mean[i])
+        KF_std_devs[n][i] = float(kappa_fission_mesh_tallies[n].std_dev[i])
     # take the norm of the deviation and analytical solution
     # compute uncertainty in ratio
-    # sigma_r^2 = flux_std_dev^2 / analytical_phi^2
+    # sigma_r^2 = (flux_std_dev/analytical_phi)^2 + ([flux_mean*voxel_volume*kf_std_dev]/[analytical_phi*P])^2
     for i in range(n):
-        sigma_r[n].append(float(flux_std_dev[n][i]/analytical_phi[n][i]))
-        two_sigma_r[n].append(2*float(flux_std_dev[n][i]/analytical_phi[n][i]))
+        sigma_r[n][i] =np.sqrt( ( (flux_std_devs[n][i]*flux_std_devs[n][i]) / (analytical_phi[n][i]*analytical_phi[n][i]) ) +\
+         ( flux_means[n][i]*flux_means[n][i]*voxel_volumes[n]*voxel_volumes[n]*KF_std_devs[n][i]*KF_std_devs[n][i])/(analytical_phi[n][i]*analytical_phi[n][i]*P*P) )
     flux_dev_norms[n] = np.linalg.norm(flux_deviations[n],ord=2)
     analytical_norms[n] = np.linalg.norm(analytical_phi[n],ord=2)
     # ratio is error norm
     flux_error_norms[n] = float(flux_dev_norms[n]/analytical_norms[n])
+    two_sigma_r[n] = 2*sigma_r[n]
 
 
 # plot numerical flux for 50 mesh elements
 plt.plot(xx[50],flux_means[50],'-o')
-plt.errorbar(xx[50],flux_means[50],yerr=flux_std_dev[50],marker = '|',fmt='none',elinewidth=1,capsize=4,capthick=2)
+plt.errorbar(xx[50],flux_means[50],yerr=flux_std_devs[50],marker = '|',fmt='none',elinewidth=1,capsize=4,capthick=2)
 plt.xlabel("X Coordinate [cm]",fontsize=16)
 plt.xticks([-60,-40,-20,0,20,40,60])
 plt.ylabel(r"Flux [n/$cm^{2}$-s]",fontsize=16)
@@ -123,7 +129,7 @@ plt.savefig("flux_50.png", bbox_inches="tight")
 plt.clf()
 
 # for n in [50,100,1000]:
-#     print(f"n={n}",np.divide(np.array(flux_std_dev[n]),np.array(flux_means[n])))
+#     print(f"n={n}",np.divide(np.array(flux_std_devs[n]),np.array(flux_means[n])))
 
 # plot all flux C/E
 for n in n_elems:
@@ -141,23 +147,7 @@ plt.grid()
 plt.savefig("flux_num_to_analy_ratios.png",bbox_inches='tight')
 plt.clf()
 
-# OLD WAY
-# # individual C/E with error bars
-# for n in n_elems:
-#     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
-#     plt.errorbar(xx[n],ones[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.35,capsize=3,capthick=1)
-#     plt.plot(xx[n],ones[n],'k',label="exact")
-#     plt.xticks([-60,-40,-20,0,20,40,60])
-#     plt.yticks([1-1e-3,1-0.5e-3,1,1+0.5e-3,1+1e-3])
-#     plt.xlabel("X Coordinate [cm]",fontsize=16)
-#     plt.ylabel(r"Flux C/E",fontsize=16)
-#     plt.gca().yaxis.tick_right()
-#     plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.4f'))
-#     plt.legend()
-#     plt.grid()
-#     plt.savefig(f"{n}_flux_CE_error_bars.png",bbox_inches='tight')
-#     plt.clf()
-
+# plot C/E = 1 with error bounds on same plot as C/E
 for n in n_elems:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
     plt.plot(xx[n],ones[n],'k',label="exact")
