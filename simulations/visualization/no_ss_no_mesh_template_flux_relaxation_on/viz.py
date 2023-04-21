@@ -6,10 +6,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import ticker as mtick
 import pandas as pd
+import scipy.stats as stats
 
 # list mesh element sizes that will be used to iterate through all cases
-# n_elems = [50,100,250,500,1000]
-n_elems = [50,100,250,500,1000]
+n_elems = np.array([50,100,250,500,1000])
 log_N = np.log10(n_elems)
 L = 106.47 # equilibrium length from paper
 P = 1.0e22 # eV/s
@@ -54,11 +54,11 @@ ratios_temp_num_to_analy = {}
 for n in n_elems:
     analytical_phi[n] = phi0*np.sqrt(1- ((lam - 1)*P*P*np.multiply(xx[n],xx[n]))/(L*L*q*q*phi0*phi0))
     analytical_T[n] = Sig_t0*T0*np.sqrt( (q*q*L*L*phi0*phi0)/(P*P) - (lam-1)*np.multiply(xx[n],xx[n]))
-    ratios_temp_num_to_analy[n] = []
-    ratios_flux_num_to_analy[n] = [] 
+    ratios_temp_num_to_analy[n] = np.zeros(n)
+    ratios_flux_num_to_analy[n] = np.zeros(n)
     for i in range(n):
-        ratios_flux_num_to_analy[n].append(cardinal_fluxes[n][i]/analytical_phi[n][i])
-        ratios_temp_num_to_analy[n].append(temps[n][i]/analytical_T[n][i])
+        ratios_flux_num_to_analy[n][i] = cardinal_fluxes[n][i]/analytical_phi[n][i]
+        ratios_temp_num_to_analy[n][i] = temps[n][i]/analytical_T[n][i]
 
 # plot analytical flux for 50
 plt.plot(xx[50],analytical_phi[50],'-o')
@@ -68,18 +68,18 @@ plt.grid()
 plt.savefig("analytical_flux_50.png")
 plt.clf()
 
-# #plot individual C/E
-# for n in n_elems:
-#     plt.plot(xx[n],ratios_flux_num_to_analy[n],'-go',label=f"{n} x-elem")
-#     plt.xticks([-60,-40,-20,0,20,40,60])
-#     plt.yticks(np.linspace(np.min(ratios_flux_num_to_analy[n]),np.max(ratios_flux_num_to_analy[n]),5))
-#     plt.xlabel("X Coordinate [cm]")
-#     plt.ylabel(r"Flux C/E")
-#     plt.title(f"Ratio Numerical to Analytical Flux {n} Mesh Elements")
-#     plt.legend()
-#     plt.grid()
-#     plt.savefig(f"num_to_analytical_flux_{n}.png",bbox_inches='tight')
-#     plt.clf()
+#plot individual C/E
+for n in n_elems:
+    plt.plot(xx[n],ratios_flux_num_to_analy[n],'-go',label=f"{n} x-elem")
+    plt.xticks([-60,-40,-20,0,20,40,60])
+    plt.yticks(np.linspace(np.min(ratios_flux_num_to_analy[n]),np.max(ratios_flux_num_to_analy[n]),5))
+    plt.xlabel("X Coordinate [cm]")
+    plt.ylabel(r"Flux C/E")
+    plt.title(f"Ratio Numerical to Analytical Flux {n} Mesh Elements")
+    plt.legend()
+    plt.grid()
+    plt.savefig(f"num_to_analytical_flux_{n}.png",bbox_inches='tight')
+    plt.clf()
 
 # plot all temp C/E on one plot
 for n in n_elems:
@@ -143,39 +143,40 @@ plt.grid()
 plt.savefig("temp_error_norms.png",bbox_inches='tight')
 plt.clf()
 
-# linear polynomial fit to get slope of line of best fit temp
-pt = np.polyfit(log_N,log_temp_error_norms,1)
-print("polyfit pt:" , pt)
+# compute flux error norm
+flux_deviations = {}
+flux_dev_norms = {}
+analytical_norms = {}
+flux_error_norms = {}
+# flux error ratio
+for n in n_elems:
+    flux_deviations[n] = []
+    # compute mean, stdev, and analytical - numerical
+    for i in range(n):
+        flux_deviations[n].append(analytical_phi[n][i]-cardinal_fluxes[n][i])
+    flux_dev_norms[n] = np.linalg.norm(flux_deviations[n],ord=2)
+    analytical_norms[n] = np.linalg.norm(analytical_phi[n],ord=2)
+    # ratio is error norm
+    flux_error_norms[n] = flux_dev_norms[n]/analytical_norms[n]
 
-# MOVED TO RESTARTS DIRECTORY BUT COMMENTED OUT FOR POSTERITY
-# # compute flux error norm
-# flux_deviations = {}
-# flux_dev_norms = {}
-# analytical_norms = {}
-# flux_error_norms = {}
-# # flux error ratio
-# for n in n_elems:
-#     flux_deviations[n] = []
-#     # compute mean, stdev, and analytical - numerical
-#     for i in range(n):
-#         flux_deviations[n].append(analytical_phi[n][i]-cardinal_fluxes[n][i])
-#     flux_dev_norms[n] = np.linalg.norm(flux_deviations[n],ord=2)
-#     analytical_norms[n] = np.linalg.norm(analytical_phi[n],ord=2)
-#     # ratio is error norm
-#     flux_error_norms[n] = flux_dev_norms[n]/analytical_norms[n]
+log_flux_error_norms = [np.log10(flux_error_norms[n]) for n in n_elems]
 
-# log_flux_error_norms = [np.log10(flux_error_norms[n]) for n in n_elems]
-# print(log_flux_error_norms)
-# # linear polynomial fit to get slope of line of best fit
-# pf = np.polyfit(log_N,log_flux_error_norms,1)
-# print("polyfit pf:" , pf)
+# linear polynomial fit to get slope of line of best fit
+pf = np.polyfit(log_N,log_flux_error_norms,1)
+print("polyfit pf:" , pf)
 
-# plt.plot(log_N,log_flux_error_norms,'-o',label=r'$\epsilon_{\phi}=\frac{||\phi_{a} - \phi_{x} ||_{2}}{|| \phi_{a} ||_{2}}$')
-# plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
-# plt.ylabel(r"Log of Error Norm $log(\epsilon_{\phi})$",fontsize=16)
-# # plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
-# plt.yticks(np.linspace(-6,-10,6))
-# plt.grid()
-# plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
-# plt.savefig("flux_error_norms.png",bbox_inches='tight')
-# plt.clf()
+plt.plot(log_N,log_flux_error_norms,'-o',label=r'$\epsilon_{\phi}=\frac{||\phi_{a} - \phi_{x} ||_{2}}{|| \phi_{a} ||_{2}}$')
+plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
+plt.ylabel(r"Log of Error Norm $log(\epsilon_{\phi})$",fontsize=16)
+# plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
+plt.yticks(np.linspace(-3.75,-4,5))
+plt.grid()
+plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
+plt.savefig("flux_error_norms.png",bbox_inches='tight')
+plt.clf()
+
+results_T = stats.linregress(log_N,log_temp_error_norms)
+print("slope = ", results_T.slope, " r-squared = ",results_T.rvalue*results_T.rvalue)
+
+results_flux = stats.linregress(log_N,log_flux_error_norms)
+print("slope = ", results_flux.slope, " r-squared = ",results_flux.rvalue*results_flux.rvalue)
