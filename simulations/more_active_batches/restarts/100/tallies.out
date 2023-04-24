@@ -1,0 +1,406 @@
+ ============================>     TALLY 1     <============================
+
+ Mesh Index (1, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197021 +/- 50.3887
+     Flux                                 0.47559 +/- 0.000121634
+ Mesh Index (2, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197213 +/- 49.3969
+     Flux                                 0.477617 +/- 0.000119631
+ Mesh Index (3, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196750 +/- 49.555
+     Flux                                 0.479611 +/- 0.000120798
+ Mesh Index (4, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196910 +/- 50.1082
+     Flux                                 0.481559 +/- 0.000122544
+ Mesh Index (5, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197052 +/- 49.9798
+     Flux                                 0.483467 +/- 0.000122626
+ Mesh Index (6, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197156 +/- 48.5638
+     Flux                                 0.485285 +/- 0.000119536
+ Mesh Index (7, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197263 +/- 48.073
+     Flux                                 0.487108 +/- 0.000118709
+ Mesh Index (8, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196713 +/- 46.7866
+     Flux                                 0.488868 +/- 0.000116273
+ Mesh Index (9, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196774 +/- 45.8439
+     Flux                                 0.490577 +/- 0.000114293
+ Mesh Index (10, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196820 +/- 46.2247
+     Flux                                 0.492249 +/- 0.000115608
+ Mesh Index (11, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196838 +/- 46.4245
+     Flux                                 0.493853 +/- 0.000116476
+ Mesh Index (12, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196839 +/- 45.718
+     Flux                                 0.495414 +/- 0.000115065
+ Mesh Index (13, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196824 +/- 45.1147
+     Flux                                 0.496934 +/- 0.000113904
+ Mesh Index (14, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196792 +/- 44.1105
+     Flux                                 0.498413 +/- 0.000111718
+ Mesh Index (15, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196757 +/- 43.9451
+     Flux                                 0.499883 +/- 0.000111647
+ Mesh Index (16, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197309 +/- 44.3704
+     Flux                                 0.501285 +/- 0.000112728
+ Mesh Index (17, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197224 +/- 45.2754
+     Flux                                 0.50263 +/- 0.000115385
+ Mesh Index (18, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197129 +/- 45.8423
+     Flux                                 0.50395 +/- 0.000117193
+ Mesh Index (19, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197019 +/- 45.4832
+     Flux                                 0.505229 +/- 0.000116636
+ Mesh Index (20, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196880 +/- 45.2545
+     Flux                                 0.506431 +/- 0.000116407
+ Mesh Index (21, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196739 +/- 45.3869
+     Flux                                 0.507627 +/- 0.000117107
+ Mesh Index (22, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197195 +/- 45.568
+     Flux                                 0.508803 +/- 0.000117574
+ Mesh Index (23, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197033 +/- 45.4847
+     Flux                                 0.509945 +/- 0.00011772
+ Mesh Index (24, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196859 +/- 45.1748
+     Flux                                 0.511052 +/- 0.000117275
+ Mesh Index (25, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197255 +/- 44.362
+     Flux                                 0.512082 +/- 0.000115165
+ Mesh Index (26, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197027 +/- 45.0299
+     Flux                                 0.51305 +/- 0.000117256
+ Mesh Index (27, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196782 +/- 46.4519
+     Flux                                 0.513971 +/- 0.000121326
+ Mesh Index (28, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197115 +/- 47.1483
+     Flux                                 0.514841 +/- 0.000123145
+ Mesh Index (29, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196845 +/- 48.0242
+     Flux                                 0.515692 +/- 0.000125813
+ Mesh Index (30, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197150 +/- 49.2698
+     Flux                                 0.516491 +/- 0.000129077
+ Mesh Index (31, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196847 +/- 48.3001
+     Flux                                 0.517257 +/- 0.000126919
+ Mesh Index (32, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197127 +/- 47.7338
+     Flux                                 0.517993 +/- 0.000125431
+ Mesh Index (33, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196801 +/- 46.8943
+     Flux                                 0.518695 +/- 0.000123596
+ Mesh Index (34, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197046 +/- 45.5204
+     Flux                                 0.519341 +/- 0.000119975
+ Mesh Index (35, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197274 +/- 44.6839
+     Flux                                 0.51994 +/- 0.00011777
+ Mesh Index (36, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196896 +/- 43.7306
+     Flux                                 0.520504 +/- 0.000115604
+ Mesh Index (37, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197089 +/- 44.8018
+     Flux                                 0.521013 +/- 0.000118436
+ Mesh Index (38, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197274 +/- 43.7405
+     Flux                                 0.521503 +/- 0.00011563
+ Mesh Index (39, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196852 +/- 42.5059
+     Flux                                 0.521946 +/- 0.000112703
+ Mesh Index (40, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197006 +/- 41.5675
+     Flux                                 0.522354 +/- 0.000110215
+ Mesh Index (41, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197161 +/- 40.3803
+     Flux                                 0.522766 +/- 0.000107067
+ Mesh Index (42, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197294 +/- 39.2332
+     Flux                                 0.523117 +/- 0.000104026
+ Mesh Index (43, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196830 +/- 38.2347
+     Flux                                 0.523448 +/- 0.000101681
+ Mesh Index (44, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196928 +/- 38.5417
+     Flux                                 0.523707 +/- 0.000102497
+ Mesh Index (45, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197015 +/- 39.3994
+     Flux                                 0.523938 +/- 0.000104778
+ Mesh Index (46, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197081 +/- 40.3275
+     Flux                                 0.524116 +/- 0.000107246
+ Mesh Index (47, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197134 +/- 40.3688
+     Flux                                 0.524255 +/- 0.000107356
+ Mesh Index (48, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197179 +/- 41.7392
+     Flux                                 0.524375 +/- 0.000111001
+ Mesh Index (49, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197211 +/- 41.3536
+     Flux                                 0.524461 +/- 0.000109975
+ Mesh Index (50, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197235 +/- 40.1988
+     Flux                                 0.524524 +/- 0.000106904
+ Mesh Index (51, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197232 +/- 40.8307
+     Flux                                 0.524515 +/- 0.000108585
+ Mesh Index (52, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197215 +/- 40.9005
+     Flux                                 0.52447 +/- 0.00010877
+ Mesh Index (53, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197182 +/- 41.5726
+     Flux                                 0.524384 +/- 0.000110558
+ Mesh Index (54, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197143 +/- 42.3442
+     Flux                                 0.524281 +/- 0.00011261
+ Mesh Index (55, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197091 +/- 42.3021
+     Flux                                 0.52414 +/- 0.000112498
+ Mesh Index (56, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197029 +/- 42.4072
+     Flux                                 0.523976 +/- 0.000112777
+ Mesh Index (57, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196955 +/- 43.1117
+     Flux                                 0.523779 +/- 0.000114651
+ Mesh Index (58, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196857 +/- 44.8746
+     Flux                                 0.523518 +/- 0.000119339
+ Mesh Index (59, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197343 +/- 44.5358
+     Flux                                 0.523249 +/- 0.000118085
+ Mesh Index (60, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197229 +/- 44.2791
+     Flux                                 0.522946 +/- 0.000117405
+ Mesh Index (61, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197092 +/- 42.5072
+     Flux                                 0.522582 +/- 0.000112707
+ Mesh Index (62, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196926 +/- 42.9241
+     Flux                                 0.522142 +/- 0.000113812
+ Mesh Index (63, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197326 +/- 44.5062
+     Flux                                 0.521642 +/- 0.000117654
+ Mesh Index (64, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197134 +/- 44.9335
+     Flux                                 0.521133 +/- 0.000118784
+ Mesh Index (65, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196937 +/- 45.4186
+     Flux                                 0.520612 +/- 0.000120066
+ Mesh Index (66, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197310 +/- 45.8823
+     Flux                                 0.520037 +/- 0.000120929
+ Mesh Index (67, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197082 +/- 44.4549
+     Flux                                 0.519435 +/- 0.000117167
+ Mesh Index (68, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196834 +/- 44.269
+     Flux                                 0.518782 +/- 0.000116677
+ Mesh Index (69, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197173 +/- 44.5748
+     Flux                                 0.518114 +/- 0.00011713
+ Mesh Index (70, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196903 +/- 46.272
+     Flux                                 0.517404 +/- 0.00012159
+ Mesh Index (71, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197213 +/- 47.0284
+     Flux                                 0.516658 +/- 0.000123205
+ Mesh Index (72, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196906 +/- 47.0518
+     Flux                                 0.515853 +/- 0.000123266
+ Mesh Index (73, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197174 +/- 47.2155
+     Flux                                 0.514994 +/- 0.000123321
+ Mesh Index (74, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196826 +/- 47.0581
+     Flux                                 0.514084 +/- 0.00012291
+ Mesh Index (75, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197065 +/- 47.5692
+     Flux                                 0.513148 +/- 0.000123868
+ Mesh Index (76, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197280 +/- 46.8154
+     Flux                                 0.512146 +/- 0.000121534
+ Mesh Index (77, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196882 +/- 46.787
+     Flux                                 0.511113 +/- 0.000121461
+ Mesh Index (78, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197084 +/- 46.7402
+     Flux                                 0.510077 +/- 0.000120969
+ Mesh Index (79, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197265 +/- 45.9364
+     Flux                                 0.508984 +/- 0.000118525
+ Mesh Index (80, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196832 +/- 46.5131
+     Flux                                 0.507865 +/- 0.000120013
+ Mesh Index (81, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196967 +/- 47.4731
+     Flux                                 0.506655 +/- 0.000122114
+ Mesh Index (82, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197093 +/- 48.4589
+     Flux                                 0.505418 +/- 0.000124266
+ Mesh Index (83, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197221 +/- 48.2929
+     Flux                                 0.504184 +/- 0.000123458
+ Mesh Index (84, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197313 +/- 48.0387
+     Flux                                 0.502856 +/- 0.000122428
+ Mesh Index (85, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197396 +/- 48.923
+     Flux                                 0.501506 +/- 0.000124294
+ Mesh Index (86, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196855 +/- 49.0197
+     Flux                                 0.500131 +/- 0.00012454
+ Mesh Index (87, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196896 +/- 49.2966
+     Flux                                 0.498677 +/- 0.000124853
+ Mesh Index (88, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196935 +/- 49.8294
+     Flux                                 0.497216 +/- 0.000125808
+ Mesh Index (89, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196954 +/- 48.3036
+     Flux                                 0.495705 +/- 0.000121573
+ Mesh Index (90, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196959 +/- 47.3777
+     Flux                                 0.494156 +/- 0.000118867
+ Mesh Index (91, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196941 +/- 48.5356
+     Flux                                 0.492552 +/- 0.000121388
+ Mesh Index (92, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196897 +/- 50.1806
+     Flux                                 0.490884 +/- 0.000125105
+ Mesh Index (93, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196823 +/- 50.3958
+     Flux                                 0.489139 +/- 0.000125243
+ Mesh Index (94, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197377 +/- 48.2298
+     Flux                                 0.487391 +/- 0.000119096
+ Mesh Index (95, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197286 +/- 48.3865
+     Flux                                 0.485605 +/- 0.000119099
+ Mesh Index (96, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197174 +/- 49.109
+     Flux                                 0.483766 +/- 0.000120489
+ Mesh Index (97, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197035 +/- 49.3482
+     Flux                                 0.481865 +/- 0.000120685
+ Mesh Index (98, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   196876 +/- 48.3986
+     Flux                                 0.479917 +/- 0.000117979
+ Mesh Index (99, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197335 +/- 47.9268
+     Flux                                 0.47791 +/- 0.00011607
+ Mesh Index (100, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   197122 +/- 47.0394
+     Flux                                 0.475835 +/- 0.000113549
+ ============================>     TALLY 2     <============================
+
+ Total Material
+   Kappa-Fission Rate                   1.97045e+07 +/- 2265.17
