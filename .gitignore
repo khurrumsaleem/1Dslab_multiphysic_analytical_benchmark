@@ -4,3 +4,4 @@
 *.csv
 .jitcache
 *.e
+*.sh
