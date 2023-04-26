@@ -1,0 +1,54 @@
+ ============================>     TALLY 1     <============================
+
+ Mesh Index (1, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   3.94962e+06 +/- 1949.42
+     Flux                                 9.84677 +/- 0.00486009
+ Mesh Index (2, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   3.95478e+06 +/- 2024.72
+     Flux                                 10.3294 +/- 0.00528831
+ Mesh Index (3, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   3.95394e+06 +/- 1797.17
+     Flux                                 10.4838 +/- 0.00476513
+ Mesh Index (4, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   3.95328e+06 +/- 1737.52
+     Flux                                 10.3255 +/- 0.00453819
+ Mesh Index (5, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   3.94791e+06 +/- 1693.32
+     Flux                                 9.84251 +/- 0.00422161
+ ============================>     TALLY 2     <============================
+
+ Total Material
+   Nu-Fission Rate                      0.296393 +/- 9.12122e-05
+   Fission Rate                         0.108677 +/- 3.34445e-05
+ ============================>     TALLY 3     <============================
+
+ Total Material
+   Kappa-Fission Rate                   1.97595e+07 +/- 6080.81
+   Flux                                 50.8279 +/- 0.0157632
+ ============================>     TALLY 4     <============================
+
+ Cell 2, Instance 0
+   Total Material
+     Kappa-Fission Rate                   3.94962e+06 +/- 1949.42
+     Flux                                 9.84677 +/- 0.00486009
+ Cell 3, Instance 0
+   Total Material
+     Kappa-Fission Rate                   3.95478e+06 +/- 2024.72
+     Flux                                 10.3294 +/- 0.00528831
+ Cell 4, Instance 0
+   Total Material
+     Kappa-Fission Rate                   3.95394e+06 +/- 1797.17
+     Flux                                 10.4838 +/- 0.00476513
+ Cell 5, Instance 0
+   Total Material
+     Kappa-Fission Rate                   3.95328e+06 +/- 1737.52
+     Flux                                 10.3255 +/- 0.00453819
+ Cell 6, Instance 0
+   Total Material
+     Kappa-Fission Rate                   3.94791e+06 +/- 1693.32
+     Flux                                 9.84251 +/- 0.00422161
