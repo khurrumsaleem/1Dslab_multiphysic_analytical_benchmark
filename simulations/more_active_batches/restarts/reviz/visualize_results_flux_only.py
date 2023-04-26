@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import ticker as mtick
 import pandas as pd
+import scipy.stats as stats
 
 # mesh element sizes that will be used to iterate through all cases
 n_elems = np.array([50,100,250,500,1000])
@@ -135,7 +136,7 @@ for n in n_elems:
     # plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
 plt.plot(xx[n],ones[n],'k',label="exact")
 plt.xticks([-60,-40,-20,0,20,40,60])
-plt.yticks([1-0.6e-3,1-0.4e-3,1-0.2e-3,1,1+0.2e-3,1+0.4e-3,1+0.6e-3])
+plt.yticks([1-0.5e-3,1-0.4e-3,1-0.2e-3,1,1+0.2e-3,1+0.4e-3,1+0.5e-3])
 plt.xlabel("X Coordinate [cm]",fontsize=16)
 plt.ylabel(r"Flux C/E",fontsize=16)
 plt.gca().yaxis.tick_right()
