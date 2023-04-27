@@ -2,6 +2,7 @@ import openmc
 import openmc.mgxs as mgxs
 import numpy as np
 import h5py
+import pandas as pd
 
 # problem physical parameters
 T0 = 293 # heat sink temp and reference temp for XS
@@ -25,7 +26,7 @@ Sig_t0 = np.sqrt(P/((lam-1)*k0*L))/(T0) # 1/cm
 sig_t0 = Sig_t0/num_dens # cm^2
 # number of regions in the problem
 N = 5
-N_ghost = 45
+N_ghost = 50 # use 50 in this case because we don't know which 5 temps will load easily and better to just set them all
 infdim = 0.5 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
 
 # generate one group cross section data
@@ -85,17 +86,16 @@ ghost_mesh.upper_right = (2*L,2,2)
 
 ghost_cells, g_cells = ghost_mesh.build_cells(['vacuum']*6)
 
-# fill cells with slab and assign all 50 temperatures
-# start with problem cells
-for i in range(N):
+# fill cells with slab
+temp_from_csv = pd.read_csv("openmc_5_temp.csv").loc[:,"temp"]
+for cell in cells:
     # cell IDs run from 2 to N+1, but we need to access 0 to N-1, offset 2
-    cell = cells[i]
-    Tx = Tmin + (Tmax - Tmin)/(NT-1) * i
-    cell.temperature = Tx
+    mesh_id = cell.id - 2
+    cell.temperature = temp_from_csv[mesh_id]
     cell.fill = slab
-# finish with ghost cells
-for i in range(N,N+N_ghost):
-    cell = g_cells[i-N]
+
+for i in range(NT):
+    cell = g_cells[i]
     Tx = Tmin + (Tmax - Tmin)/(NT-1) * i
     cell.temperature = Tx
     cell.fill = slab
@@ -112,7 +112,7 @@ tally.filters = [mesh_filter]
 tally.scores = ['kappa-fission','flux']
 # tally nu-fission rate over entire volume
 tally_global = openmc.Tally()
-tally_global.scores = ['nu-fission','fission']
+tally_global.scores = ['kappa-fission']
 mgxs_tallies = openmc.Tallies([tally,tally_global])
 mgxs_tallies.export_to_xml()
 
@@ -120,7 +120,7 @@ mgxs_tallies.export_to_xml()
 settings = openmc.Settings()
 batches = 150
 inactive = 50
-particles = 50000
+particles = 250000
 settings.energy_mode = 'multi-group'
 settings.batches = batches
 settings.inactive = inactive
@@ -138,3 +138,5 @@ settings.temperature = {'default': T0,
                         'method': 'nearest',
                         'range': (Tmin, Tmax)} # good to load all temperatures you could encounter in multiphysics
 settings.export_to_xml()
+
+openmc.run(mpi_args=['mpiexec','-n','2'],threads=6)

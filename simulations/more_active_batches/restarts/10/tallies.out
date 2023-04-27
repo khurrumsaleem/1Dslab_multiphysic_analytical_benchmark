@@ -1,0 +1,46 @@
+ ============================>     TALLY 1     <============================
+
+ Mesh Index (1, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   1.97347e+06 +/- 472.777
+     Flux                                 4.84191 +/- 0.00115996
+ Mesh Index (2, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   1.96973e+06 +/- 477.529
+     Flux                                 5.0043 +/- 0.00121321
+ Mesh Index (3, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   1.97342e+06 +/- 488.741
+     Flux                                 5.12306 +/- 0.00126879
+ Mesh Index (4, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   1.97326e+06 +/- 435.022
+     Flux                                 5.20079 +/- 0.00114656
+ Mesh Index (5, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   1.97017e+06 +/- 406.847
+     Flux                                 5.23944 +/- 0.00108196
+ Mesh Index (6, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   1.97007e+06 +/- 419.208
+     Flux                                 5.23917 +/- 0.00111484
+ Mesh Index (7, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   1.97308e+06 +/- 430.812
+     Flux                                 5.20031 +/- 0.00113546
+ Mesh Index (8, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   1.97346e+06 +/- 406.697
+     Flux                                 5.12316 +/- 0.0010558
+ Mesh Index (9, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   1.97029e+06 +/- 426.959
+     Flux                                 5.00573 +/- 0.00108473
+ Mesh Index (10, 1, 1)
+   Total Material
+     Kappa-Fission Rate                   1.97412e+06 +/- 448.921
+     Flux                                 4.8435 +/- 0.00110143
+ ============================>     TALLY 2     <============================
+
+ Total Material
+   Kappa-Fission Rate                   1.97211e+07 +/- 2612.13

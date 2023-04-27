@@ -24,8 +24,8 @@ lam = 0.5*(1+np.sqrt(1+(16*q*q*phi0*phi0)/(P*P))) # eigenvalue solution
 Sig_t0 = np.sqrt(P/((lam-1)*k0*L))/(T0) # 1/cm
 sig_t0 = Sig_t0/num_dens # cm^2
 # number of regions in the problem
-N = 5
-N_ghost = 45
+N = 10
+N_ghost = 40
 infdim = 0.5 # length at which the reflective boundary conditions will be to simulate infiniteness in YZ dimension
 
 # generate one group cross section data
