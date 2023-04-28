@@ -6,7 +6,7 @@ import pandas as pd
 import scipy.stats as stats
 
 # mesh element sizes that will be used to iterate through all cases
-n_elems = np.array([50,100,250,500,1000])
+n_elems = np.array([5,10,25,50,100,250,500,1000])
 log_N = np.log10(n_elems)
 L = 106.47 # equilibrium length from paper
 P = 1.0e22 # eV/s
@@ -136,7 +136,7 @@ for n in n_elems:
     # plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
 plt.plot(xx[n],ones[n],'k',label="exact")
 plt.xticks([-60,-40,-20,0,20,40,60])
-plt.yticks([1-0.5e-3,1-0.4e-3,1-0.2e-3,1,1+0.2e-3,1+0.4e-3,1+0.5e-3])
+plt.yticks([1-0.6e-2,1-0.5e-2,1-0.4e-2,1,1+0.1e-2])
 plt.xlabel("X Coordinate [cm]",fontsize=16)
 plt.ylabel(r"Flux C/E",fontsize=16)
 plt.gca().yaxis.tick_right()
@@ -144,6 +144,40 @@ plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.4f'))
 plt.legend(ncol=2)
 plt.grid()
 plt.savefig("flux_num_to_analy_ratios.png",bbox_inches='tight')
+plt.clf()
+
+# COARSE
+# plot all flux C/E
+for n in [5,10,25,50]:
+    plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
+    # plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
+plt.plot(xx[n],ones[n],'k',label="exact")
+plt.xticks([-60,-40,-20,0,20,40,60])
+plt.yticks([1-0.5e-2, 1-0.4e-2, 1-0.2e-2, 1,1+0.1e-2])
+plt.xlabel("X Coordinate [cm]",fontsize=16)
+plt.ylabel(r"Flux C/E",fontsize=16)
+plt.gca().yaxis.tick_right()
+plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.3f'))
+plt.legend(ncol=2)
+plt.grid()
+plt.savefig("coarse_flux_num_to_analy_ratios.png",bbox_inches='tight')
+plt.clf()
+
+# FINE
+# plot all flux C/E
+for n in [50,100,250,500,1000]:
+    plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
+    # plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
+plt.plot(xx[n],ones[n],'k',label="exact")
+plt.xticks([-60,-40,-20,0,20,40,60])
+plt.yticks([1-0.5e-3,1-0.4e-3,1-0.2e-3,1,1+0.2e-3,1+0.4e-3,1+0.5e-3])
+plt.xlabel("X Coordinate [cm]",fontsize=16)
+plt.ylabel(r"Flux C/E",fontsize=16)
+plt.gca().yaxis.tick_right()
+plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.4f'))
+plt.legend(ncol=2)
+plt.grid()
+plt.savefig("fine_flux_num_to_analy_ratios.png",bbox_inches='tight')
 plt.clf()
 
 # plot C/E = 1 with error bounds on same plot as C/E
@@ -180,7 +214,7 @@ plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
 plt.ylabel(r"Log of Error Norm $log(\epsilon_{\phi})$",fontsize=16)
 # plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
 plt.xticks(log_N)
-plt.yticks([-3.6,-3.7,-3.8,-3.9])
+plt.yticks([-2.4,-2.5,-2.9,-3,-3.6,-3.7,-3.8,-3.9])
 plt.grid()
 plt.legend(bbox_to_anchor=[0.985,0.215],fontsize=14)
 plt.savefig("flux_error_norms.png",bbox_inches='tight')
