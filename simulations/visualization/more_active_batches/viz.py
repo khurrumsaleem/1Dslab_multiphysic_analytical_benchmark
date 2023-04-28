@@ -9,7 +9,7 @@ import pandas as pd
 import scipy.stats as stats
 
 # list mesh element sizes that will be used to iterate through all cases
-n_elems = np.array([50,100,250,500,1000])
+n_elems = np.array([5,10,25,50,100,250,500,1000])
 log_N = np.log10(n_elems)
 L = 106.47 # equilibrium length from paper
 P = 1.0e22 # eV/s
@@ -31,6 +31,7 @@ for n in n_elems:
     xx[n] = pd.read_csv(f"openmc_{n}_temp.csv").loc[:,"x"]
     temps[n] = pd.read_csv(f"openmc_{n}_temp.csv").loc[:,"temp"]
     cardinal_fluxes[n] = pd.read_csv(f"openmc_{n}_flux.csv").loc[:,"flux"]
+# ones = np.ones(len(xx[1000]))
 ones = np.ones(len(xx[1000]))
 
 # plot 50 mesh element temperature
@@ -89,6 +90,46 @@ plt.xticks([-60,-40,-20,0,20,40,60])
 dict_min = min(i for v in ratios_temp_num_to_analy.values() for i in v)
 dict_max = max(i for v in ratios_temp_num_to_analy.values() for i in v)
 # plt.yticks(np.linspace(dict_min,dict_max,8))
+plt.yticks([0.995,0.999,0.9995,1.0,1.005])
+plt.xlabel("X Coordinate [cm]",fontsize=16)
+plt.ylabel(r"Temperature C/E",fontsize=16)
+plt.gca().yaxis.tick_right()
+plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.3f'))
+plt.yticks()
+# plt.title(f"Ratio Numerical to Analytical Temp All Meshes. 200 Picard Iterations")
+plt.legend(ncol=2)
+plt.grid()
+plt.savefig("temp_num_to_analy_ratios.png",bbox_inches='tight')
+plt.clf()
+
+# COARSE TEMP C/E
+for n in [5,10,25,50]:
+    plt.plot(xx[n],ratios_temp_num_to_analy[n],label=f"{n} x-elem")
+plt.plot(xx[1000],ones,'k',label="exact")
+plt.xticks([-60,-40,-20,0,20,40,60])
+dict_min = min(i for v in ratios_temp_num_to_analy.values() for i in v)
+dict_max = max(i for v in ratios_temp_num_to_analy.values() for i in v)
+# plt.yticks(np.linspace(dict_min,dict_max,8))
+plt.yticks([0.995,0.996,0.997,0.998,0.999,1,1.0005])
+plt.xlabel("X Coordinate [cm]",fontsize=16)
+plt.ylabel(r"Temperature C/E",fontsize=16)
+plt.gca().yaxis.tick_right()
+plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.4f'))
+plt.yticks()
+# plt.title(f"Ratio Numerical to Analytical Temp All Meshes. 200 Picard Iterations")
+plt.legend(ncol=2)
+plt.grid()
+plt.savefig("coarse_temp_num_to_analy_ratios.png",bbox_inches='tight')
+plt.clf()
+
+# FINE TEMP C/E
+for n in [50,100,250,500,1000]:
+    plt.plot(xx[n],ratios_temp_num_to_analy[n],label=f"{n} x-elem")
+plt.plot(xx[1000],ones,'k',label="exact")
+plt.xticks([-60,-40,-20,0,20,40,60])
+dict_min = min(i for v in ratios_temp_num_to_analy.values() for i in v)
+dict_max = max(i for v in ratios_temp_num_to_analy.values() for i in v)
+# plt.yticks(np.linspace(dict_min,dict_max,8))
 plt.yticks([0.99994,0.99995,0.99996,0.99997,0.99998,0.99999,1,1.00001,1.00002])
 plt.xlabel("X Coordinate [cm]",fontsize=16)
 plt.ylabel(r"Temperature C/E",fontsize=16)
@@ -98,11 +139,12 @@ plt.yticks()
 # plt.title(f"Ratio Numerical to Analytical Temp All Meshes. 200 Picard Iterations")
 plt.legend(ncol=2)
 plt.grid()
-plt.savefig("temp_num_to_analy_ratios.png",bbox_inches='tight')
+plt.savefig("fine_temp_num_to_analy_ratios.png",bbox_inches='tight')
 plt.clf()
 
+# flux error norms NO RESTART - TODO decide whether to delete this part and only visualize flux from reviz
 # plot all flux C/E on one plot
-for n in n_elems:
+for n in [50,100,250,500,1000]:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
 plt.plot(xx[n],ones,'-k',label="exact")
 plt.xticks([-60,-40,-20,0,20,40,60])
