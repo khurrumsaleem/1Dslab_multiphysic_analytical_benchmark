@@ -1,5 +1,5 @@
 # a tidier visualization script that takes Cardinal outputs
-# and plots C/E and error norms for the temperature and flux
+# and plots C/E and error norms for the temperature
 
 import openmc
 import numpy as np
@@ -69,19 +69,6 @@ plt.grid()
 plt.savefig("analytical_flux_50.png")
 plt.clf()
 
-#plot individual C/E
-for n in n_elems:
-    plt.plot(xx[n],ratios_flux_num_to_analy[n],'-go',label=f"{n} x-elem")
-    plt.xticks([-60,-40,-20,0,20,40,60])
-    plt.yticks(np.linspace(np.min(ratios_flux_num_to_analy[n]),np.max(ratios_flux_num_to_analy[n]),5))
-    plt.xlabel("X Coordinate [cm]")
-    plt.ylabel(r"Flux C/E")
-    plt.title(f"Ratio Numerical to Analytical Flux {n} Mesh Elements")
-    plt.legend()
-    plt.grid()
-    plt.savefig(f"num_to_analytical_flux_{n}.png",bbox_inches='tight')
-    plt.clf()
-
 # plot all temp C/E on one plot
 for n in n_elems:
     plt.plot(xx[n],ratios_temp_num_to_analy[n],label=f"{n} x-elem")
@@ -142,27 +129,7 @@ plt.grid()
 plt.savefig("fine_temp_num_to_analy_ratios.png",bbox_inches='tight')
 plt.clf()
 
-# flux error norms NO RESTART - TODO decide whether to delete this part and only visualize flux from reviz
-# plot all flux C/E on one plot
-for n in [50,100,250,500,1000]:
-    plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
-plt.plot(xx[n],ones,'-k',label="exact")
-plt.xticks([-60,-40,-20,0,20,40,60])
-dict_min = min(i for v in ratios_flux_num_to_analy.values() for i in v)
-dict_max = max(i for v in ratios_flux_num_to_analy.values() for i in v)
-plt.yticks(np.linspace(dict_min,dict_max,7))
-plt.gca().yaxis.tick_right()
-plt.gca().yaxis.set_major_formatter(mtick.FormatStrFormatter('%.5f'))
-plt.xlabel("X Coordinate [cm]",fontsize=16)
-plt.ylabel(r"Flux C/E",fontsize=16)
-# plt.title("Ratio Numerical to Analytical Flux All Meshes. 200 Picard Iterations")
-plt.legend(ncol=2)
-plt.grid()
-plt.savefig("flux_num_to_analy_ratios.png",bbox_inches='tight')
-plt.clf()
-
-
-#### ERROR NORMS ####
+#### TEMP ERROR NORM ####
 
 log_temp_error_norms = [] # list to house the error for each mesh size
 for n in n_elems:
@@ -174,7 +141,7 @@ print(log_temp_error_norms)
 # plot the error for each threshold against the number of mesh elements
 plt.plot(log_N,log_temp_error_norms,'-ro',label=r'$\epsilon_{T}=\frac{||T_{a} - T_{x} ||_{2}}{|| T_{a} ||_{2}}$')
 plt.xticks(log_N)
-plt.yticks([-2.75,-3,-3.25,-3.5,-3.75,-4,-4.25])
+plt.yticks([-1.75,-2,-2.25,-2.5,-2.75,-3,-3.25,-3.5,-3.75,-4,-4.25])
 # plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
 plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
 plt.ylabel(r"Log of Error Norm $log(\epsilon_{T})$",fontsize=16)
@@ -184,40 +151,5 @@ plt.grid()
 plt.savefig("temp_error_norms.png",bbox_inches='tight')
 plt.clf()
 
-# compute flux error norm
-flux_deviations = {}
-flux_dev_norms = {}
-analytical_norms = {}
-flux_error_norms = {}
-# flux error ratio
-for n in n_elems:
-    flux_deviations[n] = []
-    # compute mean, stdev, and analytical - numerical
-    for i in range(n):
-        flux_deviations[n].append(analytical_phi[n][i]-cardinal_fluxes[n][i])
-    flux_dev_norms[n] = np.linalg.norm(flux_deviations[n],ord=2)
-    analytical_norms[n] = np.linalg.norm(analytical_phi[n],ord=2)
-    # ratio is error norm
-    flux_error_norms[n] = flux_dev_norms[n]/analytical_norms[n]
-
-log_flux_error_norms = [np.log10(flux_error_norms[n]) for n in n_elems]
-
-# linear polynomial fit to get slope of line of best fit
-pf = np.polyfit(log_N,log_flux_error_norms,1)
-print("polyfit pf:" , pf)
-
-plt.plot(log_N,log_flux_error_norms,'-o',label=r'$\epsilon_{\phi}=\frac{||\phi_{a} - \phi_{x} ||_{2}}{|| \phi_{a} ||_{2}}$')
-plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
-plt.ylabel(r"Log of Error Norm $log(\epsilon_{\phi})$",fontsize=16)
-# plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
-plt.yticks(np.linspace(-3.75,-4,5))
-plt.grid()
-plt.legend(bbox_to_anchor=[0.985,0.25],fontsize=14)
-plt.savefig("flux_error_norms.png",bbox_inches='tight')
-plt.clf()
-
 results_T = stats.linregress(log_N,log_temp_error_norms)
 print("slope = ", results_T.slope, " r-squared = ",results_T.rvalue*results_T.rvalue)
-
-results_flux = stats.linregress(log_N,log_flux_error_norms)
-print("slope = ", results_flux.slope, " r-squared = ",results_flux.rvalue*results_flux.rvalue)

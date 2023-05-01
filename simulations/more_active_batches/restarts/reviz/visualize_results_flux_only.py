@@ -204,7 +204,7 @@ log_flux_error_norms = np.array([np.log10(flux_error_norms[n]) for n in n_elems]
 # results_T = stats.linregress(log_N,log_temp_error_norms)
 # print("slope = ", results_T.slope, " r-squared = ",results_T.rvalue*results_T.rvalue)
 
-results_flux = stats.linregress(log_N,log_flux_error_norms)
+results_flux = stats.linregress(log_N[0:3],log_flux_error_norms[0:3])
 print("slope = ", results_flux.slope, " r-squared = ",results_flux.rvalue*results_flux.rvalue)
 
 
@@ -214,8 +214,8 @@ plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
 plt.ylabel(r"Log of Error Norm $log(\epsilon_{\phi})$",fontsize=16)
 # plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
 plt.xticks(log_N)
-plt.yticks([-2.4,-2.5,-2.9,-3,-3.6,-3.7,-3.8,-3.9])
+plt.yticks([-2.3,-2.4, -2.5, -2.6, -2.7, -2.8, -2.9, -3.0, -3.1, -3.2, -3.3, -3.4, -3.5, -3.6, -3.7, -3.8, -3.9])
 plt.grid()
-plt.legend(bbox_to_anchor=[0.985,0.215],fontsize=14)
+plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
 plt.savefig("flux_error_norms.png",bbox_inches='tight')
 plt.clf()
