@@ -34,7 +34,7 @@ groups.group_edges = np.array([0.0, 20.0e6]) #  groups in eV
 
 # create temperature data for cross sections
 # isotropic angular data
-NT = 60 # for now just use 50 temps in each case until a workaround for the hdf5 namespace collision succeeds
+NT = 50 # for now just use 50 temps in each case until a workaround for the hdf5 namespace collision succeeds
 # essentially the mgxs_library causes a namespace collision when more temps are used than the number of temps
 # in Tmax - Tmin
 temps = np.linspace(Tmin,Tmax,NT)
