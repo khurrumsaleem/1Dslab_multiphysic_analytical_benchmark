@@ -37,6 +37,7 @@ ones = np.ones(len(xx[1000]))
 # plot 50 mesh element temperature
 plt.plot(xx[50],temps[50],'-ro')
 plt.xticks([-60,-40,-20,0,20,40,60])
+plt.yticks(np.linspace(310,345,8))
 plt.xlabel("X coordinate [cm]",fontsize=16)
 plt.ylabel("Temperature [K]",fontsize=16)
 # plt.title(f"Temperature for {50} Mesh Elements")
@@ -90,7 +91,7 @@ plt.savefig("temp_num_to_analy_ratios.png",bbox_inches='tight')
 plt.clf()
 
 # COARSE TEMP C/E
-for n in [5,10,25,50]:
+for n in [5,10,25]:
     plt.plot(xx[n],ratios_temp_num_to_analy[n],label=f"{n} x-elem")
 plt.plot(xx[1000],ones,'k',label="exact")
 plt.xticks([-60,-40,-20,0,20,40,60])
@@ -143,8 +144,8 @@ plt.plot(log_N,log_temp_error_norms,'-ro',label=r'$\epsilon_{T}=\frac{||T_{a} - 
 plt.xticks(log_N)
 plt.yticks([-1.75,-2,-2.25,-2.5,-2.75,-3,-3.25,-3.5,-3.75,-4,-4.25])
 # plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
-plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
-plt.ylabel(r"Log of Error Norm $log(\epsilon_{T})$",fontsize=16)
+plt.xlabel(r"Log of Number of X Elements",fontsize=16)
+plt.ylabel(r"$log(\epsilon_{T})$",fontsize=16)
 # plt.title("Temperature Error Norm vs Mesh Size \n 200 Picard Iterations",y=1)
 plt.legend(bbox_to_anchor=[0.985,0.985],fontsize=14)
 plt.grid()

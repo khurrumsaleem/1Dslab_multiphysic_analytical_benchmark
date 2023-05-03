@@ -119,11 +119,12 @@ for n in n_elems:
 
 
 # plot numerical flux for 50 mesh elements
-plt.plot(xx[50],flux_means[50],'-o')
-plt.errorbar(xx[50],flux_means[50],yerr=flux_std_devs[50],marker = '|',fmt='none',elinewidth=1,capsize=4,capthick=2)
+plt.plot(xx[50],flux_means[50]/(1E14),'-o')
+plt.errorbar(xx[50],flux_means[50]/(1E14),yerr=flux_std_devs[50]/(1E14),marker = '|',fmt='none',elinewidth=1,capsize=4,capthick=2)
 plt.xlabel("X Coordinate [cm]",fontsize=16)
 plt.xticks([-60,-40,-20,0,20,40,60])
-plt.ylabel(r"Flux [n/$cm^{2}$-s]",fontsize=16)
+plt.yticks(np.linspace(2.25,2.5,6))
+plt.ylabel(r"Flux($10^{-14})$ [n/$cm^{2}$-s]",fontsize=16)
 plt.grid()
 plt.rcParams['figure.figsize'] = [4, 4]
 plt.savefig("flux_50.png", bbox_inches="tight")
@@ -148,7 +149,7 @@ plt.clf()
 
 # COARSE
 # plot all flux C/E
-for n in [5,10,25,50]:
+for n in [5,10,25]:
     plt.plot(xx[n],ratios_flux_num_to_analy[n],label=f"{n} x-elem")
     # plt.errorbar(xx[n],ratios_flux_num_to_analy[n],yerr=two_sigma_r[n],marker = '|',fmt='none',elinewidth=0.25,capsize=3,capthick=1)
 plt.plot(xx[n],ones[n],'k',label="exact")
@@ -210,8 +211,8 @@ print("slope = ", results_flux.slope, " r-squared = ",results_flux.rvalue*result
 
 # plot mesh elements vs flux error norms
 plt.plot(log_N,log_flux_error_norms,'-o',label=r'$\epsilon_{\phi}=\frac{||\phi_{a} - \phi_{x} ||_{2}}{|| \phi_{a} ||_{2}}$')
-plt.xlabel(r"Log of number of X elements $\log(N)$",fontsize=16)
-plt.ylabel(r"Log of Error Norm $log(\epsilon_{\phi})$",fontsize=16)
+plt.xlabel(r"Log of Number of X Cells",fontsize=16)
+plt.ylabel(r"$log(\epsilon_{\phi})$",fontsize=16)
 # plt.title("Flux Error Norm vs Mesh Size \n 200 Picard Iterations with Relaxation")
 plt.xticks(log_N)
 plt.yticks([-2.3,-2.4, -2.5, -2.6, -2.7, -2.8, -2.9, -3.0, -3.1, -3.2, -3.3, -3.4, -3.5, -3.6, -3.7, -3.8, -3.9])
